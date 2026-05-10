@@ -401,7 +401,7 @@ export function renderDashboard(rootElement) {
             ${isAdmin ? `
             <button id="admin-stats-btn-mobile" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-accent-purple font-semibold text-sm transition-colors"><span class="material-symbols-outlined text-base">bar_chart_4_bars</span>Admin Stats</button>
             <button id="admin-moderation-btn-mobile" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-accent-orange font-semibold text-sm transition-colors"><span class="material-symbols-outlined text-base">flag</span>Flagged questions</button>
-            <a href="/social-card.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-primary font-semibold text-sm transition-colors"><span class="material-symbols-outlined text-base">auto_awesome_motion</span>Social export</a>` : ''}
+            ` : ''}
             <button id="account-btn-mobile" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-slate-300 font-semibold text-sm transition-colors"><span class="material-symbols-outlined text-base">manage_accounts</span>Account Settings</button>
             <button id="theme-toggle-btn-mobile" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-slate-300 font-semibold text-sm transition-colors">
                 <span class="material-symbols-outlined text-slate-700 dark:hidden text-base">light_mode</span>
@@ -440,9 +440,7 @@ export function renderDashboard(rootElement) {
                 <button id="admin-moderation-btn" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-accent-orange font-semibold text-sm transition-colors">
                     <span class="material-symbols-outlined text-base">flag</span> Flagged questions
                 </button>
-                <a href="/social-card.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-border-dark text-primary font-semibold text-sm transition-colors">
-                    <span class="material-symbols-outlined text-base">auto_awesome_motion</span> Social export
-                </a>` : ''}
+                ` : ''}
             </nav>
 
             <!-- User block -->

@@ -25,7 +25,6 @@ const routes = [
   { path: '/checkout.html', changefreq: 'monthly', priority: '0.6' },
   { path: '/success.html', changefreq: 'monthly', priority: '0.3' },
   { path: '/legal.html', changefreq: 'monthly', priority: '0.3' },
-  { path: '/social-card.html', changefreq: 'monthly', priority: '0.3' },
   { path: '/demo-instant-feedback.html', changefreq: 'monthly', priority: '0.5' },
   { path: '/diagnostic-promo.html', changefreq: 'monthly', priority: '0.5' },
   { path: '/sitemap.html', changefreq: 'monthly', priority: '0.5' },

@@ -10,7 +10,6 @@ export default defineConfig({
         checkout: resolve(__dirname, 'checkout.html'),
         success: resolve(__dirname, 'success.html'),
         legal: resolve(__dirname, 'legal.html'),
-        socialCard: resolve(__dirname, 'social-card.html'),
         demoInstantFeedback: resolve(__dirname, 'demo-instant-feedback.html'),
         diagnosticPromo: resolve(__dirname, 'diagnostic-promo.html'),
       },

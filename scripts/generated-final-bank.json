@@ -10,7 +10,7 @@
       {
         "text": "NSTEMI",
         "correct": true,
-        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
+        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
       },
       {
         "text": "STEMI",
@@ -29,7 +29,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
+    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
     "tags": [
       "acute-coronary-syndrome",
       "NSTEMI",
@@ -576,7 +576,7 @@
       {
         "text": "High-dose ibuprofen 600-800 mg TID + colchicine 0.5 mg BID",
         "correct": true,
-        "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
+        "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
       },
       {
         "text": "Prednisone 40 mg daily",
@@ -595,7 +595,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
+    "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
     "tags": [
       "pericarditis",
       "colchicine",
@@ -803,7 +803,7 @@
       {
         "text": "NSTEMI",
         "correct": true,
-        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
+        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
       },
       {
         "text": "STEMI",
@@ -822,7 +822,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
+    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
     "tags": [
       "acute-coronary-syndrome",
       "NSTEMI",
@@ -1369,7 +1369,7 @@
       {
         "text": "High-dose ibuprofen 600-800 mg TID + colchicine 0.5 mg BID",
         "correct": true,
-        "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
+        "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
       },
       {
         "text": "Prednisone 40 mg daily",
@@ -1388,7 +1388,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
+    "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
     "tags": [
       "pericarditis",
       "colchicine",
@@ -1596,7 +1596,7 @@
       {
         "text": "NSTEMI",
         "correct": true,
-        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
+        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
       },
       {
         "text": "STEMI",
@@ -1615,7 +1615,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
+    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
     "tags": [
       "acute-coronary-syndrome",
       "NSTEMI",
@@ -2162,7 +2162,7 @@
       {
         "text": "High-dose ibuprofen 600-800 mg TID + colchicine 0.5 mg BID",
         "correct": true,
-        "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
+        "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
       },
       {
         "text": "Prednisone 40 mg daily",
@@ -2181,7 +2181,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
+    "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
     "tags": [
       "pericarditis",
       "colchicine",
@@ -2389,7 +2389,7 @@
       {
         "text": "NSTEMI",
         "correct": true,
-        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
+        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
       },
       {
         "text": "STEMI",
@@ -2408,7 +2408,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
+    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
     "tags": [
       "acute-coronary-syndrome",
       "NSTEMI",
@@ -2955,7 +2955,7 @@
       {
         "text": "High-dose ibuprofen 600-800 mg TID + colchicine 0.5 mg BID",
         "correct": true,
-        "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
+        "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%). Clinical pearl: \"Pericarditis therapy\" — NSAID + colchicine for 3 months. Corticosteroids only if refractory or contraindication to NSAIDs (corticosteroids actually increase recurrence risk)."
       },
       {
         "text": "Prednisone 40 mg daily",
@@ -2974,7 +2974,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "Per 2015 ESC guidelines, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
+    "rationale": "Per Saudi MOH Clinical Practice Guideline for Pericarditis, first-line therapy for acute pericarditis is NSAIDs (ibuprofen or aspirin) plus colchicine. Colchicine reduces recurrence risk (COPE trial: 32% → 11%).",
     "tags": [
       "pericarditis",
       "colchicine",
@@ -3182,7 +3182,7 @@
       {
         "text": "NSTEMI",
         "correct": true,
-        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
+        "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI. Clinical pearl: \"Troponin defines MI, ECG defines type\" — ST depression = NSTEMI, ST elevation = STEMI."
       },
       {
         "text": "STEMI",
@@ -3201,7 +3201,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per 2023 AHA/ACC guidelines, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
+    "rationale": "NSTEMI presents with ST depression and elevated troponin. Per Saudi MOH Guideline for NSTEMI, 2024, early invasive strategy (angiography within 24h) is indicated for NSTEMI.",
     "tags": [
       "acute-coronary-syndrome",
       "NSTEMI",
@@ -3672,7 +3672,7 @@
       {
         "text": "Intubation and mechanical ventilation",
         "correct": true,
-        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
+        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
       },
       {
         "text": "Increase IPAP/EPAP settings on BiPAP",
@@ -3691,7 +3691,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
+    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
     "tags": [
       "COPD",
       "NIPPV-failure",
@@ -4241,7 +4241,7 @@
       {
         "text": "Intubation and mechanical ventilation",
         "correct": true,
-        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
+        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
       },
       {
         "text": "Increase IPAP/EPAP settings on BiPAP",
@@ -4260,7 +4260,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
+    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
     "tags": [
       "COPD",
       "NIPPV-failure",
@@ -4810,7 +4810,7 @@
       {
         "text": "Intubation and mechanical ventilation",
         "correct": true,
-        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
+        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
       },
       {
         "text": "Increase IPAP/EPAP settings on BiPAP",
@@ -4829,7 +4829,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
+    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
     "tags": [
       "COPD",
       "NIPPV-failure",
@@ -5379,7 +5379,7 @@
       {
         "text": "Intubation and mechanical ventilation",
         "correct": true,
-        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
+        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
       },
       {
         "text": "Increase IPAP/EPAP settings on BiPAP",
@@ -5398,7 +5398,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
+    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
     "tags": [
       "COPD",
       "NIPPV-failure",
@@ -5948,7 +5948,7 @@
       {
         "text": "Intubation and mechanical ventilation",
         "correct": true,
-        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
+        "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions. Clinical pearl: \"NIPPV success indicators\" — pH improvement and RR reduction within 1-2 hours predict success. Worsening = intubate."
       },
       {
         "text": "Increase IPAP/EPAP settings on BiPAP",
@@ -5967,7 +5967,7 @@
       }
     ],
     "correct_answer": "A",
-    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per GOLD 2024 guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
+    "rationale": "NIPPV failure (worsening hypercapnia and acidosis after 1-2 hours) requires intubation per Saudi MOH COPD Management Guidelines. Criteria: pH <7.25 despite NIPPV, hemodynamic instability, altered mental status, inability to clear secretions.",
     "tags": [
       "COPD",
       "NIPPV-failure",

@@ -38,7 +38,7 @@ export async function renderAdminStats(rootElement) {
         </div>
     </div>`;
 
-    // ── Fetch data concurrently ────────────────────────────────────────────────
+    // ── Fetch data  (server-side counts + site_stats + questions) ─────────────
     let totalUsers = '—';
     let totalQuestions = '—';
     let totalProUsers = '—';
@@ -50,44 +50,36 @@ export async function renderAdminStats(rootElement) {
     /** Optional Looker Studio / GA embed URL from metadata/analytics (set in Console). */
     let analyticsEmbedUrl = '';
 
+    // 1. Populate site_stats via callable (runs with Admin SDK — bypasses rules)
     try {
-        const usersCount = await getCountFromServer(collection(firestore, 'users'));
-        totalUsers = usersCount.data().count.toLocaleString();
-    } catch (e) { console.warn('[Admin] users count failed:', e.message); }
+        const refreshFn = httpsCallable(functions, 'refreshAdminStats');
+        await refreshFn();
+    } catch (e) {
+        console.warn('[Admin] refreshAdminStats failed (site_stats may be stale):', e.message);
+    }
 
+    // 2. Read everything from site_stats (computed server-side)
+    try {
+        const statsSnap = await getDoc(doc(firestore, 'metadata', 'site_stats'));
+        if (statsSnap.exists()) {
+            const d = statsSnap.data();
+            totalUsers         = d.totalUsers?.toLocaleString() ?? '—';
+            totalProUsers      = d.premiumUsers?.toLocaleString() ?? '—';
+            totalFreeUsers     = d.freeUsers?.toLocaleString() ?? '—';
+            newUsersThisWeek   = d.newUsersThisWeek?.toLocaleString() ?? '—';
+            questionsAnsweredToday = d.questionsAnsweredToday ?? '—';
+            dailyDoseCompletionsToday = d.dailyDoseCompletionsToday ?? '—';
+            lastUpdated        = d.lastUpdated?.toDate?.() ?? null;
+        }
+    } catch (e) { console.warn('[Admin] site_stats read failed:', e.message); }
+
+    // 3. Questions count — admin email has direct read access per security rules
     try {
         const qCount = await getCountFromServer(collection(firestore, 'questions'));
         totalQuestions = qCount.data().count.toLocaleString();
     } catch (e) { console.warn('[Admin] questions count failed:', e.message); }
 
-    // Count Pro vs Free users
-    try {
-        const proUsersSnap = await getDocs(collection(firestore, 'users').where('isPremium', '==', true));
-        totalProUsers = proUsersSnap.size.toLocaleString();
-        
-        const freeUsersSnap = await getDocs(collection(firestore, 'users').where('isPremium', '==', false));
-        totalFreeUsers = freeUsersSnap.size.toLocaleString();
-    } catch (e) { console.warn('[Admin] Pro/Free users count failed:', e.message); }
-
-    // Count new users this week (last 7 days)
-    try {
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-        const newUsersSnap = await getDocs(collection(firestore, 'users').where('createdAt', '>=', oneWeekAgo));
-        newUsersThisWeek = newUsersSnap.size.toLocaleString();
-    } catch (e) { console.warn('[Admin] new users this week count failed:', e.message); }
-
-    // Try to get today's activity stats (optional - may not exist)
-    try {
-        const statsSnap = await getDoc(doc(firestore, 'metadata', 'site_stats'));
-        if (statsSnap.exists()) {
-            const d = statsSnap.data();
-            questionsAnsweredToday = d.questionsAnsweredToday ?? '—';
-            dailyDoseCompletionsToday = d.dailyDoseCompletionsToday ?? '—';
-            lastUpdated = d.lastUpdated?.toDate?.() ?? null;
-        }
-    } catch (e) { console.warn('[Admin] site_stats read failed:', e.message); }
-
+    // 4. Analytics embed URL (metadata/analytics)
     try {
         const analyticsSnap = await getDoc(doc(firestore, 'metadata', 'analytics'));
         if (analyticsSnap.exists()) {

@@ -7,7 +7,6 @@ const nodemailer = require("nodemailer");
 const { DRILL_TOPIC_SYNONYMS } = require("./topic-synonyms");
 const { redactQuestionList } = require("./redact-question-images");
 const { generateImagePlanFromData, sleep } = require("./gemini-image-plan");
-const { generateSocialCard } = require("./generate-social-card");
 const { getProvider } = require("./ai-provider");
 const { generateQuestion } = require("./generate-question-agent");
 const { moyasarWebhook } = require("./webhook-handler");
@@ -374,16 +373,28 @@ exports.generateDailyDose = onSchedule(
 
     logger.info(`[Daily Dose] Generating for ${targetDate}`);
 
-    // Roll hourly active-user buckets every midnight (even if daily dose doc already exists).
-    await db.collection("metadata").doc("site_stats").set(
+    // Roll daily counters, hourly buckets, and weekly-new-user window at midnight.
+    const statsRef = db.collection("metadata").doc("site_stats");
+    const prevStats = await statsRef.get();
+    let weeklyNewUsers = Array(7).fill(0);
+    if (prevStats.exists) {
+      const prev = prevStats.data() || {};
+      if (Array.isArray(prev.weeklyNewUsers) && prev.weeklyNewUsers.length === 7) {
+        weeklyNewUsers = [...prev.weeklyNewUsers.slice(1), 0];
+      }
+    }
+    await statsRef.set(
       {
         hourlyActivityDate: targetDate,
         activeUsersByHourToday: Array(24).fill(0),
+        questionsAnsweredToday: 0,
+        dailyDoseCompletionsToday: 0,
+        weeklyNewUsers,
         lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true }
     );
-    logger.info(`[Daily Dose] Hourly presence buckets reset for ${targetDate}.`);
+    logger.info(`[Daily Dose] Daily counters and hourly buckets reset for ${targetDate}.`);
 
     // Avoid overwriting an existing document (e.g. admin manually ran the script)
     const docRef = db.collection("daily_doses").doc(targetDate);
@@ -700,145 +711,7 @@ exports.batchGenerateImagePlans = onCall(
   }
 );
 
-function escapeXml(s) {
-  return String(s || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
 
-function wrapTextLines(raw, maxCharsPerLine, maxLines) {
-  const text = String(raw || "").replace(/\s+/g, " ").trim();
-  if (!text) return [];
-  const words = text.split(" ");
-  const lines = [];
-  let line = "";
-  for (const w of words) {
-    const next = line ? `${line} ${w}` : w;
-    if (next.length <= maxCharsPerLine) {
-      line = next;
-      continue;
-    }
-    if (line) lines.push(line);
-    line = w;
-    if (lines.length >= maxLines - 1) break;
-  }
-  if (lines.length < maxLines && line) lines.push(line);
-  if (lines.length > maxLines) return lines.slice(0, maxLines);
-  if (words.length && lines.length === maxLines) {
-    const consumed = lines.join(" ").split(" ").length;
-    if (consumed < words.length) {
-      lines[maxLines - 1] = `${lines[maxLines - 1].replace(/\.*$/, "")}...`;
-    }
-  }
-  return lines;
-}
-
-function buildSocialCardSvg({
-  topic,
-  question,
-  options,
-  questionNumber,
-  totalQuestions,
-  width,
-  height,
-}) {
-  const w = Math.max(720, Math.min(2160, Number(width) || 1080));
-  const h = Math.max(720, Math.min(3840, Number(height) || 1920));
-
-  const colW = Math.round(Math.min(w * 0.78, 840));
-  const colX = Math.round((w - colW) / 2);
-  // y on <text> is the baseline; leave room for descenders before the progress track.
-  const headBaselineY = Math.round(h * 0.055);
-  const headerBelowBaselinePx = 54;
-  const progressY = headBaselineY + headerBelowBaselinePx;
-  const cardY = progressY + 24;
-  const cardH = Math.round(h * 0.62);
-  const trustY = cardY + cardH + 28;
-
-  const qNum = Math.max(1, Math.min(999, Number(questionNumber) || 1));
-  const qTotal = Math.max(1, Math.min(999, Number(totalQuestions) || 10));
-  const pct = Math.max(0, Math.min(100, Math.round((qNum / qTotal) * 100)));
-
-  const topicSafe = escapeXml(topic || "Daily Dose");
-  const stem = String(question || "").trim() || "Paste a question stem, then export.";
-  const stemLines = wrapTextLines(`${qNum}. ${stem}`, 52, 8);
-  const optLines = (Array.isArray(options) ? options : [])
-    .slice(0, 5)
-    .map((o, i) => ({ id: String.fromCharCode(65 + i), text: String(o || "").trim() }))
-    .filter((o) => o.text);
-
-  let y = cardY + 88;
-  const stemSvg = stemLines
-    .map((line) => {
-      const row = `<text x="${colX + 56}" y="${y}" fill="#F8FAFC" font-size="45" font-weight="700" font-family="Inter, Arial, sans-serif">${escapeXml(line)}</text>`;
-      y += 58;
-      return row;
-    })
-    .join("");
-
-  y += 16;
-  const optionsSvg = optLines
-    .map((o) => {
-      const boxY = y;
-      y += 96;
-      return `
-<rect x="${colX + 44}" y="${boxY}" width="${colW - 88}" height="74" rx="18" fill="#0E2830" stroke="#2E4350" stroke-width="2"/>
-<rect x="${colX + 64}" y="${boxY + 19}" width="34" height="34" rx="8" fill="#1C2C36" stroke="#3A4B57" stroke-width="2"/>
-<text x="${colX + 81}" y="${boxY + 42}" text-anchor="middle" fill="#DCE6EE" font-size="20" font-weight="700" font-family="Inter, Arial, sans-serif">${o.id}</text>
-<text x="${colX + 122}" y="${boxY + 43}" fill="#DCE6EE" font-size="24" font-weight="600" font-family="Inter, Arial, sans-serif">${escapeXml(o.text)}</text>`;
-    })
-    .join("");
-
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-  <rect width="${w}" height="${h}" fill="#101F22"/>
-  <rect x="${colX}" y="${progressY}" width="${colW}" height="14" rx="7" fill="#2E4350"/>
-  <rect x="${colX}" y="${progressY}" width="${Math.round((colW * pct) / 100)}" height="14" rx="7" fill="#11B4D4"/>
-  <text x="${colX}" y="${headBaselineY}" font-size="44" font-weight="800" font-family="Inter, Arial, sans-serif">
-    <tspan fill="#D4AF37">SMLE Pro</tspan><tspan fill="#DCE6EE"> — </tspan><tspan fill="#11B4D4">${topicSafe}</tspan>
-  </text>
-
-  <rect x="${colX}" y="${cardY}" width="${colW}" height="${cardH}" rx="34" fill="#16313A" stroke="#2E4350" stroke-width="3"/>
-  ${stemSvg}
-  ${optionsSvg}
-
-  <rect x="${colX}" y="${trustY}" width="${colW}" height="128" rx="24" fill="#0A171C" stroke="#2A3A43" stroke-width="2"/>
-  <text x="${colX + 28}" y="${trustY + 44}" fill="#E2E8F0" font-size="28" font-weight="700" font-family="Inter, Arial, sans-serif">Independent prep</text>
-  <text x="${colX + 270}" y="${trustY + 44}" fill="#94A3B8" font-size="28" font-weight="500" font-family="Inter, Arial, sans-serif">— Not affiliated with SCFHS or any government body.</text>
-  <text x="${colX + 28}" y="${trustY + 84}" fill="#94A3B8" font-size="28" font-weight="500" font-family="Inter, Arial, sans-serif">Educational use only; not medical advice.</text>
-  <text x="${colX + 742}" y="${h - 28}" fill="#F8FAFC" font-size="22" font-weight="700" font-family="Inter, Arial, sans-serif">SMLE Pro</text>
-</svg>`;
-
-  return { svg, width: w, height: h };
-}
-
-exports.generateSocialCardSvg = onCall({ region: "us-central1" }, async (request) => {
-  const callerEmail = String(request.auth?.token?.email || "").toLowerCase();
-  if (!request.auth?.uid || callerEmail !== ADMIN_OPERATOR_EMAIL) {
-    throw new HttpsError("permission-denied", "Admin only.");
-  }
-
-  const payload = request.data || {};
-  const out = buildSocialCardSvg({
-    topic: payload.topic,
-    question: payload.question,
-    options: payload.options,
-    questionNumber: payload.questionNumber,
-    totalQuestions: payload.totalQuestions,
-    width: payload.width,
-    height: payload.height,
-  });
-
-  return {
-    ok: true,
-    svg: out.svg,
-    width: out.width,
-    height: out.height,
-  };
-});
 
 /**
  * Create a Moyasar Invoice (Payment Link) and return the hosted payment page URL.
@@ -1393,11 +1266,69 @@ exports.checkAiProvider = onCall(
   }
 );
 
-// Social card generator using Puppeteer (server-side PNG rendering)
-exports.generateSocialCard = generateSocialCard;
-
 // Moyasar payment webhook handler (defined in webhook-handler.js)
 exports.moyasarWebhook = moyasarWebhook;
+
+/**
+ * Refreshes metadata/site_stats with accurate user counts computed server-side.
+ * Admin-only; reads the entire users collection with Admin SDK privileges
+ * so it bypasses Firestore security rules that block client-side aggregation.
+ */
+exports.refreshAdminStats = onCall({ region: "us-central1" }, async (request) => {
+  if (request.auth?.token?.email !== ADMIN_OPERATOR_EMAIL) {
+    throw new HttpsError("permission-denied", "Admin only.");
+  }
+
+  const db = admin.firestore();
+  const usersSnap = await db.collection("users").get();
+  const totalUsers = usersSnap.size;
+
+  let premiumUsers = 0;
+  let freeUsers = 0;
+  let newUsersThisWeek = 0;
+  const now = new Date();
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const weeklyBuckets = Array(7).fill(0); // index 0 = oldest, 6 = today
+
+  usersSnap.forEach((doc) => {
+    const data = doc.data();
+    if (data.isPremium === true) premiumUsers++;
+    else freeUsers++;
+
+    const createdAt = data.createdAt?.toDate?.() || (data.createdAt ? new Date(data.createdAt) : null);
+    if (createdAt && createdAt >= sevenDaysAgo) {
+      newUsersThisWeek++;
+      const dayDiff = Math.floor((now - createdAt) / (24 * 60 * 60 * 1000));
+      if (dayDiff >= 0 && dayDiff < 7) {
+        weeklyBuckets[6 - dayDiff]++;
+      }
+    }
+  });
+
+  // Preserve existing counters that only the client can increment
+  const statsRef = db.collection("metadata").doc("site_stats");
+  const existingSnap = await statsRef.get();
+  const existing = existingSnap.exists ? existingSnap.data() : {};
+
+  await statsRef.set(
+    {
+      totalUsers,
+      premiumUsers,
+      freeUsers,
+      newUsersThisWeek,
+      weeklyNewUsers: weeklyBuckets,
+      questionsAnsweredTotal: existing.questionsAnsweredTotal ?? 0,
+      questionsAnsweredToday: existing.questionsAnsweredToday ?? 0,
+      dailyDoseCompletionsToday: existing.dailyDoseCompletionsToday ?? 0,
+      hourlyActivityDate: existing.hourlyActivityDate ?? null,
+      activeUsersByHourToday: existing.activeUsersByHourToday ?? Array(24).fill(0),
+      lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
+
+  return { ok: true };
+});
 
 /**
  * Admin: Revoke Pro from any user by email. Call from browser console.

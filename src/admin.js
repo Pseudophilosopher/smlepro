@@ -1,13 +1,7 @@
-import { navigateTo, firestore, state, functions } from './app.js';
+import { navigateTo, firestore, state } from './app.js';
 import { ADMIN_CONFIG } from './admin-config.js';
 import { initializeThemeSwitch } from './theme.js';
-import { formatCorrectAnswerForAdmin } from './resolve-correct-answer.js';
-import { collection, getDocs, deleteDoc, doc, addDoc, writeBatch, setDoc, getDoc } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
-
-/** Browser waits longer than default (~70s) or batch runs fail with deadline-exceeded. */
-const CALLABLE_BATCH_MS = 62 * 60 * 1000;
-const CALLABLE_GEMINI_SINGLE_MS = 3 * 60 * 1000;
+import { collection, getDocs, deleteDoc, doc, writeBatch, setDoc, getDoc } from 'firebase/firestore';
 
 function escapeHtml(s) {
     return String(s)
@@ -15,19 +9,6 @@ function escapeHtml(s) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
-}
-
-/** Firebase callable errors often hide detail unless code + message are shown together. */
-function formatCallableError(err) {
-    if (!err) return 'Unknown error';
-    const code = err.code != null ? String(err.code) : '';
-    const msg = err.message != null ? String(err.message) : '';
-    const details = err.details != null ? String(err.details) : '';
-    const lines = [];
-    if (code) lines.push(`Code: ${code}`);
-    if (msg) lines.push(msg);
-    if (details && details !== msg) lines.push(details);
-    return lines.length ? lines.join('\n\n') : String(err);
 }
 
 export async function renderAdmin(rootElement) {
@@ -83,164 +64,28 @@ export async function renderAdmin(rootElement) {
                 </div>
             </div>
 
-            <div
-                id="admin-image-queue-hint"
-                class="rounded-xl border border-primary/35 bg-primary/5 dark:bg-primary/10 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 flex gap-3 items-start"
-                role="status"
-            >
-                <span class="material-symbols-outlined text-primary shrink-0 mt-0.5">tips_and_updates</span>
-                <div class="space-y-1 leading-snug">
-                    <p>
-                        <strong class="text-primary">Gemini:</strong> Scroll to <strong>Image Verification Queue</strong> below.
-                        If images are waiting for review, use the button inside the viewer. If the queue is empty, use
-                        <strong>Question document ID</strong> in the empty-state box to run Gemini on any question.
-                        For many <code class="bg-slate-200 dark:bg-surface-dark px-1 rounded text-xs">image_reference</code> items, use
-                        <strong>Batch AI plans</strong> (next card).
-                    </p>
-                    <p class="text-slate-600 dark:text-slate-400 text-xs">
-                        If you deployed Functions but not Hosting, run <code class="bg-slate-200 dark:bg-surface-dark px-1 rounded">npm run build</code> then
-                        <code class="bg-slate-200 dark:bg-surface-dark px-1 rounded">firebase deploy --only hosting</code> so this page updates.
-                    </p>
-                </div>
-            </div>
 
-            <div class="rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark p-6 shadow-depth">
-                <h3 class="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800 dark:text-slate-100">
-                    <span class="material-symbols-outlined text-primary">batch_prediction</span>
-                    Batch AI image plans
-                </h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-snug">
-                    Calls Gemini for up to <strong>40</strong> questions per run: <code class="text-xs bg-slate-100 dark:bg-background-dark px-1 rounded">image_reference === true</code>
-                    and missing <code class="text-xs bg-slate-100 dark:bg-background-dark px-1 rounded">ai_image_plan</code> (unless you force). Re-run until the summary shows no remainder.
-                    Large batches can take <strong>many minutes</strong>; keep this tab open until the result appears.
-                </p>
-                <div class="flex flex-wrap items-end gap-3 mb-3">
-                    <div>
-                        <label for="admin-batch-plan-limit" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Per run</label>
-                        <input id="admin-batch-plan-limit" type="number" min="1" max="40" value="15"
-                            class="w-24 rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">
+
+            <!-- Edit question modal -->
+            <div id="edit-question-modal" class="hidden fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4" onclick="if(event.target===this)document.getElementById('edit-question-modal')?.classList.add('hidden')">
+                <div class="bg-white dark:bg-surface-dark rounded-2xl shadow-depth border border-slate-200 dark:border-border-dark w-full max-w-2xl max-h-[90vh] flex flex-col">
+                    <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-border-dark shrink-0">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">edit</span>
+                            Edit Question
+                        </h3>
+                        <button type="button" onclick="document.getElementById('edit-question-modal')?.classList.add('hidden')" class="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-border-dark transition">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
                     </div>
-                    <div>
-                        <label for="admin-batch-plan-delay" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Pause ms (between questions)</label>
-                        <input id="admin-batch-plan-delay" type="number" min="500" max="20000" value="3500"
-                            title="Higher = fewer Google 503 overload errors; slower batch."
-                            class="w-28 rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">
-                    </div>
-                    <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 cursor-pointer select-none">
-                        <input id="admin-batch-plan-force" type="checkbox" class="rounded border-slate-300 text-primary focus:ring-primary">
-                        Force (overwrite existing plans)
-                    </label>
-                </div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
-                    If you see many <strong>503 / high demand</strong> errors, raise the pause (e.g. 5000–8000) or run fewer per batch; the server also retries each question automatically.
-                </p>
-                <button type="button" id="btn-batch-ai-image-plans"
-                    class="w-full sm:w-auto py-3 px-6 rounded-xl bg-primary text-white font-bold shadow-glow-primary hover:opacity-90 transition flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">bolt</span>
-                    Run batch (Gemini)
-                </button>
-                <pre id="admin-batch-plan-result" class="hidden mt-4 text-xs font-mono whitespace-pre-wrap rounded-xl border border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-background-dark p-4 text-slate-800 dark:text-slate-200 max-h-64 overflow-y-auto"></pre>
-            </div>
-
-            <!-- Image Verification Queue -->
-            <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 shadow-depth border border-slate-200 dark:border-border-dark w-full">
-                <h3 class="text-xl font-bold mb-6 flex items-center gap-2 border-b border-slate-200 dark:border-border-dark pb-4">
-                    <span class="material-symbols-outlined text-primary">image</span> Image Verification Queue 
-                    <span id="admin-images-count" class="text-sm bg-primary text-white px-2 py-0.5 rounded-full ml-auto">0</span>
-                </h3>
-                
-                <div id="image-queue-loading" class="text-center py-8">
-                   <div class="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full mb-2"></div>
-                   <p class="text-slate-500">Loading unverified images...</p>
-                </div>
-
-                <div id="image-queue-empty" class="hidden text-center py-12">
-                   <span class="material-symbols-outlined text-6xl text-slate-300 mb-4 block">check_circle</span>
-                   <h4 class="text-lg font-bold text-slate-700 dark:text-slate-300">All caught up!</h4>
-                   <p class="text-slate-500">No images pending verification.</p>
-                   <p class="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto mt-3 leading-relaxed">
-                       This list only shows questions that already have a <strong>candidate photo</strong> and
-                       <code class="text-xs bg-slate-200 dark:bg-surface-dark px-1 rounded">image_verified: false</code>.
-                       Batch Gemini only saves <strong>search ideas</strong> (<code class="text-xs bg-slate-200 dark:bg-surface-dark px-1 rounded">ai_image_plan</code>) — it does not add pictures.
-                       Next step: attach images (e.g. your <code class="text-xs bg-slate-200 dark:bg-surface-dark px-1 rounded">attach-images</code> script); then new items appear here for Approve / Reject.
-                   </p>
-                   <div class="mt-10 max-w-lg mx-auto text-start space-y-3 px-2 border-t border-slate-200 dark:border-border-dark pt-8">
-                       <p class="text-sm text-slate-600 dark:text-slate-400">
-                           Run Gemini on <strong>any</strong> question anyway (writes <code class="text-xs bg-slate-200 dark:bg-surface-dark px-1 rounded">ai_image_plan</code> on that doc):
-                       </p>
-                       <label for="admin-ai-plan-question-id" class="block text-xs font-bold uppercase tracking-wide text-slate-500">Question document ID</label>
-                       <input id="admin-ai-plan-question-id" type="text" autocomplete="off"
-                           class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
-                           placeholder="Firestore ID, e.g. from Console or URL">
-                       <button type="button" id="btn-ai-image-plan-by-id"
-                           class="w-full py-3 rounded-xl border border-primary/50 text-primary font-bold hover:bg-primary/10 transition flex items-center justify-center gap-2">
-                           <span class="material-symbols-outlined">auto_awesome</span>
-                           Generate AI image plan
-                       </button>
-                       <div id="admin-ai-plan-by-id-result" class="hidden text-start text-sm rounded-xl border border-primary/25 bg-primary/5 dark:bg-primary/10 p-4 text-slate-800 dark:text-slate-100 space-y-2"></div>
-                   </div>
-                </div>
-
-                <div id="image-queue-viewer" class="hidden flex flex-col md:flex-row gap-6 bg-slate-50 dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark">
-                    <div class="md:w-1/2 flex items-center justify-center bg-slate-200/50 dark:bg-surface-dark rounded-lg p-4 overflow-hidden min-h-[300px] relative">
-                        <img id="admin-q-image" src="" alt="Clinical" class="max-w-full max-h-[400px] rounded shadow object-contain transition-opacity">
-                        <div class="absolute top-2 left-2 bg-white/90 dark:bg-black/50 px-2 py-1 rounded text-xs font-bold text-primary shadow-sm uppercase tracking-wider">
-                           Source: <span id="admin-q-source">wikimedia</span>
+                    <div id="edit-question-body" class="p-5 overflow-y-auto space-y-4">
+                        <div class="text-center text-slate-500 py-8">
+                            <div class="animate-spin inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full mb-2"></div>
+                            <p>Loading question data...</p>
                         </div>
                     </div>
-                    <div class="md:w-1/2 flex flex-col">
-                        <div class="mb-auto">
-                           <span id="admin-q-topic" class="text-xs font-bold uppercase tracking-wider text-accent-purple mb-2 block">Topic</span>
-                           <h4 id="admin-q-text" class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4 bg-white dark:bg-surface-dark p-3 rounded border border-slate-200 dark:border-border-dark max-h-48 overflow-y-auto">Question text...</h4>
-                           
-                           <div class="mb-4">
-                               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Diagnosis / Answer:</span>
-                               <p id="admin-q-diag" class="font-bold text-slate-700 dark:text-slate-300 mt-1">Diagnosis</p>
-                           </div>
-                           <div class="mb-4">
-                               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">All options</span>
-                               <div id="admin-q-options" class="mt-2 space-y-1.5 text-sm text-slate-700 dark:text-slate-300 max-h-44 overflow-y-auto rounded-lg border border-slate-200 dark:border-border-dark p-3 bg-white dark:bg-surface-dark"></div>
-                           </div>
-                           
-                           <div>
-                               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Search Query Used:</span>
-                               <code id="admin-q-query" class="block mt-1 bg-slate-200 dark:bg-surface-dark px-2 py-1 rounded text-sm text-slate-600 dark:text-slate-400">Query</code>
-                           </div>
-                           <div id="admin-q-ai-plan-wrap" class="mt-4 hidden">
-                               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">AI image plan</span>
-                               <div id="admin-q-ai-plan" class="mt-1 text-sm text-slate-700 dark:text-slate-300 rounded-lg border border-primary/30 bg-primary/5 dark:bg-primary/10 p-3 space-y-2 max-h-56 overflow-y-auto"></div>
-                           </div>
-                        </div>
-                        
-                         <div class="flex flex-col gap-2 mt-6">
-                             <!-- Manual URL paste area -->
-                             <div class="flex gap-2">
-                                 <input id="admin-paste-image-url" type="text" autocomplete="off"
-                                     class="flex-1 rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
-                                     placeholder="Paste a direct image URL (ends in .jpg/.png/.webp)">
-                                 <button id="btn-paste-image-url"
-                                     class="px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-500/20 transition flex items-center gap-1.5 text-sm shrink-0">
-                                     <span class="material-symbols-outlined text-lg">add_photo_alternate</span>
-                                     Attach
-                                 </button>
-                             </div>
-                             <button type="button" id="btn-ai-image-plan" class="w-full py-3 rounded-xl border border-primary/50 text-primary font-bold hover:bg-primary/10 transition flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">auto_awesome</span>
-                                Generate AI image plan (Gemini)
-                             </button>
-                             <div class="flex gap-4">
-                             <button id="btn-reject-img" class="flex-1 py-3 bg-red-50 dark:bg-red-900/20 text-accent-red font-bold rounded-xl border border-red-200 dark:border-red-900/50 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">delete</span> Reject
-                             </button>
-                             <button id="btn-approve-img" class="flex-1 py-3 bg-primary text-white font-bold rounded-xl shadow-glow-primary hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">check_circle</span> Approve
-                             </button>
-                             </div>
-                         </div>
-                    </div>
                 </div>
             </div>
-
         </main>
     </div>
     `;
@@ -252,359 +97,9 @@ export async function renderAdmin(rootElement) {
         navigateTo('dashboard');
     });
 
-    bindBatchGenerateImagePlansButton();
     await fetchAndRenderReports();
-    await fetchAndRenderImageVerification();
     initializeThemeSwitch();
 }
-
-// ── IMAGE VERIFICATION LOGIC ──────────────────────────────────────
-let unverifiedImagesQueue = [];
-let currentImageIndex = 0;
-
-async function fetchAndRenderImageVerification() {
-    const loadingEl = document.getElementById('image-queue-loading');
-    
-    try {
-        // We fetch the collection and filter locally to bypass any FAILED_PRECONDITION indexing or missing field permissions
-        // Fetches ALL questions, filters client-side.
-        // Catches both: explicit image_verified: false AND questions with image_url but no image_verified yet.
-        const snapshot = await getDocs(collection(firestore, "questions"));
-        unverifiedImagesQueue = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const hasUrl = !!data.image_url;
-            const explicitlyUnverified = data.image_verified === false;
-            const missingVerification = hasUrl && data.image_verified == null;
-            if (explicitlyUnverified || missingVerification) {
-                unverifiedImagesQueue.push({ id: doc.id, ...data });
-            }
-        });
-
-        const btnApprove = document.getElementById('btn-approve-img');
-        const btnReject = document.getElementById('btn-reject-img');
-        
-        // Remove old listeners by replacing elements to avoid duplicates on re-renders
-        const newApprove = btnApprove.cloneNode(true);
-        const newReject = btnReject.cloneNode(true);
-        btnApprove.replaceWith(newApprove);
-        btnReject.replaceWith(newReject);
-
-        newApprove.addEventListener('click', () => handleImageVerification('approve', newApprove, newReject));
-        newReject.addEventListener('click', () => handleImageVerification('reject', newApprove, newReject));
-
-        bindAiImagePlanButton();
-        bindAiImagePlanByIdButton();
-        bindPasteImageUrlButton();
-
-        currentImageIndex = 0;
-        updateImageVerificationUI();
-    } catch (err) {
-        console.error("Error fetching unverified images: ", err);
-        loadingEl.innerHTML = `<span class="text-accent-red font-bold">Failed to load image queue. Check console.</span>`;
-    }
-}
-
-function renderAiPlanHtml(plan) {
-    if (!plan || typeof plan !== 'object') return '';
-    const q = (plan.search_queries || []).map((s) => escapeHtml(s)).join(', ');
-    const avoid = (plan.must_avoid || []).map((s) => escapeHtml(s)).join(', ');
-    return `
-        <p><span class="font-bold text-slate-500 dark:text-slate-400">Summary:</span> ${escapeHtml(plan.visual_summary || '')}</p>
-        <p><span class="font-bold text-slate-500 dark:text-slate-400">Modality:</span> ${escapeHtml(plan.modality || '')}
-          ${typeof plan.confidence === 'number' ? ` · <span class="font-bold">Confidence</span> ${plan.confidence.toFixed(2)}` : ''}</p>
-        <p><span class="font-bold text-slate-500 dark:text-slate-400">Queries:</span> ${q || '—'}</p>
-        <p><span class="font-bold text-slate-500 dark:text-slate-400">Avoid:</span> ${avoid || '—'}</p>
-        ${plan.skip_auto_image ? `<p class="text-amber-600 dark:text-amber-400 font-bold">Skip auto-image: ${escapeHtml(plan.skip_reason || '')}</p>` : ''}
-        <p class="text-slate-600 dark:text-slate-400"><span class="font-bold">Rationale:</span> ${escapeHtml(plan.rationale || '')}</p>
-    `;
-}
-
-function updateImageVerificationUI() {
-    const countEl = document.getElementById('admin-images-count');
-    const loadingEl = document.getElementById('image-queue-loading');
-    const emptyEl = document.getElementById('image-queue-empty');
-    const viewerEl = document.getElementById('image-queue-viewer');
-
-    countEl.textContent = unverifiedImagesQueue.length - currentImageIndex;
-
-    if (currentImageIndex >= unverifiedImagesQueue.length) {
-        loadingEl.classList.add('hidden');
-        viewerEl.classList.add('hidden');
-        emptyEl.classList.remove('hidden');
-        return;
-    }
-
-    const currentDoc = unverifiedImagesQueue[currentImageIndex];
-
-    loadingEl.classList.add('hidden');
-    emptyEl.classList.add('hidden');
-    viewerEl.classList.remove('hidden');
-    viewerEl.classList.add('flex'); // restore flex display
-
-    const imgEl = document.getElementById('admin-q-image');
-    imgEl.style.opacity = 0;
-    setTimeout(() => {
-        imgEl.src = currentDoc.image_url || '';
-        imgEl.onload = () => imgEl.style.opacity = 1;
-    }, 100);
-
-    document.getElementById('admin-q-source').textContent = currentDoc.image_source || 'Unknown';
-    document.getElementById('admin-q-topic').textContent = currentDoc.topic || 'General';
-    document.getElementById('admin-q-text').textContent = currentDoc.question || 'No text';
-    document.getElementById('admin-q-query').textContent = currentDoc.image_search_query || 'N/A';
-
-    document.getElementById('admin-q-diag').textContent = formatCorrectAnswerForAdmin(currentDoc);
-
-    const optsCol = document.getElementById('admin-q-options');
-    if (optsCol) {
-        const opts = Array.isArray(currentDoc.options) ? currentDoc.options : [];
-        optsCol.innerHTML =
-            opts.length > 0
-                ? opts
-                      .map((o, i) => {
-                          const id = String.fromCharCode(65 + i);
-                          const mark = o.correct
-                              ? 'font-bold text-emerald-600 dark:text-emerald-400'
-                              : '';
-                          return `<p class="leading-snug ${mark}"><span class="font-mono text-slate-500 dark:text-slate-400">${id}.</span> ${escapeHtml(o.text || '')}</p>`;
-                      })
-                      .join('')
-                : '<p class="text-slate-500 text-sm">No options on document</p>';
-    }
-
-    const aiWrap = document.getElementById('admin-q-ai-plan-wrap');
-    const aiBox = document.getElementById('admin-q-ai-plan');
-    const plan = currentDoc.ai_image_plan;
-    if (aiWrap && aiBox) {
-        if (plan && typeof plan === 'object') {
-            aiWrap.classList.remove('hidden');
-            aiBox.innerHTML = renderAiPlanHtml(plan);
-        } else {
-            aiWrap.classList.add('hidden');
-            aiBox.innerHTML = '';
-        }
-    }
-}
-
-function bindBatchGenerateImagePlansButton() {
-    const btn = document.getElementById('btn-batch-ai-image-plans');
-    if (!btn) return;
-    const fresh = btn.cloneNode(true);
-    btn.replaceWith(fresh);
-    fresh.addEventListener('click', async () => {
-        const limitInput = document.getElementById('admin-batch-plan-limit');
-        const delayInput = document.getElementById('admin-batch-plan-delay');
-        const forceEl = document.getElementById('admin-batch-plan-force');
-        const out = document.getElementById('admin-batch-plan-result');
-        const limit = Math.min(40, Math.max(1, parseInt(limitInput?.value, 10) || 15));
-        if (limitInput) limitInput.value = String(limit);
-        const delayMs = Math.min(20000, Math.max(500, parseInt(delayInput?.value, 10) || 3500));
-        if (delayInput) delayInput.value = String(delayMs);
-        const force = !!(forceEl && forceEl.checked);
-        fresh.disabled = true;
-        const label = fresh.innerHTML;
-        fresh.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Batch running…`;
-        try {
-            const batchFn = httpsCallable(functions, 'batchGenerateImagePlans', {
-                timeout: CALLABLE_BATCH_MS,
-            });
-            const result = await batchFn({ limit, force, delayMs });
-            const d = result.data || {};
-            if (out) {
-                out.classList.remove('hidden');
-                out.textContent = JSON.stringify(
-                    {
-                        processed: d.processed,
-                        failed: d.failed,
-                        batchSize: d.batchSize,
-                        remainingCandidateEstimate: d.remainingCandidateEstimate,
-                        scannedImageReferenceDocs: d.scannedImageReferenceDocs,
-                        candidatesNeedingPlanBeforeBatch: d.candidatesNeedingPlanBeforeBatch,
-                        hint: d.hint,
-                        errors: d.errors,
-                    },
-                    null,
-                    2
-                );
-            }
-            alert(
-                `Batch finished: ${d.processed ?? 0} saved, ${d.failed ?? 0} failed. Remaining (estimate): ${d.remainingCandidateEstimate ?? '—'}`
-            );
-        } catch (e) {
-            console.error(e);
-            const msg = formatCallableError(e);
-            alert(msg);
-            if (out) {
-                out.classList.remove('hidden');
-                out.textContent = msg;
-            }
-        } finally {
-            fresh.disabled = false;
-            fresh.innerHTML = label;
-        }
-    });
-}
-
-function bindAiImagePlanByIdButton() {
-    const btn = document.getElementById('btn-ai-image-plan-by-id');
-    if (!btn) return;
-    const fresh = btn.cloneNode(true);
-    btn.replaceWith(fresh);
-    fresh.addEventListener('click', async () => {
-        const input = document.getElementById('admin-ai-plan-question-id');
-        const out = document.getElementById('admin-ai-plan-by-id-result');
-        const qid = (input?.value || '').trim();
-        if (!qid) {
-            alert('Paste the Firestore document ID for the question (questions collection).');
-            return;
-        }
-        fresh.disabled = true;
-        const label = fresh.innerHTML;
-        fresh.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Running Gemini…`;
-        try {
-            const generateImagePlan = httpsCallable(functions, 'generateImagePlan', {
-                timeout: CALLABLE_GEMINI_SINGLE_MS,
-            });
-            const result = await generateImagePlan({ questionId: qid });
-            const plan = result.data?.plan;
-            if (out) {
-                if (plan) {
-                    out.classList.remove('hidden');
-                    out.innerHTML = `<p class="text-xs font-mono text-slate-500 mb-2">Saved on: ${escapeHtml(qid)}</p>${renderAiPlanHtml(plan)}`;
-                } else {
-                    out.classList.remove('hidden');
-                    out.textContent = 'Done — open this question in Console to see ai_image_plan.';
-                }
-            }
-            alert('AI image plan saved on that question document.');
-        } catch (e) {
-            console.error(e);
-            alert(formatCallableError(e));
-            if (out) {
-                out.classList.add('hidden');
-                out.innerHTML = '';
-            }
-        } finally {
-            fresh.disabled = false;
-            fresh.innerHTML = label;
-        }
-    });
-}
-
-function bindAiImagePlanButton() {
-    const btn = document.getElementById('btn-ai-image-plan');
-    if (!btn) return;
-    const fresh = btn.cloneNode(true);
-    btn.replaceWith(fresh);
-    fresh.addEventListener('click', async () => {
-        const currentDoc = unverifiedImagesQueue[currentImageIndex];
-        if (!currentDoc?.id) return;
-        fresh.disabled = true;
-        const label = fresh.innerHTML;
-        fresh.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Running Gemini…`;
-        try {
-            const generateImagePlan = httpsCallable(functions, 'generateImagePlan', {
-                timeout: CALLABLE_GEMINI_SINGLE_MS,
-            });
-            await generateImagePlan({ questionId: currentDoc.id });
-            const snap = await getDoc(doc(firestore, 'questions', currentDoc.id));
-            if (snap.exists()) {
-                unverifiedImagesQueue[currentImageIndex] = { id: snap.id, ...snap.data() };
-            }
-            updateImageVerificationUI();
-            alert('AI image plan saved on this question document.');
-        } catch (e) {
-            console.error(e);
-            alert(formatCallableError(e));
-        } finally {
-            fresh.disabled = false;
-            fresh.innerHTML = label;
-        }
-    });
-}
-
-function bindPasteImageUrlButton() {
-    const btn = document.getElementById('btn-paste-image-url');
-    if (!btn) return;
-    const fresh = btn.cloneNode(true);
-    btn.replaceWith(fresh);
-    fresh.addEventListener('click', async () => {
-        const input = document.getElementById('admin-paste-image-url');
-        const url = (input?.value || '').trim();
-        if (!url) { alert('Paste a direct image URL first.'); return; }
-        const currentDoc = unverifiedImagesQueue[currentImageIndex];
-        if (!currentDoc?.id) { alert('No question selected in the queue.'); return; }
-        if (!/^https?:\/\/.+\.(jpg|jpeg|png|webp)(\?.*)?$/i.test(url)) {
-            alert('URL must end in .jpg, .png, or .webp\n\nMake sure it is a DIRECT image URL, not a page URL.');
-            return;
-        }
-        fresh.disabled = true;
-        const label = fresh.innerHTML;
-        fresh.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Saving…`;
-        try {
-            const docRef = doc(firestore, "questions", currentDoc.id);
-            await setDoc(docRef, {
-                image_url: url,
-                image_source: 'manual',
-                image_verified: false,
-                image_attached_at: new Date().toISOString(),
-            }, { merge: true });
-            // Reload the queue item with updated data
-            const snap = await getDoc(doc(firestore, 'questions', currentDoc.id));
-            if (snap.exists()) {
-                unverifiedImagesQueue[currentImageIndex] = { id: snap.id, ...snap.data() };
-            }
-            updateImageVerificationUI();
-            input.value = ''; // clear the input
-        } catch (e) {
-            console.error('Failed to attach image URL:', e);
-            alert('Firestore write failed. Check console for details.');
-        } finally {
-            fresh.disabled = false;
-            fresh.innerHTML = label;
-        }
-    });
-}
-
-async function handleImageVerification(action, btnApprove, btnReject) {
-    const currentDoc = unverifiedImagesQueue[currentImageIndex];
-    if (!currentDoc) return;
-
-    btnApprove.disabled = true;
-    btnReject.disabled = true;
-    const originalTextApprove = btnApprove.innerHTML;
-    const originalTextReject = btnReject.innerHTML;
-
-    if (action === 'approve') btnApprove.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Saving...`;
-    else btnReject.innerHTML = `<span class="animate-spin material-symbols-outlined">sync</span> Trashing...`;
-
-    try {
-        const docRef = doc(firestore, "questions", currentDoc.id);
-        if (action === 'approve') {
-            await setDoc(docRef, { image_verified: true }, { merge: true });
-        } else {
-            // Remove the image reference completely
-            await setDoc(docRef, { 
-                image_url: null, 
-                image_verified: null, 
-                image_rejected: true 
-            }, { merge: true });
-        }
-        currentImageIndex++;
-        updateImageVerificationUI();
-    } catch (e) {
-        console.error("Verification failed:", e);
-        alert("Failed to update Firestore. Did you deploy your firestore.rules?");
-    } finally {
-        btnApprove.disabled = false;
-        btnReject.disabled = false;
-        btnApprove.innerHTML = originalTextApprove;
-        btnReject.innerHTML = originalTextReject;
-    }
-}
-// ──────────────────────────────────────────────────────────────────
-
 export async function bulkUploadQuestions(data) {
     if (!data || !Array.isArray(data)) {
         console.error("Invalid data formatted provided for bulk upload. Must be an array.");
@@ -699,23 +194,33 @@ async function fetchAndRenderReports() {
         } else {
             tbody.innerHTML = reports.map(r => {
                 const dateStr = r.reported_at ? new Date(r.reported_at.toMillis()).toLocaleDateString() : 'Unknown Date';
+                const safeQuestion = escapeHtml(r.question_text || '-');
+                const safeReason = escapeHtml(r.reason || 'No reason provided');
+                const safeId = escapeHtml(r.question_id || 'N/A');
+                const safeReportId = escapeHtml(r.id);
                 return `
                 <tr class="hover:bg-slate-50 dark:hover:bg-background-dark/20 transition-colors">
                     <td class="p-4 max-w-xs">
-                        <div class="text-xs font-mono text-slate-400 mb-1">ID: ${r.question_id || 'N/A'}</div>
-                        <div class="text-sm font-medium text-slate-800 dark:text-slate-200 truncate" title="${r.question_text || ''}">${r.question_text || '-'}</div>
+                        <div class="text-xs font-mono text-slate-400 mb-1">ID: ${safeId}</div>
+                        <div class="text-sm font-medium text-slate-800 dark:text-slate-200 truncate" title="${safeQuestion}">${safeQuestion}</div>
                     </td>
                     <td class="p-4 text-sm text-accent-red font-medium max-w-sm whitespace-normal">
-                        ${r.reason || 'No reason provided'}
+                        ${safeReason}
                     </td>
                     <td class="p-4 text-sm text-slate-500">
                         ${dateStr}
                     </td>
                     <td class="p-4 text-right">
-                        <button class="resolve-report-btn flex items-center justify-end gap-2 ml-auto px-4 py-2 rounded-lg bg-accent-green/10 text-accent-green font-bold hover:bg-accent-green hover:text-white transition-all duration-300" data-id="${r.id}">
-                            <span class="material-symbols-outlined text-sm">done_all</span>
-                            Resolve
-                        </button>
+                        <div class="flex items-center justify-end gap-2">
+                            <button class="edit-report-btn flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold hover:bg-primary hover:text-white transition-all duration-300" data-qid="${safeId}">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                                Edit
+                            </button>
+                            <button class="resolve-report-btn flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-green/10 text-accent-green font-bold hover:bg-accent-green hover:text-white transition-all duration-300" data-id="${safeReportId}">
+                                <span class="material-symbols-outlined text-sm">done_all</span>
+                                Resolve
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 `;
@@ -741,10 +246,140 @@ async function fetchAndRenderReports() {
             });
         });
 
+        document.querySelectorAll('.edit-report-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const qid = btn.dataset.qid;
+                if (qid) openQuestionEditor(qid);
+            });
+        });
+
     } catch (error) {
         console.error("Error fetching reports: ", error);
         tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-accent-red font-bold">Error loading reports. Check your console.</td></tr>`;
     } finally {
         if(loadingOverlay) loadingOverlay.classList.add('hidden');
+    }
+}
+
+async function openQuestionEditor(questionId) {
+    const modal = document.getElementById('edit-question-modal');
+    const body = document.getElementById('edit-question-body');
+    if (!modal || !body) return;
+
+    modal.classList.remove('hidden');
+    body.innerHTML = `
+        <div class="text-center text-slate-500 py-8">
+            <div class="animate-spin inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full mb-2"></div>
+            <p>Loading question data...</p>
+        </div>
+    `;
+
+    try {
+        const snap = await getDoc(doc(firestore, 'questions', questionId));
+        if (!snap.exists()) {
+            body.innerHTML = `<p class="text-accent-red text-center py-8">Question document not found (ID: ${escapeHtml(questionId)}). It may have been deleted.</p>`;
+            return;
+        }
+        const data = { id: snap.id, ...snap.data() };
+        const opts = Array.isArray(data.options) ? data.options : [];
+
+        body.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Question ID</label>
+                    <input type="text" value="${escapeHtml(data.id)}" readonly class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-slate-100 dark:bg-background-dark px-3 py-2 text-sm text-slate-500 font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Question Stem</label>
+                    <textarea id="eq-stem" rows="3" class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">${escapeHtml(data.question || '')}</textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Options</label>
+                    <div class="space-y-2" id="eq-options">
+                        ${['A', 'B', 'C', 'D', 'E'].map((letter, i) => {
+                            const opt = opts[i] || { text: '' };
+                            const checked = opt.correct === true ? 'checked' : '';
+                            return `
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs font-bold text-slate-400 w-5 shrink-0">${letter}</span>
+                                <input type="radio" name="eq-correct" value="${i}" ${checked} class="rounded-full border-slate-300 text-emerald-500 focus:ring-emerald-400 shrink-0" title="Mark as correct answer">
+                                <input type="text" value="${escapeHtml(opt.text || '')}" data-index="${i}" class="eq-opt-input flex-1 rounded-lg border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100">
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Rationale</label>
+                    <textarea id="eq-rationale" rows="3" class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">${escapeHtml(data.rationale || '')}</textarea>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Topic</label>
+                        <input id="eq-topic" type="text" value="${escapeHtml(data.topic || '')}" class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">
+                    </div>
+                    <div class="w-32">
+                        <label class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Difficulty</label>
+                        <select id="eq-difficulty" class="w-full rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-2 text-sm text-slate-900 dark:text-slate-100">
+                            ${['easy', 'medium', 'hard'].map(d => `<option value="${d}" ${(data.difficulty || '').toLowerCase() === d ? 'selected' : ''}>${d.charAt(0).toUpperCase() + d.slice(1)}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-border-dark mt-4">
+                <button type="button" onclick="document.getElementById('edit-question-modal')?.classList.add('hidden')" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-border-dark text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-border-dark transition">
+                    Cancel
+                </button>
+                <button type="button" id="eq-save-btn" class="px-5 py-2.5 rounded-xl bg-primary text-white font-bold shadow-glow-primary hover:opacity-90 transition flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    Save Changes
+                </button>
+            </div>
+        `;
+
+        document.getElementById('eq-save-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('eq-save-btn');
+            btn.disabled = true;
+            const label = btn.innerHTML;
+            btn.innerHTML = `<span class="animate-spin material-symbols-outlined text-sm">sync</span> Saving...`;
+
+            try {
+                const stem = document.getElementById('eq-stem')?.value?.trim() || '';
+                const optInputs = document.querySelectorAll('.eq-opt-input');
+                const correctRadio = document.querySelector('input[name="eq-correct"]:checked');
+                const correctIndex = correctRadio ? parseInt(correctRadio.value) : -1;
+                const options = Array.from(optInputs).map((inp, i) => ({
+                    text: inp.value.trim(),
+                    correct: i === correctIndex,
+                })).filter(o => o.text);
+
+                const rationale = document.getElementById('eq-rationale')?.value?.trim() || '';
+                const topic = document.getElementById('eq-topic')?.value?.trim() || '';
+                const difficulty = document.getElementById('eq-difficulty')?.value || 'medium';
+
+                await setDoc(doc(firestore, 'questions', questionId), {
+                    question: stem,
+                    options,
+                    rationale,
+                    topic,
+                    difficulty,
+                    edited_at: new Date().toISOString(),
+                    edited_by: 'admin',
+                }, { merge: true });
+
+                modal.classList.add('hidden');
+                alert('Question updated successfully!');
+            } catch (e) {
+                console.error('Failed to save question:', e);
+                alert('Error saving question. Check console.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = label;
+            }
+        });
+
+    } catch (e) {
+        console.error('Failed to load question for editing:', e);
+        body.innerHTML = `<p class="text-accent-red text-center py-8">Failed to load question. Check console for details.</p>`;
     }
 }

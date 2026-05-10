@@ -87,7 +87,7 @@ RULES:
 2. Distractors must be PLAUSIBLE — conditions a student might confuse with the correct answer.
 3. Rationales must TEACH: explain WHY the distractor is wrong and WHAT condition it actually fits.
 4. Use GENERIC drug names only (metformin, not Glucophage).
-5. Cite guidelines where relevant: "Per 2023 AHA/ACC...", "Per KDIGO 2022..."
+5. Cite Saudi guidelines where relevant: "Per Saudi MOH Clinical Practice Guideline for [condition]...", "Per Saudi Heart Association..."
 6. Difficulty must be HARD: multi-step reasoning, subtle findings, or guideline nuance.
 7. Vignettes must be CLINICALLY REALISTIC for Saudi practice.
 

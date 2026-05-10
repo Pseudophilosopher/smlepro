@@ -5,7 +5,6 @@ export default {
     "./checkout.html",
     "./success.html",
     "./legal.html",
-    "./social-card.html",
     "./demo-instant-feedback.html",
     "./admin-images.html",
     "./src/**/*.{js,ts,jsx,tsx}",

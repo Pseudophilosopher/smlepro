@@ -19,7 +19,6 @@
     "questions:duplicates": "node scripts/find-duplicate-questions.mjs",
     "questions:reset-images": "node scripts/reset-question-images.mjs",
     "upload": "node scripts/upload-questions.mjs",
-    "export-social-pfp": "node scripts/export-social-pfp.mjs",
     "export-twitter-header": "node scripts/export-twitter-header.mjs"
   },
   "devDependencies": {
@@ -31,7 +30,6 @@
   "dependencies": {
     "firebase": "^10.12.2",
     "firebase-admin": "^12.1.1",
-    "html-to-image": "^1.11.13",
     "node-fetch": "^3.3.2",
     "sharp": "^0.34.5"
   }
