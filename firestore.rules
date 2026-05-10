@@ -1,0 +1,136 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── 0. SAFETY NET — deny everything not explicitly allowed ──────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ── 1. DAILY DOSE — any authenticated user (including Anonymous) ─────────
+    // One document per day (e.g. "2026-03-28") containing 30 embedded question objects.
+    // A single document read instead of 30 separate question reads.
+    match /daily_doses/{dateId} {
+      allow read:  if request.auth != null;
+      allow write: if false;  // written by backend / admin SDK only
+    }
+
+    // ── 2. QUESTION BANK — no direct client reads allowed ───────────────────
+    // Questions are served exclusively through the getQuizQuestions Cloud
+    // Function, which enforces per-tier limits server-side (free: 10, Pro: 100).
+    // Blocking direct reads here prevents bulk-scraping via the Firebase SDK
+    // even by authenticated users.  The Admin SDK (Cloud Functions) bypasses
+    // these rules and retains full read access.
+    // Exception: the admin email can read directly for the admin panel.
+    match /questions/{questionId} {
+      allow read:  if request.auth != null
+                   && request.auth.token.email == 'ohgzzz11@gmail.com';
+      allow write: if request.auth != null
+                   && request.auth.token.email == 'ohgzzz11@gmail.com';
+    }
+
+    // ── 3. REPORTED QUESTIONS — any signed-in user (incl. anonymous Daily Dose guests)
+    match /reported_questions/{document=**} {
+      allow read, delete: if request.auth != null
+                          && request.auth.token.email == 'ohgzzz11@gmail.com';
+      allow create: if request.auth != null;
+      allow update: if false;
+    }
+
+    // ── 4. USER PROFILES — each user owns their own document ────────────────
+    // Anonymous users get a real uid, so their daily dose scores can be persisted
+    // here and seamlessly merged when they create a full account later.
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && !request.resource.data.keys().hasAny([
+                         'isPremium', 'moyasarPaymentId', 'upgradedAt',
+                         'complimentaryPro', 'complimentaryGrantedAt', 'complimentaryRevokedAt'
+                       ]);
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+                         'isPremium', 'moyasarPaymentId', 'upgradedAt',
+                         'complimentaryPro', 'complimentaryGrantedAt', 'complimentaryRevokedAt'
+                       ]);
+      allow delete: if false;
+    }
+
+    // ── 5. PERFORMANCE HISTORY — users read/write their own sub-collection ───
+    // Works for both anonymous and registered users. When an anonymous user
+    // upgrades, their uid stays the same so history is preserved automatically.
+    match /users/{userId}/performance/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── 6. PAYMENTS — server-side only, no client access ────────────────────
+    match /payments/{paymentId} {
+      allow read, write: if false;
+    }
+
+    // ── 7. APP METADATA (daily config, topic lists) ──────────────────────────
+    // Single-segment docs only (metadata/site_stats, metadata/app_config, …).
+    // metadata/analytics is admin-read-only (embed URL for Admin Stats dashboard).
+    match /metadata/{docId} {
+      allow read: if request.auth != null && (
+        docId != 'analytics' || request.auth.token.email == 'ohgzzz11@gmail.com'
+      );
+      allow write: if request.auth != null
+                   && request.auth.token.email == 'ohgzzz11@gmail.com';
+    }
+
+    // ── 8. DAILY LEADERBOARD — one score entry per user per day ─────────────
+    // Structure: daily_scores/{YYYY-MM-DD}/entries/{uid}
+    // Anyone authenticated can read (to see rankings).
+    // A user can only create their own entry — updates are blocked so scores
+    // cannot be inflated after submission.
+    match /daily_scores/{date}/entries/{userId} {
+      allow read:   if request.auth != null;
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.keys().hasAll(['uid', 'score'])
+                    && request.resource.data.score is number
+                    && request.resource.data.score >= 0
+                    && request.resource.data.score <= 100;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── 7a. HOURLY PRESENCE DEDUP — written only by recordHourlyPresence (Admin SDK)
+    match /presence_hour_marks/{docId} {
+      allow read, write: if false;
+    }
+
+    // ── 9. DIAGNOSTIC LEADS — free email capture (no auth required) ────────
+    // The diagnostic is completely free and requires no sign-up. Users who
+    // choose to enter their email get their full results + a personalized
+    // study plan sent within 24 hours. Unauthenticated writes are permitted
+    // for this specific collection only.
+    match /diagnostic_leads/{docId} {
+      allow create: if true;
+      allow read: if request.auth != null
+                  && request.auth.token.email == 'ohgzzz11@gmail.com';
+      allow update, delete: if false;
+    }
+
+    // ── 7b. SITE STATS — non-anonymous users may increment specific counters ──
+    // Scoped separately from metadata/** so regular users can update counters
+    // without gaining write access to app_config or daily_config.
+    match /metadata/site_stats {
+      allow read: if request.auth != null;
+      // Allow create only if the doc doesn't exist yet (first session ever)
+      allow create: if request.auth != null
+                    && request.auth.token.firebase.sign_in_provider != 'anonymous'
+                    && request.resource.data.keys().hasOnly([
+                         'questionsAnsweredTotal', 'questionsAnsweredToday', 'lastUpdated'
+                       ]);
+      // Allow update only on the counter + timestamp fields — no other metadata fields
+      allow update: if request.auth != null
+                    && request.auth.token.firebase.sign_in_provider != 'anonymous'
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                         'questionsAnsweredTotal', 'questionsAnsweredToday', 'lastUpdated'
+                       ]);
+    }
+  }
+}

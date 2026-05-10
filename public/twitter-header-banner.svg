@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#02060c"/>
+      <stop offset="50%" stop-color="#0a1620"/>
+      <stop offset="100%" stop-color="#101f22"/>
+    </linearGradient>
+    <radialGradient id="glowGold" cx="75%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="rgba(212,175,55,0.18)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <radialGradient id="hg" cx="38%" cy="30%" r="68%">
+      <stop offset="0%" stop-color="#FFE566"/>
+      <stop offset="45%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#8B6508"/>
+    </radialGradient>
+    <linearGradient id="textGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE566"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+  </defs>
+  <rect width="1500" height="500" fill="url(#bg)"/>
+  <rect width="1500" height="500" fill="url(#glowGold)"/>
+  <line x1="0" y1="498" x2="1500" y2="498" stroke="#D4AF37" stroke-opacity="0.35" stroke-width="2"/>
+
+  <!-- Logo mark (heart + badge) scaled for header -->
+  <g transform="translate(100, 105) scale(3.2)">
+    <path d="M50 84 C49 84 9 61 9 36.5 C9 23.5 19.2 13 32 13 C39.6 13 46.5 16.9 50 22.9 C53.5 16.9 60.4 13 68 13 C80.8 13 91 23.5 91 36.5 C91 61 51 84 50 84Z" fill="url(#hg)"/>
+    <circle cx="66" cy="30" r="16" fill="#0B1120" fill-opacity="0.88"/>
+    <circle cx="66" cy="30" r="15.5" fill="none" stroke="#D4AF37" stroke-width="1.5"/>
+    <rect x="63.5" y="23" width="5" height="14" rx="2.5" fill="white"/>
+    <rect x="59.5" y="27" width="13" height="6" rx="3" fill="white"/>
+  </g>
+
+  <!-- Wordmark (center-weighted for mobile crop) -->
+  <text x="520" y="210" font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="72" font-weight="900" letter-spacing="-2">
+    <tspan fill="white">SMLE </tspan><tspan fill="url(#textGold)">Pro</tspan>
+  </text>
+  <text x="520" y="275" font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="28" font-weight="600" fill="#94a3b8">Saudi Medical Licensing Exam</text>
+  <text x="520" y="318" font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="22" font-weight="500" fill="#64748b">Practice questions, mock exams, and instant rationales</text>
+  <text x="520" y="385" font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="600" fill="#D4AF37" letter-spacing="0.05em">INDEPENDENT PREP - NOT AFFILIATED WITH SCFHS</text>
+</svg>

@@ -1,0 +1,313 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+/* ── Accessibility: Focus Indicators ── */
+:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default focus for mouse users (keep for keyboard) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Accessibility: Screen Reader Only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Accessibility: Better Contrast for Primary Text on Dark ── */
+@media (prefers-color-scheme: dark) {
+  .text-primary {
+    color: #E8C547 !important; /* Lighter gold for WCAG AA compliance (4.6:1) */
+  }
+}
+
+@layer utilities {
+  .bg-mesh {
+    background-image: radial-gradient(at 0% 0%, rgba(17, 180, 212, 0.15) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+  }
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 4px;
+  }
+}
+
+/* ── Medical hero animations ── */
+@keyframes med-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-18px) rotate(4deg); }
+}
+.med-float {
+  animation: med-float 9s ease-in-out infinite;
+}
+
+@keyframes ecg-container-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ecg-scroll-container {
+  animation: ecg-container-scroll 14s linear infinite;
+}
+
+/* ── Landing: Daily Dose hero hint (RTL Arabic) ── */
+@keyframes hero-dose-arrow-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.hero-dose-arrow-nudge {
+  animation: hero-dose-arrow-nudge 2.2s ease-in-out infinite;
+}
+@keyframes hero-dose-shimmer {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+.hero-dose-glow-ring {
+  animation: hero-dose-shimmer 3s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-dose-arrow-nudge,
+  .hero-dose-glow-ring {
+    animation: none;
+  }
+}
+
+@keyframes expand-ring {
+  0%   { transform: scale(0.15); opacity: 0.55; }
+  100% { transform: scale(3.2);  opacity: 0; }
+}
+.ecg-ring {
+  animation: expand-ring 5.5s ease-out infinite;
+}
+
+/* ── Urgency Banner Pulse (red/orange glow breathing) ── */
+@keyframes proUrgencyPulse {
+  0%, 100% { box-shadow:0 0 50px rgba(220,38,38,0.4),0 0 100px rgba(234,88,12,0.2),inset 0 1px 0 rgba(255,255,255,0.2); transform: scale(1); }
+  50%      { box-shadow:0 0 70px rgba(220,38,38,0.55),0 0 120px rgba(234,88,12,0.3),0 0 160px rgba(220,38,38,0.15),inset 0 1px 0 rgba(255,255,255,0.25); transform: scale(1.01); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pro-urgency-banner { animation: none !important; }
+}
+
+/* ── Saudi Blessing Section ── */
+@keyframes blessing-star-twinkle {
+  0%, 100% { opacity: var(--base-opacity, 0.25); transform: scale(0.82); }
+  50%       { opacity: 1; transform: scale(1.38); }
+}
+.blessing-star {
+  position: absolute;
+  border-radius: 9999px;
+  background: white;
+  animation: blessing-star-twinkle var(--duration, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes blessing-flag-sway {
+  0%, 100% { transform: scaleX(1) rotate(0.2deg); }
+  50%       { transform: scaleX(1) rotate(-0.15deg) translateY(2px); }
+}
+.blessing-flag-sway {
+  animation: blessing-flag-sway 6.5s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes dua-glow-pulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(212,175,55,0.35), 0 1px 4px rgba(0,0,0,0.85); }
+  50%       { text-shadow: 0 0 55px rgba(212,175,55,0.78), 0 0 110px rgba(212,175,55,0.22), 0 1px 4px rgba(0,0,0,0.85); }
+}
+.dua-glow-pulse {
+  animation: dua-glow-pulse 3.5s ease-in-out infinite;
+}
+
+@keyframes blessing-chevron-bounce {
+  0%, 100% { transform: translateY(0);   opacity: 0.45; }
+  50%       { transform: translateY(7px); opacity: 0.9; }
+}
+.blessing-chevron {
+  animation: blessing-chevron-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes blessing-hint-fadein {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+.blessing-scroll-hint {
+  animation: blessing-hint-fadein 1s ease forwards;
+  animation-delay: 4s;
+  opacity: 0;
+}
+
+/* ── Light Mode Overrides ─────────────────────────────────────────────────
+ * Tailwind is configured to use `class` dark mode strategy. All internal
+ * screens (dashboard, quiz, results, review, pricing, etc.) render with
+ * hardcoded dark-only utility classes (bg-surface-dark, bg-background-dark,
+ * text-white, text-slate-300/400/500, border-border-dark, etc.).
+ *
+ * When html:not(.dark), these classes produce dark backgrounds / light text
+ * regardless of the user's color-scheme preference.  The overrides below
+ * remap them into a clean light palette so the app is usable in both modes.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+html:not(.dark) .bg-background-dark {
+  background-color: #f6f8f8 !important;
+}
+html:not(.dark) .bg-surface-dark {
+  background-color: #ffffff !important;
+}
+html:not(.dark) .bg-surface-dark\/80 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+html:not(.dark) .bg-white\/8 {
+  background-color: rgba(248, 250, 252, 0.9) !important;
+}
+html:not(.dark) .bg-white\/\[\.08\] {
+  background-color: rgba(248, 250, 252, 0.9) !important;
+}
+html:not(.dark) .border-border-dark {
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .border-border-dark\/50 {
+  border-color: rgba(226, 232, 240, 0.5) !important;
+}
+html:not(.dark) .border-border-dark\/60 {
+  border-color: rgba(226, 232, 240, 0.6) !important;
+}
+html:not(.dark) .text-white {
+  color: #1e293b !important;
+}
+html:not(.dark) .text-slate-200 {
+  color: #334155 !important;
+}
+html:not(.dark) .text-slate-300 {
+  color: #475569 !important;
+}
+html:not(.dark) .text-slate-400 {
+  color: #64748b !important;
+}
+html:not(.dark) .text-slate-500 {
+  color: #94a3b8 !important;
+}
+/* text-slate-600 and text-slate-700 are already dark enough for light backgrounds — no override needed */
+/* Primary gold/special text — remap to darker amber shades for light mode */
+html:not(.dark) .text-amber-200 {
+  color: #b45309 !important;
+}
+html:not(.dark) .text-amber-200\/90 {
+  color: rgba(180, 83, 9, 0.9) !important;
+}
+html:not(.dark) .text-amber-300 {
+  color: #d97706 !important;
+}
+html:not(.dark) .text-amber-300\/70 {
+  color: rgba(217, 119, 6, 0.7) !important;
+}
+html:not(.dark) .text-emerald-300 {
+  color: #059669 !important;
+}
+html:not(.dark) .bg-white\/5 {
+  background-color: #f1f5f9 !important;
+}
+html:not(.dark) .bg-white\/10 {
+  background-color: #f1f5f9 !important;
+}
+html:not(.dark) .bg-white\/\[\.05\] {
+  background-color: #f1f5f9 !important;
+}
+html:not(.dark) .bg-white\/\[\.10\] {
+  background-color: #f1f5f9 !important;
+}
+/* ── Checkout page (standalone HTML, no class switch) ──────────────── */
+html:not(.dark) .bg-slate-950 {
+  background-color: #f8fafc !important;
+}
+html:not(.dark) .bg-slate-900 {
+  background-color: #ffffff !important;
+}
+html:not(.dark) .border-slate-800 {
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .text-slate-100 {
+  color: #1e293b !important;
+}
+html:not(.dark) .text-slate-300 {
+  color: #475569 !important;
+}
+html:not(.dark) .text-slate-400 {
+  color: #64748b !important;
+}
+html:not(.dark) .text-slate-500 {
+  color: #94a3b8 !important;
+}
+html:not(.dark) .text-white {
+  color: #1e293b !important;
+}
+html:not(.dark) .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+}
+html:not(.dark) .bg-slate-800:hover {
+  background-color: #e2e8f0 !important;
+}
+html:not(.dark) .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .text-blue-400 {
+  color: #2563eb !important;
+}
+html:not(.dark) .text-slate-200 {
+  color: #334155 !important;
+}
+
+/* ── Quiz instant feedback: rationale reveal (see quiz-feedback-dom.js) ── */
+@keyframes smle-rationale-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rationale-reveal {
+  animation: smle-rationale-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rationale-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Demo recording: fake pointer (demo-instant-feedback only) ── */
+@keyframes demo-cursor-tap {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  50% { transform: rotate(-12deg) scale(0.82); }
+}
+.demo-fake-cursor-tap {
+  animation: demo-cursor-tap 0.14s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-fake-cursor-tap {
+    animation: none;
+  }
+}

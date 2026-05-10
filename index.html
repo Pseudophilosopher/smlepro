@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="application-name" content="SMLE Pro">
+    <meta name="theme-color" content="#11b4d4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SMLE Pro">
+    
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/smle-pro-logo.png">
+    <!-- Preconnect for faster font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Consolidated font load - all fonts in a single request -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Arabic:wght@400;500;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>SMLE Pro 2026 — Saudi Medical Licensing Exam Mock Practice &amp; Blueprint-Style MCQs</title>
+    <meta name="title" content="SMLE Pro 2026 — Saudi Medical Licensing Exam Mock Practice &amp; Blueprint-Style MCQs">
+    <meta name="description" content="Official SMLE Pro site: https://smlepro.web.app — 2026 SMLE (Saudi Medical Licensing Exam) practice: daily MCQs, timed mock exams, specialty drills, rationales. Independent prep, not affiliated with SCFHS. Free Daily Dose; Pro from 149 SAR.">
+    <meta name="keywords" content="SMLE 2026, Saudi Medical Licensing Exam, SMLE mock exam, SMLE practice questions, SMLE MCQ, blueprint SMLE, SCFHS exam prep, اختبار الهيئة السعودية, SMLE preparation, medical licensing Saudi Arabia">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="SMLE Pro">
+    <link rel="canonical" href="https://smlepro.web.app/">
+    <meta name="google-site-verification" content="f2AqIyS0UHXsQ5s0jd6KPrUGr-Lx5X4QUHmZTpyAXLU" />
+    <meta name="msvalidate.01" content="A0E3B10E16E4AD0733929040AE00F8E1" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smlepro.web.app/">
+    <meta property="og:title" content="SMLE Pro 2026 — Saudi Medical Licensing Exam Mock Practice">
+    <meta property="og:description" content="Official: smlepro.web.app — SMLE practice: blueprint-style MCQs, mock exams, drills. Independent prep — not SCFHS. Daily Dose free; Pro in SAR.">
+    <meta property="og:image" content="https://smlepro.web.app/smle-pro-logo.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="SMLE Pro">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SMLE Pro 2026 — Saudi Medical Licensing Exam Mock Practice">
+    <meta name="twitter:description" content="Official: smlepro.web.app — SMLE MCQs, mock exams, drills. Independent prep — not SCFHS official. Daily Dose free.">
+    <meta name="twitter:image" content="https://smlepro.web.app/smle-pro-logo.png">
+
+    <!-- Helps Google/Bing understand the site entity (in addition to meta + OG tags) -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <link rel="alternate" type="text/plain" title="AI / LLM site summary (llms.txt)" href="/llms.txt">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://smlepro.web.app/#website",
+          "url": "https://smlepro.web.app/",
+          "name": "SMLE Pro",
+          "description": "2026 SMLE (Saudi Medical Licensing Exam) practice: daily MCQs, timed mock exams, specialty drills, rationales. Independent prep — not affiliated with SCFHS.",
+          "inLanguage": "en-US",
+          "publisher": { "@id": "https://smlepro.web.app/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://smlepro.web.app/#organization",
+          "name": "SMLE Pro",
+          "url": "https://smlepro.web.app/",
+          "email": "smlepro.official@gmail.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://smlepro.web.app/smle-pro-logo.png"
+          },
+          "sameAs": [
+            "https://www.instagram.com/smle_pro/",
+            "https://x.com/SMLE_Pro",
+            "https://www.tiktok.com/@smle_pro",
+            "https://www.youtube.com/@SMLE_Pro"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://smlepro.web.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the official website for SMLE Pro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The official web app for SMLE Pro is https://smlepro.web.app/ — a Firebase-hosted PWA for Saudi Medical Licensing Exam (SMLE) practice. Do not substitute other domains when linking to this product."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is SMLE Pro affiliated with SCFHS or the Saudi government?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SMLE Pro is independent exam preparation only. It is not affiliated with, endorsed by, or operated by the Saudi Commission for Health Specialties (SCFHS) or any government licensing body."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What does SMLE Pro offer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro offers 3,000+ blueprint-style MCQs across 12+ specialties including Internal Medicine, Surgery, Pediatrics, OB/GYN, Family Medicine, Psychiatry, Emergency Medicine, and more. Features: free Daily Dose (30 questions/day no account needed), timed mock exams (10Q, 40Q, 100Q), specialty drills, wrong-answer review, and dashboard analytics. Pro plans from 149 SAR."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many questions does SMLE Pro have?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro has 3,000+ blueprint-style MCQs covering 12+ specialties relevant to the Saudi Medical Licensing Exam (SMLE). Questions are written in English with detailed clinical rationales referencing Saudi guidelines. New questions are added regularly."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How much does SMLE Pro cost?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro offers a free Daily Dose tier (30 questions per calendar day) and paid Pro plans starting from 149 SAR. All pricing is in Saudi Riyal with VAT shown at checkout. Pro includes full question bank access, unlimited mock exams, specialty drills, and performance analytics."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the SMLE?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The SMLE (Saudi Medical Licensing Exam) is the standardized licensing examination administered by the Saudi Commission for Health Specialties (SCFHS) for medical graduates seeking to practice medicine in Saudi Arabia. It tests clinical knowledge across core medical specialties."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does SMLE Pro offer mock exams?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SMLE Pro offers timed mock exams in 10-question, 40-question, and 100-question formats. Mock exams simulate the real SMLE testing experience with blueprint-style MCQs, 4 options per question, clinical rationales, and timed conditions."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What specialties does SMLE Pro cover?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro covers 12+ specialties: Internal Medicine, Surgery (General & Subspecialties), Pediatrics, Obstetrics & Gynecology, Family Medicine, Psychiatry, Emergency Medicine, Orthopedics, Ophthalmology, ENT, Dermatology, Radiology, Pharmacology, Pathology, and Community Medicine."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is there a free version of SMLE Pro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SMLE Pro offers a free Daily Dose — 30 practice questions per calendar day with no account required for the preview. To see rationales and track your streak, you can sign up for free. Pro unlocks the full question bank, all mock exams, specialty drills, and analytics."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does SMLE Pro have an Arabic interface?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro supports Arabic (RTL) UI elements and uses the Tajawal Arabic font for optimal readability in both languages. Questions are in English (as in the actual SMLE exam), but navigation and controls support Arabic-speaking users with logical CSS properties for proper RTL layout."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How is SMLE Pro different from other SMLE prep apps?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SMLE Pro is an independent web app (PWA) focused specifically on blueprint-style MCQs that match the SMLE format. Key differentiators: free Daily Dose tier with no credit card, specialty-specific drills to target weak areas, detailed clinical rationales, wrong-answer review across all sessions, and dashboard analytics with readiness scoring."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use SMLE Pro on mobile?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SMLE Pro is a Progressive Web App (PWA) that works on all devices — mobile, tablet, and desktop. You can install it to your home screen for a native-like experience. It works offline for previously loaded content via service worker caching."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How can I contact SMLE Pro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use smlepro.official@gmail.com or the official social profiles linked from https://smlepro.web.app/ (Instagram @smle_pro, X @SMLE_Pro, TikTok @smle_pro, YouTube @SMLE_Pro)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does SMLE Pro provide SCFHS official questions?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SMLE Pro is an independent third-party practice platform. It is not affiliated with SCFHS and does not provide official SCFHS exam questions. All questions are original blueprint-style MCQs written by the platform for practice purposes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What payment methods does SMLE Pro accept?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Pro plan payments are processed through Moyasar payment gateway in Saudi Riyal (SAR). VAT is shown at checkout if applicable. Pricing is transparent with no hidden fees."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How often are new questions added to SMLE Pro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The SMLE Pro question bank is regularly updated with new blueprint-style MCQs. The Daily Dose refreshes daily with 30 new questions. Content was last clinically reviewed on 6 April 2026."
+              }
+            }
+          ]
+        }
+
+      ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+    <link rel="stylesheet" href="style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G2S4QENDZ0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-G2S4QENDZ0');
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark transition-colors duration-300">
+
+    <div id="app-root"></div>
+    <noscript>
+      <main class="max-w-xl mx-auto px-6 py-16 text-slate-800 bg-slate-50">
+        <h1>SMLE Pro — Saudi Medical Licensing Exam (SMLE) Practice Platform</h1>
+        <p><strong>Official site:</strong> <a href="https://smlepro.web.app/">https://smlepro.web.app/</a></p>
+        <p>Independent SMLE MCQ practice platform — not affiliated with SCFHS or any government body.</p>
+        <ul>
+          <li><strong>3,000+ blueprint-style MCQs</strong> across 12+ specialties</li>
+          <li><strong>Free Daily Dose:</strong> 30 questions per day (no account required)</li>
+          <li><strong>Pro plans from 149 SAR:</strong> Full question bank, mock exams (10Q/40Q/100Q), specialty drills, wrong-answer review, dashboard analytics & readiness scoring</li>
+          <li><strong>Specialties:</strong> Internal Medicine, Surgery, Pediatrics, OB/GYN, Family Medicine, Psychiatry, Emergency Medicine, Orthopedics, Ophthalmology, ENT, Dermatology, Radiology, Pharmacology, Pathology, Community Medicine</li>
+          <li><strong>Timed mock exams</strong> matching SMLE blueprint format</li>
+          <li><strong>Arabic UI support</strong> with RTL layout and Tajawal font</li>
+        </ul>
+        <p><strong>Pricing:</strong> Saudi Riyal (SAR). Free tier + Pro from 149 SAR.</p>
+        <p><strong>Contact:</strong> smlepro.official@gmail.com | Instagram/TikTok/YouTube/X: @smle_pro / @SMLE_Pro</p>
+        <p><a href="https://smlepro.web.app/legal.html">Terms, Privacy & Legal</a> | <a href="https://smlepro.web.app/llms.txt">AI summary (llms.txt)</a> | <a href="https://smlepro.web.app/sitemap.xml">Sitemap</a></p>
+        <p><em>Enable JavaScript for the full interactive app experience including personalized dashboard, quizzes, and performance tracking.</em></p>
+      </main>
+    </noscript>
+
+    <script type="module" src="src/app.js"></script>
+
+    <!-- PWA Service Worker registration (optional; Google's Rich Results / URL Inspection tools often reject SW — not a site bug) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => console.log('[PWA] Service Worker registered. Scope:', reg.scope))
+                    .catch((err) => {
+                        const msg = String(err && err.message);
+                        // Suppress noise in Google's crawlers/tools where registration is intentionally blocked.
+                        if (/rejected|disabled|not supported/i.test(msg)) return;
+                        console.warn('[PWA] Service Worker registration failed:', err);
+                    });
+            });
+        }
+    </script>
+
+</body>
+</html>

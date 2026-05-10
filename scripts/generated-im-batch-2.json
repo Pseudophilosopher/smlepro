@@ -1,0 +1,332 @@
+[
+  {
+    "question": "A 60-year-old male with a history of hypertension presents with sudden-onset left-sided weakness and slurred speech. NIHSS is 8. CT head shows no hemorrhage. Time since last known well is 2.5 hours. Blood pressure is 185/110 mmHg. What is the next most appropriate step?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Neurology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Start IV alteplase immediately",
+        "correct": false,
+        "rationale": "Alteplase is contraindicated if BP >185/110 mmHg. Blood pressure must be lowered below this threshold before thrombolysis to reduce the risk of intracranial hemorrhage."
+      },
+      {
+        "text": "Administer IV labetalol to lower BP, then give alteplase if BP falls below threshold",
+        "correct": true,
+        "rationale": "Per AHA/ASA 2019 guidelines, BP must be <185/110 mmHg before and <180/105 mmHg during and after alteplase administration. Labetalol is first-line for this acute BP reduction in stroke."
+      },
+      {
+        "text": "Mechanical thrombectomy without thrombolysis",
+        "correct": false,
+        "rationale": "Mechanical thrombectomy is indicated for large vessel occlusion (LVO), typically with NIHSS ≥6, but should not replace IV thrombolysis when the patient is within the 4.5-hour window. Both are given if LVO is confirmed."
+      },
+      {
+        "text": "Aspirin 325 mg immediately",
+        "correct": false,
+        "rationale": "Aspirin is given within 24-48 hours after ruling out hemorrhage, but NOT within 24 hours of thrombolysis. Giving aspirin before or concurrently with alteplase increases bleeding risk."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Acute ischemic stroke within 4.5 hours qualifies for thrombolysis, but uncontrolled hypertension (≥185/110) is a contraindication. BP must be lowered first with IV agents like labetalol.",
+    "tags": ["internal-medicine", "neurology", "hard", "2024-2025", "stroke", "thrombolysis"]
+  },
+  {
+    "question": "A 55-year-old female with a 10-year history of type 2 diabetes presents with numbness and burning pain in both feet, worse at night. Monofilament testing shows loss of protective sensation. Fundoscopy reveals dot-blot hemorrhages. HbA1c is 8.8%. What is the most appropriate modification to her diabetes regimen?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Endocrinology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Add pregabalin and optimize glycemic control",
+        "correct": true,
+        "rationale": "This is painful diabetic peripheral neuropathy (DPN). Pregabalin or duloxetine are first-line for painful DPN per ADA 2024 guidelines. Tight glycemic control (HbA1c <7%) slows progression of neuropathy and retinopathy."
+      },
+      {
+        "text": "Start insulin immediately and discontinue oral agents",
+        "correct": false,
+        "rationale": "While insulin may eventually be needed, abrupt switching without evidence of beta-cell failure is unnecessary. The priority is adding neuropathic pain therapy while intensifying current regimen."
+      },
+      {
+        "text": "Vitamin B12 supplementation alone",
+        "correct": false,
+        "rationale": "B12 deficiency can cause neuropathy, but this patient has long-standing diabetes with retinopathy — classic microvascular complications. B12 alone will not address hyperglycemia-driven nerve damage."
+      },
+      {
+        "text": "Refer for lumbar spine MRI",
+        "correct": false,
+        "rationale": "Bilateral stocking-glove sensory loss with monofilament abnormalities is characteristic of DPN, not radiculopathy. MRI is unnecessary unless there are atypical features (asymmetric weakness, back pain, saddle anesthesia)."
+      }
+    ],
+    "correct_answer": "A",
+    "rationale": "Painful diabetic neuropathy with background retinopathy indicates advanced microvascular disease. First-line management is neuropathic pain agents (pregabalin/duloxetine) plus intensified glycemic control.",
+    "tags": ["internal-medicine", "endocrinology", "hard", "2024-2025", "diabetes", "neuropathy"]
+  },
+  {
+    "question": "A 40-year-old male presents with jaundice, dark urine, and pale stools for 2 weeks. He has mild right upper quadrant pain. Total bilirubin is 8.2 mg/dL, direct bilirubin 6.8 mg/dL. ALP is 320 U/L, GGT 180 U/L. ALT 85 U/L. What is the most likely diagnosis?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Gastroenterology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Acute viral hepatitis",
+        "correct": false,
+        "rationale": "Viral hepatitis causes predominantly elevated transaminases (AST/ALT >1000 in acute cases) with mixed or indirect hyperbilirubinemia. The markedly elevated ALP and GGT with normal-ish ALT suggest cholestasis, not hepatocellular injury."
+      },
+      {
+        "text": "Extrahepatic biliary obstruction (choledocholithiasis)",
+        "correct": true,
+        "rationale": "Elevated direct bilirubin with disproportionately high ALP and GGT indicates cholestasis. The pale stools and dark urine suggest complete or near-complete bile duct obstruction, most commonly from a stone in the common bile duct."
+      },
+      {
+        "text": "Gilbert syndrome",
+        "correct": false,
+        "rationale": "Gilbert syndrome causes mild, unconjugated hyperbilirubinemia (<3 mg/dL), often triggered by fasting or illness. It does not cause elevated ALP, GGT, pale stools, or jaundice of this severity."
+      },
+      {
+        "text": "Hemolytic anemia",
+        "correct": false,
+        "rationale": "Hemolysis causes indirect (unconjugated) hyperbilirubinemia with elevated LDH and low haptoglobin. Direct bilirubin of 6.8 mg/dL with elevated ALP and GGT is inconsistent with hemolysis."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Cholestatic pattern (high direct bilirubin, ALP, GGT) with pale stools = bile duct obstruction. Choledocholithiasis is the most common cause in this age group.",
+    "tags": ["internal-medicine", "gastroenterology", "moderate", "2024-2025", "jaundice", "cholestasis"]
+  },
+  {
+    "question": "A 32-year-old female presents with fatigue, cold intolerance, and weight gain. TSH is 15 mIU/L, free T4 is low. She is 8 weeks pregnant. What is the most appropriate initial levothyroxine dose?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Endocrinology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Start levothyroxine 50 mcg daily and recheck TSH in 6 weeks",
+        "correct": true,
+        "rationale": "Overt hypothyroidism in pregnancy requires immediate treatment. The typical starting dose is 1.6-2.0 mcg/kg/day (≈50-100 mcg for average weight). TSH target in first trimester is <2.5 mIU/L per ATA guidelines."
+      },
+      {
+        "text": "Start levothyroxine 25 mcg daily to avoid overtreatment",
+        "correct": false,
+        "rationale": "While cautious dosing seems reasonable, undertreatment in first-trimester hypothyroidism is associated with miscarriage and impaired fetal neurodevelopment. Adequate replacement is critical."
+      },
+      {
+        "text": "Defer treatment until second trimester",
+        "correct": false,
+        "rationale": "Maternal hypothyroxinemia in the first trimester (when fetal thyroid is not yet functional) is associated with irreversible neurodevelopmental deficits. Treatment must NOT be delayed."
+      },
+      {
+        "text": "Start T3/T4 combination therapy for faster symptom relief",
+        "correct": false,
+        "rationale": "Levothyroxine (T4) monotherapy is the standard of care in pregnancy. T3 crosses the placenta and may affect fetal thyroid development. Combination therapy is not recommended."
+      }
+    ],
+    "correct_answer": "A",
+    "rationale": "Overt hypothyroidism in first trimester requires prompt levothyroxine replacement. Target TSH <2.5 in first trimester. Dose typically increases by 25-30% during pregnancy.",
+    "tags": ["internal-medicine", "endocrinology", "hard", "2024-2025", "hypothyroidism", "pregnancy"]
+  },
+  {
+    "question": "A 70-year-old male with metastatic prostate cancer on androgen deprivation therapy (ADT) presents with back pain. Calcium is 12.8 mg/dL, phosphate is 2.1 mg/dL. He is alert and oriented. What is the most appropriate initial management?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Oncology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "IV pamidronate immediately",
+        "correct": false,
+        "rationale": "Bisphosphonates are effective for malignancy-related hypercalcemia but take 2-4 days to work. They are second-line after aggressive saline hydration, which is the immediate priority."
+      },
+      {
+        "text": "Aggressive IV normal saline at 200-300 mL/hr with loop diuretics once euvolemic",
+        "correct": true,
+        "rationale": "Malignancy hypercalcemia is treated first with aggressive IV hydration (4-6 L in first 24 hours) to restore intravascular volume and promote calciuresis. Loop diuretics are added ONLY after rehydration to prevent fluid overload."
+      },
+      {
+        "text": "Calcitonin SC immediately",
+        "correct": false,
+        "rationale": "Calcitonin lowers calcium rapidly (within hours) but tachyphylaxis develops within 48 hours. It is reserved for severe symptomatic hypercalcemia (Ca >14 or altered mental status) as a bridge to bisphosphonates."
+      },
+      {
+        "text": "Start corticosteroids (prednisone 40 mg PO daily)",
+        "correct": false,
+        "rationale": "Steroids are effective for hematologic malignancies (myeloma, lymphoma) and vitamin D-mediated hypercalcemia. Prostate cancer typically causes osteoblastic bone metastases with PTHrP-mediated hypercalcemia, which responds poorly to steroids alone."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Malignancy hypercalcemia management: (1) aggressive IV saline, (2) loop diuretics after euvolemia, (3) bisphosphonates for sustained effect. Calcitonin for severe/symptomatic cases only.",
+    "tags": ["internal-medicine", "oncology", "hard", "2024-2025", "hypercalcemia", "prostate-cancer"]
+  },
+  {
+    "question": "A 25-year-old male presents with hemoptysis, hematuria, and rising creatinine (2.4 mg/dL). C-ANCA is positive. Urinalysis shows dysmorphic RBCs and RBC casts. Chest CT shows bilateral cavitary nodules. What is the first-line induction therapy?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Nephrology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Cyclophosphamide + high-dose corticosteroids",
+        "correct": true,
+        "rationale": "This is GPA (Wegener granulomatosis) with rapidly progressive glomerulonephritis (RPGN). Standard induction is cyclophosphamide IV or PO plus high-dose steroids per EUVAS/KDIGO guidelines. Plasmapheresis is added for severe renal involvement (creatinine >4 or dialysis dependence)."
+      },
+      {
+        "text": "Mycophenolate mofetil + low-dose steroids",
+        "correct": false,
+        "rationale": "MMF is used for maintenance therapy in ANCA-associated vasculitis, not induction. For severe renal involvement (RPGN), cyclophosphamide-based induction is superior for remission induction."
+      },
+      {
+        "text": "Rituximab monotherapy",
+        "correct": false,
+        "rationale": "Rituximab is non-inferior to cyclophosphamide for induction in some ANCA vasculitis populations, but standard practice (especially in severe disease with RPGN) is cyclophosphamide plus steroids. Rituximab is preferred for relapsing disease or when fertility preservation is needed."
+      },
+      {
+        "text": "Supportive care with ACE inhibitor only",
+        "correct": false,
+        "rationale": "ACE inhibitors slow progression of proteinuric kidney disease but have no role in active ANCA vasculitis with RPGN. Without immunosuppression, this patient will progress to end-stage renal disease within weeks."
+      }
+    ],
+    "correct_answer": "A",
+    "rationale": "GPA with RPGN (hematuria, RBC casts, rising creatinine) requires urgent immunosuppression. Cyclophosphamide + high-dose steroids is standard induction therapy.",
+    "tags": ["internal-medicine", "nephrology", "hard", "2024-2025", "ANCA-vasculitis", "GPA"]
+  },
+  {
+    "question": "A 38-year-old female presents with recurrent oral ulcers, genital ulcers, and painful red nodules on her shins. She had a previous episode of uveitis. What is the most likely diagnosis?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Rheumatology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Systemic lupus erythematosus",
+        "correct": false,
+        "rationale": "SLE can cause oral ulcers and skin lesions, but the combination of recurrent oral AND genital ulcers with erythema nodosum is highly specific for Behçet disease. SLE typically has photosensitivity, malar rash, and serologic markers (anti-dsDNA, low complement)."
+      },
+      {
+        "text": "Behçet disease",
+        "correct": true,
+        "rationale": "Recurrent oral ulcers (required), genital ulcers, erythema nodosum, and uveitis constitute the classic triad of Behçet disease, a systemic vasculitis common along the Silk Road (including Saudi Arabia and Turkey)."
+      },
+      {
+        "text": "Reactive arthritis",
+        "correct": false,
+        "rationale": "Reactive arthritis presents with urethritis, conjunctivitis/uveitis, and arthritis (can't see, can't pee, can't climb a tree). Oral ulcers can occur but genital ulcers and erythema nodosum are not typical features."
+      },
+      {
+        "text": "Crohn disease",
+        "correct": false,
+        "rationale": "Crohn disease can cause oral ulcers, erythema nodosum, and uveitis, but genital ulcers are not characteristic. Additionally, GI symptoms (diarrhea, abdominal pain, weight loss) would be expected."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Oral ulcers + genital ulcers + erythema nodosum + uveitis = Behçet disease. This vasculitis is endemic in the Middle East and must be recognized by Saudi medical graduates.",
+    "tags": ["internal-medicine", "rheumatology", "moderate", "2024-2025", "behcet", "vasculitis"]
+  },
+  {
+    "question": "A 52-year-old male presents with epigastric pain radiating to the back, nausea, and vomiting. Serum lipase is 1200 U/L. CT abdomen shows peripancreatic fat stranding and a 3 cm fluid collection. He has no gallstones on ultrasound. He drinks 2-3 beers daily. What is the most likely cause?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Gastroenterology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Gallstone pancreatitis",
+        "correct": false,
+        "rationale": "Gallstones are the most common cause of pancreatitis overall, but ultrasound shows no stones. Additionally, gallstone pancreatitis often presents with elevated ALT/AST and biliary dilation, neither of which is described here."
+      },
+      {
+        "text": "Alcohol-induced pancreatitis",
+        "correct": true,
+        "rationale": "Chronic alcohol use (>4-5 drinks/day for >5 years) is the second most common cause of pancreatitis. The moderate daily intake (2-3 beers) may seem low, but combined with genetic or metabolic factors, it can precipitate acute episodes. With negative gallbladder imaging, alcohol becomes the leading etiology."
+      },
+      {
+        "text": "Hypertriglyceridemia-induced pancreatitis",
+        "correct": false,
+        "rationale": "Hypertriglyceridemia (>1000 mg/dL) causes ~10% of pancreatitis cases. There is no mention of lipid panel abnormalities, obesity, diabetes, or medication history (estrogens, retinoids) that would suggest this etiology."
+      },
+      {
+        "text": "Pancreatic malignancy",
+        "correct": false,
+        "rationale": "Pancreatic cancer can present with pancreatitis-like symptoms but typically causes painless jaundice, weight loss, and a pancreatic mass on imaging. A fluid collection and peripancreatic stranding are inflammatory, not neoplastic, findings."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Acute pancreatitis with negative gallbladder ultrasound and alcohol history makes alcohol the most likely etiology. Lipase >3x upper limit of normal confirms the diagnosis.",
+    "tags": ["internal-medicine", "gastroenterology", "moderate", "2024-2025", "pancreatitis", "alcohol"]
+  },
+  {
+    "question": "A 45-year-old male with HIV (CD4 180, not on ART) presents with progressive dyspnea, nonproductive cough, and fever. Chest X-ray shows diffuse bilateral interstitial infiltrates. LDH is 450 U/L. What is the most appropriate initial diagnostic test?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Infectious Diseases",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Bronchoalveolar lavage (BAL) with silver stain",
+        "correct": false,
+        "rationale": "BAL with silver stain (methenamine silver) can diagnose Pneumocystis jirovecii pneumonia (PJP) but is invasive. In patients with classic presentation and high pretest probability, less invasive testing should be attempted first."
+      },
+      {
+        "text": "Induced sputum for Pneumocystis jirovecii PCR",
+        "correct": true,
+        "rationale": "In HIV patients with CD4 <200, diffuse interstitial infiltrates, elevated LDH, and hypoxemia, PJP is the leading diagnosis. Induced sputum PCR has >90% sensitivity and is non-invasive. If negative, proceed to BAL."
+      },
+      {
+        "text": "Empiric high-dose trimethoprim-sulfamethoxazole without testing",
+        "correct": false,
+        "rationale": "While empiric therapy for suspected PJP is common, diagnostic confirmation is preferred when feasible to rule out other causes (CMV, TB, cryptococcosis) that may coexist and require different treatment."
+      },
+      {
+        "text": "CT chest with contrast",
+        "correct": false,
+        "rationale": "CT may show ground-glass opacities with cysts (classic for PJP) but is not diagnostic. It adds radiation exposure and cost without providing microbiologic confirmation. Testing should precede or accompany imaging."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "PJP is the most common opportunistic infection in advanced HIV (CD4 <200). Induced sputum PCR is the best initial diagnostic test — non-invasive with high sensitivity.",
+    "tags": ["internal-medicine", "infectious-diseases", "hard", "2024-2025", "HIV", "PJP"]
+  },
+  {
+    "question": "A 65-year-old female presents with fatigue, constipation, and polyuria. Calcium is 11.2 mg/dL, PTH is 85 pg/mL (elevated). Phosphate is 2.8 mg/dL. Sestamibi scan shows a single parathyroid adenoma. What is the definitive treatment?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Endocrinology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Observation with annual calcium monitoring",
+        "correct": false,
+        "rationale": "Observation is appropriate for asymptomatic primary hyperparathyroidism meeting specific criteria (age <50, calcium <1 mg/dL above normal, no osteoporosis). This patient is symptomatic (fatigue, constipation, polyuria) and warrants intervention."
+      },
+      {
+        "text": "Parathyroidectomy",
+        "correct": true,
+        "rationale": "Parathyroidectomy is the definitive treatment for symptomatic primary hyperparathyroidism. With a localized adenoma on sestamibi scan, minimally invasive parathyroidectomy has >95% cure rate and resolves both hypercalcemia and symptoms."
+      },
+      {
+        "text": "Cinacalcet indefinitely",
+        "correct": false,
+        "rationale": "Cinacalcet lowers calcium by increasing parathyroid calcium-sensing receptor sensitivity. It is used when surgery is contraindicated or refused, not as definitive therapy. It does not address the underlying adenoma."
+      },
+      {
+        "text": "Bisphosphonate therapy (zoledronic acid)",
+        "correct": false,
+        "rationale": "Bisphosphonates lower calcium temporarily (weeks) by inhibiting bone resorption. They are used for acute hypercalcemia of malignancy or when surgery is delayed, not as long-term management of primary hyperparathyroidism."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Symptomatic primary hyperparathyroidism with localized adenoma = parathyroidectomy. This is curative and preferred over lifelong medical management.",
+    "tags": ["internal-medicine", "endocrinology", "moderate", "2024-2025", "hyperparathyroidism", "surgery"]
+  }
+]

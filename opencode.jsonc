@@ -1,0 +1,74 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // ============================================
+  // MCP Servers — enhances OpenCode with extra tools
+  // Enable the ones you need by setting "enabled": true
+  // ============================================
+  "mcp": {
+    // Sequential Thinking: structured reasoning for complex problems
+    // (Firebase security rules, pricing logic, quiz engine design)
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "enabled": true
+    },
+
+    // Firecrawl: web scraping for medical research, competitor analysis
+    // Get an API key at https://firecrawl.dev
+    "firecrawl": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-firecrawl"],
+      "enabled": false,
+      "environment": {
+        "FIRECRAWL_API_KEY": "{env:FIRECRAWL_API_KEY}"
+      }
+    },
+
+    // Playwright: automated E2E smoke tests for your quiz/checkout flows
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@executeautomation/playwright-mcp-server"],
+      "enabled": false
+    }
+  },
+
+  // ============================================
+  // Permissions — commands OpenCode can run without asking
+  // ============================================
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit -m *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git checkout *)",
+      "Bash(git branch *)",
+      "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "Bash(gh repo *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)"
+    ]
+  },
+
+  // ============================================
+  // Tools — enable/disable specific tools
+  // ============================================
+  "tools": {
+    "sequential-thinking_*": true,
+    "firecrawl_*": false,
+    "playwright_*": false
+  }
+}

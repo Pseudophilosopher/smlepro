@@ -1,0 +1,7 @@
+# Local overrides (personal settings, not project defaults)
+settings.local.json
+CLAUDE.local.md
+
+# OS files
+.DS_Store
+Thumbs.db

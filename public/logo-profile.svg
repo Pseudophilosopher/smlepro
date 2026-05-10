@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#050508"/>
+    </radialGradient>
+
+    <radialGradient id="hg" cx="38%" cy="30%" r="68%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#FFE566"/>
+      <stop offset="45%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#8B6508"/>
+    </radialGradient>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="badgeglow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#bg)"/>
+
+  <ellipse cx="200" cy="210" rx="140" ry="110"
+           fill="rgba(212,175,55,0.12)" filter="url(#glow)"/>
+
+  <g transform="translate(200,215) scale(3.1)">
+    <path
+      d="M0 24.6 C-1 24.6 -29 11 -29 -3.5 C-29 -16.5 -20.8 -27 -9 -27 C-3.4 -27 2.2 -23.1 0 -17.1 C-2.2 -23.1 3.4 -27 9 -27 C20.8 -27 29 -16.5 29 -3.5 C29 11 1 24.6 0 24.6Z"
+      fill="url(#hg)"
+      filter="url(#glow)"
+    />
+  </g>
+
+  <circle cx="258" cy="160" r="52" fill="#0B1120" fill-opacity="0.88" filter="url(#badgeglow)"/>
+  <circle cx="258" cy="160" r="51" fill="none" stroke="#D4AF37" stroke-width="3"/>
+
+  <rect x="248" y="137" width="20" height="46" rx="10" fill="white"/>
+  <rect x="235" y="150" width="46" height="20" rx="10" fill="white"/>
+
+  <text x="200" y="342"
+        text-anchor="middle"
+        font-family="system-ui,Segoe UI,Arial,sans-serif"
+        font-weight="900"
+        font-size="46"
+        letter-spacing="-1"
+        fill="#FFFFFF">SMLE</text>
+  <text x="200" y="385"
+        text-anchor="middle"
+        font-family="system-ui,Segoe UI,Arial,sans-serif"
+        font-weight="700"
+        font-size="34"
+        letter-spacing="6"
+        fill="#D4AF37">PRO</text>
+</svg>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smlepro.web.app/sitemap.xml

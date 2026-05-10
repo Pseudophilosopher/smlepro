@@ -1,0 +1,38 @@
+{
+  "name": "smle-pro",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build && node scripts/generate-sitemap.mjs",
+    "preview": "vite preview",
+    "update-daily": "node scripts/update-daily-dose.js",
+    "attach-images": "node scripts/attach-images.mjs",
+    "attach-images:dry": "node scripts/attach-images.mjs --dry-run --limit=5",
+    "attach-images:batch": "node scripts/attach-images.mjs --limit=100",
+    "attach-images:loop": "node scripts/attach-images-loop.mjs --limit=10 --pause-between-rounds=5000",
+    "attach-images:loop:dry": "node scripts/attach-images-loop.mjs --dry-run --limit=10 --pause-between-rounds=3000",
+    "backup": "node scripts/backup-questions.mjs",
+    "audit": "node scripts/audit-question-bank.mjs",
+    "audit:smle": "node scripts/audit-smle-authenticity.mjs",
+    "questions:duplicates": "node scripts/find-duplicate-questions.mjs",
+    "questions:reset-images": "node scripts/reset-question-images.mjs",
+    "upload": "node scripts/upload-questions.mjs",
+    "export-social-pfp": "node scripts/export-social-pfp.mjs",
+    "export-twitter-header": "node scripts/export-twitter-header.mjs"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.12",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.2.11"
+  },
+  "dependencies": {
+    "firebase": "^10.12.2",
+    "firebase-admin": "^12.1.1",
+    "html-to-image": "^1.11.13",
+    "node-fetch": "^3.3.2",
+    "sharp": "^0.34.5"
+  }
+}

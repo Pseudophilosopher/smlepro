@@ -1,0 +1,20 @@
+SMLE Pro — profile picture files for social networks
+====================================================
+
+Why uploads failed before
+-------------------------
+- TikTok, Instagram, X (Twitter), and YouTube do NOT accept SVG as a profile photo.
+- They need a square JPG or PNG (not a wide/banner image).
+- Our old smle-pro-logo.png was a wide rectangle — wrong aspect ratio for avatars.
+
+What to use (after deploy, download from your site)
+---------------------------------------------------
+1. social-profile-1080.jpg  — best default (square, high quality, small file size)
+2. social-profile-1080.png  — if a platform insists on PNG
+3. social-profile-400.jpg   — if a platform has a low max resolution
+
+Upload the SAME file to TikTok, X, Instagram, and YouTube profile settings.
+
+Regenerate after logo changes
+----------------------------
+From the project folder:  npm run export-social-pfp

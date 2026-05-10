@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "smle-mock-exam-51478532-5ae31"
+  },
+  "targets": {
+    "smle-mock-exam-51478532-5ae31": {
+      "hosting": {
+        "smlepro": [
+          "smlepro"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,27 @@
+# Personal Overrides for Claude Code
+# Rename this file to CLAUDE.local.md and it will be merged with .claude/CLAUDE.md
+# This file is gitignored so your personal preferences stay local.
+
+## My Preferences
+
+- Preferred model: (e.g., claude-sonnet-4-20250514 for battery life)
+- Verbosity: (e.g., concise, detailed)
+- Common patterns I use: (e.g., "Always use async/await, never .then()")
+
+## My Custom Commands
+
+```
+# Quick build
+npm run build
+
+# Run tests
+npm test
+
+# Deploy preview
+npm run preview
+```
+
+## Personal Workflow Notes
+
+- I work mostly on (e.g., quiz engine, admin panel, landing pages)
+- My common review checklist: (e.g., check RTL, test on mobile, verify auth)

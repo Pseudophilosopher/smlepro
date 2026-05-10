@@ -1,0 +1,1120 @@
+{
+  "total": 260,
+  "batches": 13,
+  "questions": [
+    {
+      "id": "a-10yearold-boy-presents-with-a-painful-swelling-over-his-tibia-xr",
+      "question": "A 10-year-old boy presents with a painful swelling over his tibia. X-ray shows an 'onion-skin' periosteal reaction. What is the diagnosis?",
+      "topic": "Orthopedics",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Osteosarcoma",
+          "correct": false,
+          "rationale": "Sunburst reaction."
+        },
+        {
+          "text": "Ewing Sarcoma",
+          "correct": true,
+          "rationale": "Onion-skinning is the classic radiographic sign of Ewing's sarcoma."
+        },
+        {
+          "text": "Brodie Abscess",
+          "correct": false,
+          "rationale": "A subacute/chronic osteomyelitis with a radiolucent center and sclerotic border."
+        },
+        {
+          "text": "Osteoblastoma",
+          "correct": false,
+          "rationale": "A benign bone tumor usually involving the spine."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Onion-skinning is the classic radiographic sign of Ewing's sarcoma.",
+      "scfhs_domain": "Surgery – Orthopedics",
+      "image_search_no_result": false,
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776092268,
+        "_nanoseconds": 188000000
+      },
+      "ai_image_plan": {
+        "modality": "ct_mri",
+        "visual_summary": "An X-ray image of a long bone, preferably the tibia, demonstrating a multi-layered or 'onion-skin' periosteal reaction, characteristic of Ewing sarcoma.",
+        "search_queries": [
+          "Ewing sarcoma X-ray tibia",
+          "onion skin periosteal reaction radiography",
+          "Ewing sarcoma bone tumor X-ray",
+          "pediatric Ewing sarcoma X-ray",
+          "periosteal reaction X-ray layers"
+        ],
+        "confidence": 0.9,
+        "model": "gemini-2.5-flash",
+        "rationale": "The STEM explicitly mentions an 'onion-skin' periosteal reaction on X-ray as the key finding. A visual example of this radiographic sign is essential for learning and directly illustrates the diagnostic clue.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "histology",
+          "microscopy",
+          "CT",
+          "MRI",
+          "ultrasound",
+          "clinical photo"
+        ]
+      },
+      "tags": [
+        "orthopedics",
+        "surgery",
+        "easy",
+        "2024-2025",
+        "dermatology",
+        "radiology",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_verified": false,
+      "image_reference": false
+    },
+    {
+      "id": "a-15yearold-male-with-a-sudden-painful-scrotum-on-exam-the-cremast",
+      "question": "A 15-year-old male with a sudden painful scrotum. On exam, the cremasteric reflex is absent. What is the management?",
+      "topic": "Surgery",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Antibiotics",
+          "correct": false,
+          "rationale": "For epididymitis."
+        },
+        {
+          "text": "Emergency Surgery",
+          "correct": true,
+          "rationale": "Absent cremasteric reflex and acute pain point to testicular torsion, a surgical emergency."
+        },
+        {
+          "text": "Scrotal support",
+          "correct": false,
+          "rationale": "Supportive only."
+        },
+        {
+          "text": "Observe",
+          "correct": false,
+          "rationale": "Torsion leads to necrosis within hours."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Absent cremasteric reflex and acute pain point to testicular torsion, a surgical emergency.",
+      "scfhs_domain": "Surgery",
+      "tags": [
+        "surgery",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-15yearold-male-with-sudden-severe-scrotal-pain-and-absent-cremaste",
+      "question": "A 15-year-old male with sudden severe scrotal pain and absent cremasteric reflex. Management?",
+      "topic": "Surgery",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Antibiotics",
+          "correct": false,
+          "rationale": "For epididymitis."
+        },
+        {
+          "text": "Emergency Surgery",
+          "correct": true,
+          "rationale": "For testicular torsion."
+        },
+        {
+          "text": "Ultrasound then follow up",
+          "correct": false,
+          "rationale": "Should not delay surgery."
+        },
+        {
+          "text": "Scrotal support",
+          "correct": false,
+          "rationale": "Symptomatic only."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "For testicular torsion.",
+      "scfhs_domain": "Surgery",
+      "tags": [
+        "surgery",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-19yearold-male-presents-with-pinpoint-pupils-a-respiratory-rate-o",
+      "question": "A 19-year-old male presents with pinpoint pupils, a respiratory rate of 5/min, and track marks on his arms. What is the immediate treatment?",
+      "topic": "Toxicology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "N-acetylcysteine",
+          "correct": false,
+          "rationale": "For paracetamol."
+        },
+        {
+          "text": "Naloxone",
+          "correct": true,
+          "rationale": "Naloxone is the specific opioid receptor antagonist used to reverse life-threatening respiratory depression."
+        },
+        {
+          "text": "Flumazenil",
+          "correct": false,
+          "rationale": "For benzodiazepines; can cause seizures if opioids are also present."
+        },
+        {
+          "text": "Sodium Bicarbonate",
+          "correct": false,
+          "rationale": "For TCAs or Aspirin."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Naloxone is the specific opioid receptor antagonist used to reverse life-threatening respiratory depression.",
+      "scfhs_domain": "Emergency Medicine – Toxicology",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776093862,
+        "_nanoseconds": 356000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "The image should show classic signs of opioid overdose, such as constricted, pinpoint pupils (miosis) or track marks on the arm from intravenous drug use.",
+        "search_queries": [
+          "pinpoint pupils opioid overdose",
+          "miosis opioid toxicity",
+          "track marks intravenous drug use arm",
+          "opioid intoxication physical exam"
+        ],
+        "confidence": 0.95,
+        "model": "gemini-2.5-flash",
+        "rationale": "The stem describes classic physical findings of opioid overdose (pinpoint pupils, bradypnea, track marks). A clinical photo illustrating pinpoint pupils or track marks would directly reinforce the visual cues of the diagnosis, linking the clinical presentation to the appropriate treatment (Naloxone).",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "diagram",
+          "chart",
+          "cartoon",
+          "MRI",
+          "CT",
+          "histology",
+          "electron microscopy"
+        ]
+      },
+      "image_search_query": "pinpoint pupils opioid overdose → miosis opioid toxicity → track marks intravenous drug use arm → opioid intoxication physical exam → Naloxone medical → Naloxone clinical",
+      "image_attached_at": "2026-04-15T22:00:26.094Z",
+      "image_source": "wikimedia",
+      "image_url": null,
+      "image_rejected": true,
+      "image_verified": null,
+      "tags": [
+        "toxicology",
+        "emergency-medicine",
+        "easy",
+        "2024-2025",
+        "has-image"
+      ],
+      "image_reference": false,
+      "image_search_no_result": true
+    },
+    {
+      "id": "a-22yearold-presents-with-a-bag-of-worms-swelling-in-the-left-scro",
+      "question": "A 22-year-old presents with a 'bag of worms' swelling in the left scrotum. What is the diagnosis?",
+      "topic": "Surgery",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Hydrocele",
+          "correct": false,
+          "rationale": "Fluid."
+        },
+        {
+          "text": "Varicocele",
+          "correct": true,
+          "rationale": "Dilated veins in the pampiniform plexus."
+        },
+        {
+          "text": "Spermatocele",
+          "correct": false,
+          "rationale": "Cyst."
+        },
+        {
+          "text": "Hernia",
+          "correct": false,
+          "rationale": "Bowel."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Dilated veins in the pampiniform plexus.",
+      "scfhs_domain": "Surgery",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776095507,
+        "_nanoseconds": 654000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "A clinical photograph of a scrotum demonstrating the characteristic 'bag of worms' appearance of a varicocele, specifically showing dilated, tortuous veins.",
+        "search_queries": [
+          "varicocele scrotum clinical photo",
+          "bag of worms swelling scrotum",
+          "dilated pampiniform plexus clinical",
+          "testicular varicocele gross appearance"
+        ],
+        "confidence": 1,
+        "model": "gemini-2.5-flash",
+        "rationale": "The 'bag of worms' description is classic for a varicocele and a direct clinical photograph would best illustrate this key diagnostic finding for learners.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "ultrasound",
+          "diagram",
+          "histology",
+          "CT",
+          "MRI",
+          "child",
+          "infant"
+        ]
+      },
+      "image_search_no_result": false,
+      "tags": [
+        "surgery",
+        "easy",
+        "2024-2025",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_verified": false,
+      "image_reference": false
+    },
+    {
+      "id": "a-24yearold-male-believes-that-the-news-anchor-is-sending-him-spec",
+      "question": "A 24-year-old male believes that the 'news anchor' is sending him special instructions to save the world. These symptoms have been present for 3 weeks. What is the diagnosis?",
+      "topic": "Psychiatry",
+      "difficulty": "Moderate",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Schizophrenia",
+          "correct": false,
+          "rationale": "Requires 6 months."
+        },
+        {
+          "text": "Brief Psychotic Disorder",
+          "correct": true,
+          "rationale": "Psychotic symptoms lasting >1 day but <1 month are classified as Brief Psychotic Disorder."
+        },
+        {
+          "text": "Schizophreniform Disorder",
+          "correct": false,
+          "rationale": "Requires 1 to 6 months."
+        },
+        {
+          "text": "Delusional Disorder",
+          "correct": false,
+          "rationale": "Delusions without hallucinations or disorganized behavior."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Psychotic symptoms lasting >1 day but <1 month are classified as Brief Psychotic Disorder.",
+      "scfhs_domain": "Internal Medicine – Psychiatry",
+      "tags": [
+        "psychiatry",
+        "internal-medicine",
+        "moderate",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-25yearold-female-presents-with-a-stabbing-facial-pain-that-lasts",
+      "question": "A 25-year-old female presents with a 'stabbing' facial pain that lasts for 2 seconds. What is the treatment?",
+      "topic": "Dermatology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Carbamazepine",
+          "correct": true,
+          "rationale": "First-line treatment for Trigeminal Neuralgia."
+        },
+        {
+          "text": "Paracetamol",
+          "correct": false,
+          "rationale": "Ineffective."
+        },
+        {
+          "text": "Sumatriptan",
+          "correct": false,
+          "rationale": "For migraines."
+        },
+        {
+          "text": "Prednisolone",
+          "correct": false,
+          "rationale": "For Bell's palsy."
+        }
+      ],
+      "correct_answer": "A",
+      "rationale": "First-line treatment for Trigeminal Neuralgia.",
+      "scfhs_domain": "Internal Medicine – Dermatology",
+      "tags": [
+        "dermatology",
+        "internal-medicine",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-25yearold-male-presents-with-foot-drop-after-a-fibular-neck-frac",
+      "question": "A 25-year-old male presents with 'foot drop' after a fibular neck fracture. Which nerve is likely injured?",
+      "topic": "Orthopedics",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Tibial nerve",
+          "correct": false,
+          "rationale": "Loss of plantar flexion."
+        },
+        {
+          "text": "Common Peroneal (Fibular) nerve",
+          "correct": true,
+          "rationale": "Wraps around the fibular neck; injury leads to loss of dorsiflexion (foot drop)."
+        },
+        {
+          "text": "Femoral nerve",
+          "correct": false,
+          "rationale": "Weakness in knee extension."
+        },
+        {
+          "text": "Sciatic nerve",
+          "correct": false,
+          "rationale": "High-level injury."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Wraps around the fibular neck; injury leads to loss of dorsiflexion (foot drop).",
+      "scfhs_domain": "Surgery – Orthopedics",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776097147,
+        "_nanoseconds": 994000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "A clinical photograph demonstrating 'foot drop', showing the patient's inability to dorsiflex the foot, often resulting in a steppage gait.",
+        "search_queries": [
+          "foot drop clinical photo",
+          "common peroneal nerve palsy physical exam",
+          "steppage gait foot drop",
+          "fibular head common peroneal nerve injury symptom"
+        ],
+        "confidence": 0.9,
+        "model": "gemini-2.5-flash",
+        "rationale": "A clinical photo of foot drop directly visualizes the key symptom described in the stem, which is a classic presentation of common peroneal nerve injury.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "x-ray",
+          "mri",
+          "ct",
+          "ultrasound",
+          "histology",
+          "diagram"
+        ]
+      },
+      "image_search_no_result": false,
+      "tags": [
+        "orthopedics",
+        "surgery",
+        "easy",
+        "2024-2025",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_verified": false,
+      "image_reference": false
+    },
+    {
+      "id": "a-30yearold-female-presents-with-a-butterfly-rash-on-her-face-and",
+      "question": "A 30-year-old female presents with a 'butterfly' rash on her face and joint pain. Which antibody is most specific?",
+      "topic": "Internal Medicine",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "ANA",
+          "correct": false,
+          "rationale": "Highly sensitive but not specific."
+        },
+        {
+          "text": "Anti-dsDNA or Anti-Smith",
+          "correct": true,
+          "rationale": "Most specific markers for SLE."
+        },
+        {
+          "text": "Anti-Ro",
+          "correct": false,
+          "rationale": "Sjögren's."
+        },
+        {
+          "text": "Anti-histone",
+          "correct": false,
+          "rationale": "Drug-induced lupus."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Most specific markers for SLE.",
+      "scfhs_domain": "Internal Medicine",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776098384,
+        "_nanoseconds": 769000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "A malar 'butterfly' rash across the cheeks and bridge of the nose on a patient's face.",
+        "search_queries": [
+          "malar rash",
+          "butterfly rash face",
+          "lupus rash",
+          "systemic lupus erythematosus face"
+        ],
+        "confidence": 0.95,
+        "model": "gemini-2.5-flash-lite",
+        "rationale": "The 'butterfly rash' is a classic physical exam finding for Systemic Lupus Erythematosus (SLE), making a clinical photo highly relevant to the diagnosis suggested by the stem and options.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "diagram",
+          "illustration",
+          "histology"
+        ]
+      },
+      "image_search_no_result": false,
+      "tags": [
+        "internal-medicine",
+        "easy",
+        "2024-2025",
+        "dermatology",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_verified": false,
+      "image_reference": false
+    },
+    {
+      "id": "a-30yearold-male-is-brought-to-the-er-with-a-headache-vomiting-and",
+      "question": "A 30-year-old male is brought to the ER with a headache, vomiting, and high anion gap metabolic acidosis. He has visual disturbances described as 'looking through a snowstorm.' What is the specific antidote?",
+      "topic": "Toxicology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "N-acetylcysteine",
+          "correct": false,
+          "rationale": "For paracetamol."
+        },
+        {
+          "text": "Fomepizole",
+          "correct": true,
+          "rationale": "Methanol causes visual toxicity ('snowstorm vision'); Fomepizole inhibits alcohol dehydrogenase to prevent toxic metabolites."
+        },
+        {
+          "text": "Methylene Blue",
+          "correct": false,
+          "rationale": "For methemoglobinemia."
+        },
+        {
+          "text": "Atropine",
+          "correct": false,
+          "rationale": "For organophosphates."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Methanol causes visual toxicity ('snowstorm vision'); Fomepizole inhibits alcohol dehydrogenase to prevent toxic metabolites.",
+      "scfhs_domain": "Emergency Medicine – Toxicology",
+      "tags": [
+        "toxicology",
+        "emergency-medicine",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-30yearold-male-presents-with-recurrent-episodes-of-hearing-voices",
+      "question": "A 30-year-old male presents with recurrent episodes of hearing voices and believing people are trying to kill him. These symptoms have lasted for 8 months. What is the diagnosis?",
+      "topic": "Psychiatry",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Schizophreniform",
+          "correct": false,
+          "rationale": "Lasts 1-6 months."
+        },
+        {
+          "text": "Schizophrenia",
+          "correct": true,
+          "rationale": "Psychotic symptoms lasting > 6 months are classified as Schizophrenia."
+        },
+        {
+          "text": "Brief Psychotic Disorder",
+          "correct": false,
+          "rationale": "Lasts < 1 month."
+        },
+        {
+          "text": "Bipolar Disorder",
+          "correct": false,
+          "rationale": "Requires distinct mood episodes."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Psychotic symptoms lasting > 6 months are classified as Schizophrenia.",
+      "scfhs_domain": "Internal Medicine – Psychiatry",
+      "tags": [
+        "psychiatry",
+        "internal-medicine",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-30yearold-male-with-chronic-back-pain-has-a-bamboo-spine-on-xra",
+      "question": "A 30-year-old male with chronic back pain has a 'bamboo spine' on X-ray. Genetic marker?",
+      "topic": "Rheumatology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "HLA-DR4",
+          "correct": false,
+          "rationale": "RA."
+        },
+        {
+          "text": "HLA-B27",
+          "correct": true,
+          "rationale": "Strongly associated with Ankylosing Spondylitis."
+        },
+        {
+          "text": "HLA-DQ8",
+          "correct": false,
+          "rationale": "Celiac."
+        },
+        {
+          "text": "HLA-B51",
+          "correct": false,
+          "rationale": "Behcet's."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Strongly associated with Ankylosing Spondylitis.",
+      "scfhs_domain": "Internal Medicine – Rheumatology",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776099377,
+        "_nanoseconds": 221000000
+      },
+      "ai_image_plan": {
+        "modality": "ct_mri",
+        "visual_summary": "An anteroposterior or lateral X-ray image of the spine demonstrating the characteristic 'bamboo spine' appearance with diffuse syndesmophyte formation and vertebral body fusion.",
+        "search_queries": [
+          "bamboo spine X-ray",
+          "ankylosing spondylitis spine radiograph",
+          "spinal syndesmophytes X-ray",
+          "fused vertebrae X-ray"
+        ],
+        "confidence": 0.9,
+        "model": "gemini-2.5-flash",
+        "rationale": "Illustrates the defining radiographic feature of advanced ankylosing spondylitis, directly linking the visual finding to the genetic marker discussed in the stem.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "CT",
+          "MRI",
+          "diagram",
+          "schematic",
+          "histology"
+        ]
+      },
+      "image_search_no_result": false,
+      "tags": [
+        "rheumatology",
+        "internal-medicine",
+        "easy",
+        "2024-2025",
+        "radiology",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_verified": false,
+      "image_reference": false
+    },
+    {
+      "id": "a-30yearold-male-with-chronic-schizophrenia-presents-with-high-fever",
+      "question": "A 30-year-old male with chronic schizophrenia presents with high fever, tachycardia, and a 'blank stare.' He has significantly elevated Creatine Kinase (CK). What is the first-line medication to treat the rigidity?",
+      "topic": "Toxicology",
+      "difficulty": "Moderate",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Benztropine",
+          "correct": false,
+          "rationale": "Benztropine is for dystonia; NMS requires muscle relaxation."
+        },
+        {
+          "text": "Dantrolene",
+          "correct": true,
+          "rationale": "Dantrolene (a direct-acting muscle relaxant) and Bromocriptine are used to treat the life-threatening rigidity of NMS."
+        },
+        {
+          "text": "Propranolol",
+          "correct": false,
+          "rationale": "For akathisia."
+        },
+        {
+          "text": "Diazepam",
+          "correct": false,
+          "rationale": "May help with agitation but is not the specific treatment for NMS-related rigidity."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Dantrolene (a direct-acting muscle relaxant) and Bromocriptine are used to treat the life-threatening rigidity of NMS.",
+      "scfhs_domain": "Emergency Medicine – Toxicology",
+      "tags": [
+        "toxicology",
+        "emergency-medicine",
+        "moderate",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-30yearold-patient-presents-with-a-butterfly-rash-on-her-face-and",
+      "question": "A 30-year-old patient presents with a 'butterfly' rash on her face and multiple joint pains. Which of the following antibodies is the most specific for her condition?",
+      "topic": "Internal Medicine",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Antinuclear antibody (ANA)",
+          "correct": false,
+          "rationale": "ANA is sensitive (>95%) but not specific for SLE."
+        },
+        {
+          "text": "Anti-Smith antibody",
+          "correct": true,
+          "rationale": "Anti-dsDNA and Anti-Smith are the most specific antibodies for Systemic Lupus Erythematosus."
+        },
+        {
+          "text": "Anti-Ro antibody",
+          "correct": false,
+          "rationale": "Associated with Sjögren's syndrome and neonatal lupus."
+        },
+        {
+          "text": "Rheumatoid Factor",
+          "correct": false,
+          "rationale": "Associated with RA."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Anti-dsDNA and Anti-Smith are the most specific antibodies for Systemic Lupus Erythematosus.",
+      "scfhs_domain": "Internal Medicine",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776099439,
+        "_nanoseconds": 38000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "A patient's face showing the characteristic erythematous malar rash, often described as a 'butterfly' rash, across the cheeks and bridge of the nose.",
+        "search_queries": [
+          "systemic lupus erythematosus malar rash",
+          "lupus butterfly rash face",
+          "SLE facial erythema",
+          "malar rash clinical photo"
+        ],
+        "confidence": 0.9,
+        "model": "gemini-2.5-flash",
+        "rationale": "The stem describes a 'butterfly' rash, which is a hallmark clinical sign of Systemic Lupus Erythematosus, making a clinical photo of this rash highly relevant.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "histology",
+          "diagram",
+          "chart",
+          "cartoon"
+        ]
+      },
+      "image_search_no_result": false,
+      "image_verified": false,
+      "tags": [
+        "internal-medicine",
+        "easy",
+        "2024-2025",
+        "dermatology",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_reference": false
+    },
+    {
+      "id": "a-40yearold-male-believes-that-he-has-special-powers-to-control-the",
+      "question": "A 40-year-old male believes that he has special powers to control the weather. This has been present for 2 weeks. What is the diagnosis?",
+      "topic": "Psychiatry",
+      "difficulty": "Moderate",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Brief Psychotic Disorder",
+          "correct": true,
+          "rationale": "Psychotic symptoms (grandiosity) lasting < 1 month."
+        },
+        {
+          "text": "Schizophrenia",
+          "correct": false,
+          "rationale": "Requires 6 months."
+        },
+        {
+          "text": "Schizophreniform",
+          "correct": false,
+          "rationale": "Requires 1-6 months."
+        },
+        {
+          "text": "Bipolar Disorder",
+          "correct": false,
+          "rationale": "Requires a mood cycle."
+        }
+      ],
+      "correct_answer": "A",
+      "rationale": "Psychotic symptoms (grandiosity) lasting < 1 month.",
+      "scfhs_domain": "Internal Medicine – Psychiatry",
+      "tags": [
+        "psychiatry",
+        "internal-medicine",
+        "moderate",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-40yearold-male-presents-with-a-stabbing-facial-pain-that-lasts-f",
+      "question": "A 40-year-old male presents with a 'stabbing' facial pain that lasts for 2 seconds, triggered by cold wind. What is the first-line medication?",
+      "topic": "Surgery",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Paracetamol",
+          "correct": false,
+          "rationale": "Ineffective for neuropathic pain."
+        },
+        {
+          "text": "Carbamazepine",
+          "correct": true,
+          "rationale": "Gold standard first-line for Trigeminal Neuralgia."
+        },
+        {
+          "text": "Prednisolone",
+          "correct": false,
+          "rationale": "For Bell's palsy."
+        },
+        {
+          "text": "Sumatriptan",
+          "correct": false,
+          "rationale": "For migraines."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Gold standard first-line for Trigeminal Neuralgia.",
+      "scfhs_domain": "Surgery",
+      "tags": [
+        "surgery",
+        "easy",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": "a-40yearold-male-with-chronic-back-pain-and-stiffness-is-found-to-ha",
+      "question": "A 40-year-old male with chronic back pain and stiffness is found to have 'bamboo spine' on X-ray. Which of the following is the most likely genetic marker?",
+      "topic": "Rheumatology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "HLA-DR4",
+          "correct": false,
+          "rationale": "Associated with RA."
+        },
+        {
+          "text": "HLA-B27",
+          "correct": true,
+          "rationale": "HLA-B27 is associated with over 90% of cases of Ankylosing Spondylitis (Bamboo spine)."
+        },
+        {
+          "text": "HLA-DQ8",
+          "correct": false,
+          "rationale": "Associated with Type 1 Diabetes and Celiac."
+        },
+        {
+          "text": "HLA-B51",
+          "correct": false,
+          "rationale": "Associated with Behçet's disease."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "HLA-B27 is associated with over 90% of cases of Ankylosing Spondylitis (Bamboo spine).",
+      "scfhs_domain": "Internal Medicine – Rheumatology",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776100717,
+        "_nanoseconds": 979000000
+      },
+      "ai_image_plan": {
+        "confidence": 0.9,
+        "model": "gemini-2.5-flash",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "modality": "ct_mri",
+        "visual_summary": "A lateral X-ray of the lumbar and thoracic spine showing vertebral body fusion and syndesmophytes, characteristic of 'bamboo spine' in ankylosing spondylitis.",
+        "search_queries": [
+          "ankylosing spondylitis bamboo spine x-ray",
+          "spinal syndesmophytes radiography",
+          "vertebral fusion ankylosing spondylitis",
+          "bamboo spine plain film"
+        ],
+        "rationale": "The stem explicitly mentions 'bamboo spine' on X-ray, which is the pathognomonic radiological finding for ankylosing spondylitis. A spinal X-ray clearly depicting this finding is the most relevant and educational visual.",
+        "must_avoid": [
+          "histology",
+          "microscopy",
+          "clinical photo",
+          "diagram"
+        ]
+      },
+      "image_search_no_result": false,
+      "image_verified": false,
+      "tags": [
+        "rheumatology",
+        "internal-medicine",
+        "easy",
+        "2024-2025",
+        "radiology",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_reference": false
+    },
+    {
+      "id": "a-4yearold-child-has-a-white-reflex-leukocoria-urgent-diagnosis",
+      "question": "A 4-year-old child has a 'white reflex' (leukocoria). Urgent diagnosis to rule out?",
+      "topic": "Pediatrics",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Cataract",
+          "correct": false,
+          "rationale": "Common but not a tumor."
+        },
+        {
+          "text": "Retinoblastoma",
+          "correct": true,
+          "rationale": "Life-threatening intraocular malignancy."
+        },
+        {
+          "text": "Uveitis",
+          "correct": false,
+          "rationale": "Pain/redness."
+        },
+        {
+          "text": "Glaucoma",
+          "correct": false,
+          "rationale": "Large eye."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Life-threatening intraocular malignancy.",
+      "scfhs_domain": "Pediatrics",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776101132,
+        "_nanoseconds": 93000000
+      },
+      "ai_image_plan": {
+        "modality": "clinical_photo",
+        "visual_summary": "A close-up clinical photo of a child's eye demonstrating a 'white reflex' (leukocoria) in the pupil.",
+        "search_queries": [
+          "leukocoria child eye",
+          "white pupillary reflex infant",
+          "retinoblastoma clinical photo eye",
+          "child retinoblastoma pupil"
+        ],
+        "confidence": 0.95,
+        "model": "gemini-2.5-flash",
+        "rationale": "To visually represent leukocoria, the key clinical sign for retinoblastoma in children, as described in the stem.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "histology",
+          "microscopy",
+          "pathology",
+          "diagram",
+          "chart",
+          "surgery",
+          "MRI",
+          "CT",
+          "ultrasound"
+        ]
+      },
+      "image_search_no_result": false,
+      "image_verified": false,
+      "tags": [
+        "pediatrics",
+        "easy",
+        "2024-2025",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_reference": false
+    },
+    {
+      "id": "a-50yearold-male-smoker-with-high-blood-pressure-presents-with-acute",
+      "question": "A 50-year-old male smoker with high blood pressure presents with acute, severe abdominal pain and a pulsatile mass in the midline. He is hypotensive. What is the diagnosis?",
+      "topic": "Surgery",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "options": [
+        {
+          "text": "Ruptured Abdominal Aortic Aneurysm (AAA)",
+          "correct": true,
+          "rationale": "The triad of pain, hypotension, and a pulsatile mass in an elderly hypertensive smoker is pathognomonic for a ruptured AAA."
+        },
+        {
+          "text": "Acute Pancreatitis",
+          "correct": false,
+          "rationale": "No pulsatile mass."
+        },
+        {
+          "text": "Renal Colic",
+          "correct": false,
+          "rationale": "Causes severe flank pain but not hypotension or a pulsatile mass."
+        },
+        {
+          "text": "Perforated Peptic Ulcer",
+          "correct": false,
+          "rationale": "Causes peritonitis but not a pulsatile mass."
+        }
+      ],
+      "correct_answer": "A",
+      "rationale": "The triad of pain, hypotension, and a pulsatile mass in an elderly hypertensive smoker is pathognomonic for a ruptured AAA.",
+      "scfhs_domain": "Surgery",
+      "ai_image_plan_updated_at": {
+        "_seconds": 1776101607,
+        "_nanoseconds": 333000000
+      },
+      "ai_image_plan": {
+        "modality": "ct_mri",
+        "visual_summary": "A CT scan of the abdomen showing a large abdominal aortic aneurysm with evidence of retroperitoneal hemorrhage, indicative of rupture.",
+        "search_queries": [
+          "abdominal aortic aneurysm rupture CT scan",
+          "ruptured AAA CT retroperitoneal hematoma",
+          "aortic aneurysm bleeding CT"
+        ],
+        "confidence": 0.95,
+        "model": "gemini-2.5-flash",
+        "rationale": "A CT scan clearly demonstrates the anatomical findings of a ruptured AAA, including the aneurysm and the associated hemorrhage, which is key for diagnosis.",
+        "skip_auto_image": false,
+        "skip_reason": "",
+        "must_avoid": [
+          "diagram",
+          "schematic",
+          "ultrasound",
+          "angiography"
+        ]
+      },
+      "image_search_no_result": false,
+      "image_verified": false,
+      "tags": [
+        "surgery",
+        "easy",
+        "2024-2025",
+        "has-image"
+      ],
+      "image_search_query": null,
+      "image_url": null,
+      "image_attached_at": null,
+      "image_source": null,
+      "image_reference": false
+    },
+    {
+      "id": "a-50yearold-woman-presents-with-dry-eyes-and-dry-mouth-which-antibo",
+      "question": "A 50-year-old woman presents with dry eyes and dry mouth. Which antibody is most associated with this condition?",
+      "topic": "Rheumatology",
+      "difficulty": "Easy",
+      "year": "2024-2025",
+      "image_reference": false,
+      "options": [
+        {
+          "text": "Anti-dsDNA",
+          "correct": false,
+          "rationale": "Specific for SLE."
+        },
+        {
+          "text": "Anti-Ro (SSA)",
+          "correct": true,
+          "rationale": "Anti-Ro and Anti-La are the diagnostic hallmarks of Sjögren's Syndrome."
+        },
+        {
+          "text": "Anti-Scl70",
+          "correct": false,
+          "rationale": "Specific for diffuse Scleroderma."
+        },
+        {
+          "text": "Anti-Jo1",
+          "correct": false,
+          "rationale": "Associated with Dermatomyositis/Polymyositis."
+        }
+      ],
+      "correct_answer": "B",
+      "rationale": "Anti-Ro and Anti-La are the diagnostic hallmarks of Sjögren's Syndrome.",
+      "scfhs_domain": "Internal Medicine – Rheumatology",
+      "tags": [
+        "rheumatology",
+        "internal-medicine",
+        "easy",
+        "2024-2025"
+      ]
+    }
+  ]
+}

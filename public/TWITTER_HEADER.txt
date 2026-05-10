@@ -1,0 +1,11 @@
+X (Twitter) profile / header banner
+====================================
+
+Files (after deploy, download from your site):
+  twitter-header-banner.png  — 1500 x 500 px (recommended X header size)
+  twitter-header-banner.svg  — edit this, then run: npm run export-twitter-header
+
+Upload: X / Settings / Profile / Header / Edit / Upload photo
+
+Tip: X crops a lot on mobile. Important text is kept in the center-left band;
+preview on phone before saving.

@@ -1,0 +1,332 @@
+[
+  {
+    "question": "A 58-year-old male presents with crushing chest pain radiating to his left arm. ECG shows ST elevation in leads V1-V4. Troponin I is 12 ng/mL. He is hemodynamically stable. What is the most appropriate immediate management?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Cardiology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Thrombolysis with streptokinase",
+        "correct": false,
+        "rationale": "Thrombolysis is reserved when primary PCI cannot be performed within 120 minutes. This patient is in a center with cath lab capability (implied by stable presentation), so primary PCI is preferred."
+      },
+      {
+        "text": "Primary PCI within 90 minutes",
+        "correct": true,
+        "rationale": "Per 2023 ESC guidelines, primary PCI is the reperfusion strategy of choice for STEMI when door-to-balloon time is <90 minutes. This anterior STEMI (V1-V4) has high mortality benefit from rapid revascularization."
+      },
+      {
+        "text": "Aspirin and clopidogrel only, observe for 24 hours",
+        "correct": false,
+        "rationale": "Dual antiplatelet therapy alone is insufficient for STEMI. This approach risks recurrent MI, cardiogenic shock, or death from ongoing coronary occlusion."
+      },
+      {
+        "text": "Beta-blocker IV and morphine, defer intervention",
+        "correct": false,
+        "rationale": "While beta-blockers and pain relief are adjunctive, they do not reperfuse the occluded LAD. Time is myocardium in STEMI — intervention must not be delayed."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Anterior STEMI with elevated troponin requires emergent reperfusion. Primary PCI is superior to thrombolysis when available within 90 minutes.",
+    "tags": ["internal-medicine", "cardiology", "hard", "2024-2025", "STEMI", "PCI"]
+  },
+  {
+    "question": "A 45-year-old female with type 2 diabetes presents with dyspnea on exertion. Echo shows EF 35% with regional wall motion abnormalities. HbA1c is 9.2%. Which medication should be added to her regimen to reduce heart failure hospitalization?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Cardiology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Pioglitazone",
+        "correct": false,
+        "rationale": "Pioglitazone causes fluid retention and is contraindicated in heart failure (NYHA Class III-IV). It can worsen edema and precipitate decompensation."
+      },
+      {
+        "text": "SGLT2 inhibitor (dapagliflozin)",
+        "correct": true,
+        "rationale": "DAPA-HF and DELIVER trials demonstrated SGLT2 inhibitors reduce HF hospitalization and cardiovascular death in HFrEF regardless of diabetes status. Also improves glycemic control."
+      },
+      {
+        "text": "Nifedipine",
+        "correct": false,
+        "rationale": "Dihydropyridine calcium channel blockers lack mortality benefit in heart failure and may worsen edema. They are not part of guideline-directed medical therapy (GDMT) for HFrEF."
+      },
+      {
+        "text": "Digoxin",
+        "correct": false,
+        "rationale": "Digoxin reduces HF hospitalization but does not improve mortality. It is reserved for symptomatic patients despite GDMT or with atrial fibrillation, not first-line."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "SGLT2 inhibitors are now foundational GDMT for HFrEF (Class I recommendation) alongside ACEi/ARB, beta-blockers, and MRAs. They also address her poorly controlled diabetes.",
+    "tags": ["internal-medicine", "cardiology", "hard", "2024-2025", "heart-failure", "SGLT2"]
+  },
+  {
+    "question": "A 62-year-old male with atrial fibrillation on warfarin (INR 2.5) presents with acute flank pain and hematuria. CT shows a 5 mm obstructing ureteral stone. His creatinine is 1.8 mg/dL. What is the next best step?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Nephrology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Immediate ureteroscopy and stone extraction",
+        "correct": false,
+        "rationale": "Intervention on anticoagulation carries high bleeding risk. INR should be normalized first unless there is infection or complete anuria — neither is present here."
+      },
+      {
+        "text": "Reverse warfarin with vitamin K and perform urgent intervention",
+        "correct": false,
+        "rationale": "While reversal may be needed for surgery, a 5 mm stone has a high spontaneous passage rate. Urgent intervention is not indicated in a stable patient without infection."
+      },
+      {
+        "text": "IV fluids, analgesia, and observation for spontaneous passage",
+        "correct": true,
+        "rationale": "Stones <5-6 mm pass spontaneously in ~70% of cases. With controlled pain, no infection, and only moderate AKI, conservative management is appropriate per AUA guidelines."
+      },
+      {
+        "text": "Extracorporeal shock wave lithotripsy (ESWL) immediately",
+        "correct": false,
+        "rationale": "ESWL is contraindicated while anticoagulated due to retroperitoneal hemorrhage risk. Additionally, ESWL is less effective for ureteral stones and unnecessary for a stone likely to pass."
+      }
+    ],
+    "correct_answer": "C",
+    "rationale": "Small ureteral stones in hemodynamically stable patients without infection are managed conservatively. Anticoagulation complicates any invasive approach.",
+    "tags": ["internal-medicine", "nephrology", "hard", "2024-2025", "nephrolithiasis", "urology"]
+  },
+  {
+    "question": "A 28-year-old female presents with fatigue, joint pain in her hands, and a malar rash. ANA is positive (1:640, speckled). Anti-dsDNA is positive. C3 is low. What is the most specific test to confirm her diagnosis?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Rheumatology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Anti-Smith (Anti-Sm) antibodies",
+        "correct": true,
+        "rationale": "Anti-Smith antibodies are highly specific (>95%) for systemic lupus erythematosus (SLE), though only present in ~30% of patients. In this classic presentation, a positive Anti-Sm essentially confirms SLE."
+      },
+      {
+        "text": "Anti-Ro/SSA antibodies",
+        "correct": false,
+        "rationale": "Anti-Ro is associated with neonatal lupus and Sjögren syndrome. While common in SLE, it is not specific and is also found in other autoimmune diseases."
+      },
+      {
+        "text": "Rheumatoid factor (RF)",
+        "correct": false,
+        "rationale": "RF is characteristic of rheumatoid arthritis, not SLE. The malar rash and positive anti-dsDNA make RA an unlikely diagnosis."
+      },
+      {
+        "text": "HLA-B27 testing",
+        "correct": false,
+        "rationale": "HLA-B27 is associated with spondyloarthropathies (ankylosing spondylitis, reactive arthritis). It has no role in SLE diagnosis and would be an inappropriate test here."
+      }
+    ],
+    "correct_answer": "A",
+    "rationale": "This is classic SLE (malar rash, arthritis, positive ANA, anti-dsDNA, low complement). Anti-Smith is the most specific serologic marker for SLE.",
+    "tags": ["internal-medicine", "rheumatology", "moderate", "2024-2025", "SLE", "autoimmune"]
+  },
+  {
+    "question": "A 55-year-old male with COPD (FEV1 45% predicted) presents with increased dyspnea and purulent sputum. He is on LABA/ICS. Exam: RR 24, no confusion. ABG: pH 7.38, PaCO2 52, PaO2 58 on room air. What is the appropriate oxygen target?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Pulmonology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "High-flow oxygen to achieve SpO2 94-98%",
+        "correct": false,
+        "rationale": "High-flow oxygen in chronic CO2 retainers suppresses hypoxic drive, causing CO2 narcosis and respiratory acidosis. This patient already has elevated PaCO2 (52)."
+      },
+      {
+        "text": "Controlled oxygen at 1-2 L/min via nasal cannula, target SpO2 88-92%",
+        "correct": true,
+        "rationale": "Per BTS guidelines, COPD patients with chronic hypercapnia should receive controlled low-flow oxygen (24-28%) with a target SpO2 of 88-92%. This avoids CO2 retention while correcting hypoxemia."
+      },
+      {
+        "text": "Non-invasive ventilation (BiPAP) immediately",
+        "correct": false,
+        "rationale": "NIV is indicated for acute hypercapnic respiratory failure with acidosis (pH <7.35). This patient's pH is 7.38 — compensated, not decompensated. NIV is premature."
+      },
+      {
+        "text": "Room air only; oxygen is contraindicated in hypercapnia",
+        "correct": false,
+        "rationale": "Oxygen is not contraindicated — it is essential to correct hypoxemia (PaO2 58). The key is controlled titration, not withholding oxygen entirely."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Acute COPD exacerbation with chronic CO2 retention requires controlled oxygen. Target SpO2 88-92% prevents hypoxic drive suppression while treating hypoxemia.",
+    "tags": ["internal-medicine", "pulmonology", "hard", "2024-2025", "COPD", "oxygen"]
+  },
+  {
+    "question": "A 48-year-old male with cirrhosis presents with confusion and asterixis. Ammonia is elevated. He had a similar episode 2 months ago precipitated by constipation. What is the most effective long-term preventive strategy?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Gastroenterology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Daily lactulose titrated to 2-3 soft bowel movements daily",
+        "correct": true,
+        "rationale": "Lactulose is first-line prophylaxis for recurrent hepatic encephalopathy. It acidifies the colonic lumen, trapping ammonia as ammonium and promoting its excretion. Titration to 2-3 BMs prevents constipation-related recurrence."
+      },
+      {
+        "text": "Rifaximin alone without lactulose",
+        "correct": false,
+        "rationale": "While rifaximin reduces HE recurrence, guidelines recommend it as ADD-ON to lactulose, not monotherapy. It is less effective alone for patients whose trigger is constipation."
+      },
+      {
+        "text": "Protein restriction to <40g/day",
+        "correct": false,
+        "rationale": "Protein restriction is no longer recommended in cirrhosis. It worsens sarcopenia and does not effectively reduce ammonia. Small, frequent protein meals are preferred."
+      },
+      {
+        "text": "Neomycin orally for gut decontamination",
+        "correct": false,
+        "rationale": "Neomycin is rarely used due to ototoxicity and nephrotoxicity. Rifaximin has replaced it as the non-absorbable antibiotic of choice in HE."
+      }
+    ],
+    "correct_answer": "A",
+    "rationale": "Recurrent HE precipitated by constipation is best prevented with lactulose titrated to ensure regular bowel movements. Rifaximin is added for breakthrough episodes.",
+    "tags": ["internal-medicine", "gastroenterology", "hard", "2024-2025", "cirrhosis", "hepatic-encephalopathy"]
+  },
+  {
+    "question": "A 35-year-old female presents with palpitations and heat intolerance. TSH is 0.01 mIU/L, free T4 is elevated. She has a 2 cm smooth thyroid nodule. What is the next best step in management?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Endocrinology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Start methimazole immediately",
+        "correct": false,
+        "rationale": "While methimazole treats hyperthyroidism, a thyroid nodule in a patient with hyperthyroidism raises concern for toxic adenoma or toxic multinodular goiter. Tissue diagnosis should be considered before long-term medical therapy."
+      },
+      {
+        "text": "Thyroid uptake scan and radionuclide imaging",
+        "correct": true,
+        "rationale": "A thyroid uptake scan distinguishes Graves disease (diffuse uptake) from toxic adenoma (focal uptake) or thyroiditis (low uptake). This determines whether RAI, surgery, or ATDs are appropriate."
+      },
+      {
+        "text": "Fine needle aspiration (FNA) of the nodule immediately",
+        "correct": false,
+        "rationale": "FNA is used for suspicious nodules in euthyroid patients. In hyperthyroidism, functional assessment (uptake scan) takes precedence. A hyperfunctioning ('hot') nodule is rarely malignant."
+      },
+      {
+        "text": "Total thyroidectomy",
+        "correct": false,
+        "rationale": "Surgery is definitive treatment for large goiters or suspicious nodules, but is not first-line without determining etiology. RAI is preferred for Graves disease; surgery for toxic nodules."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Thyroid uptake scan is essential to differentiate Graves disease from toxic adenoma or thyroiditis. This guides definitive therapy selection.",
+    "tags": ["internal-medicine", "endocrinology", "moderate", "2024-2025", "hyperthyroidism", "thyroid-nodule"]
+  },
+  {
+    "question": "A 68-year-old male with CKD stage 4 (eGFR 28) presents with Hb 8.2 g/dL, MCV 88 fL. Ferritin is 120 ng/mL, TSAT 18%. What is the most appropriate initial treatment?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Nephrology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Oral ferrous sulfate 325 mg daily",
+        "correct": false,
+        "rationale": "Oral iron is poorly absorbed in CKD due to elevated hepcidin and is often insufficient for anemia of CKD. KDIGO guidelines recommend IV iron when TSAT ≤20% and ferritin ≤500."
+      },
+      {
+        "text": "IV iron sucrose supplementation",
+        "correct": true,
+        "rationale": "KDIGO 2012 guidelines recommend IV iron for CKD patients with TSAT ≤20% and ferritin ≤500 ng/mL, especially when not on ESA therapy. This patient meets criteria for functional iron deficiency despite normal ferritin."
+      },
+      {
+        "text": "Erythropoietin stimulating agent (ESA) alone",
+        "correct": false,
+        "rationale": "ESA therapy without iron repletion is ineffective. Iron must be replete before or concurrently with ESA initiation. Starting ESA first risks functional iron deficiency worsening."
+      },
+      {
+        "text": "Blood transfusion with 2 units packed RBCs",
+        "correct": false,
+        "rationale": "Transfusion is reserved for acute symptomatic anemia (Hb <7) or hemodynamic instability. This patient is stable with chronic anemia. Transfusion risks iron overload and alloimmunization."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Anemia of CKD with low TSAT (18%) indicates functional iron deficiency despite normal ferritin. IV iron is first-line per KDIGO guidelines before considering ESA.",
+    "tags": ["internal-medicine", "nephrology", "hard", "2024-2025", "CKD", "anemia"]
+  },
+  {
+    "question": "A 42-year-old female presents with progressive dyspnea, dry cough, and fatigue over 3 months. CT chest shows bilateral ground-glass opacities with traction bronchiectasis. Autoimmune workup is negative. What is the most likely diagnosis?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Pulmonology",
+    "difficulty": "Hard",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Acute eosinophilic pneumonia",
+        "correct": false,
+        "rationale": "AEP presents acutely (days) with fever, hypoxemia, and diffuse infiltrates. It often has peripheral eosinophilia. This subacute course over 3 months with fibrotic features makes AEP unlikely."
+      },
+      {
+        "text": "Nonspecific interstitial pneumonia (NSIP)",
+        "correct": true,
+        "rationale": "NSIP presents with subacute dyspnea, ground-glass opacities, and traction bronchiectasis on HRCT. It is the most common idiopathic interstitial pneumonia in women aged 40-50 and often has a better prognosis than UIP."
+      },
+      {
+        "text": "Sarcoidosis",
+        "correct": false,
+        "rationale": "Sarcoidosis typically shows perilymphatic nodules, hilar lymphadenopathy, and upper lobe predominance. Bilateral ground-glass with traction bronchiectasis is not the typical radiographic pattern."
+      },
+      {
+        "text": "Lymphangioleiomyomatosis (LAM)",
+        "correct": false,
+        "rationale": "LAM occurs in women of childbearing age and presents with thin-walled cysts throughout the lungs, not ground-glass opacities. It is associated with tuberous sclerosis or occurs sporadically."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Subacute presentation with ground-glass and traction bronchiectasis in a middle-aged woman is classic for NSIP, the second most common idiopathic interstitial pneumonia.",
+    "tags": ["internal-medicine", "pulmonology", "hard", "2024-2025", "ILD", "NSIP"]
+  },
+  {
+    "question": "A 50-year-old male with hypertension presents with sudden severe tearing chest pain radiating to the back. BP is 180/110 in the right arm, 140/90 in the left. What is the most appropriate initial imaging study?",
+    "topic": "Internal Medicine",
+    "scfhs_domain": "Internal Medicine – Cardiology",
+    "difficulty": "Moderate",
+    "year": "2024-2025",
+    "image_reference": false,
+    "options": [
+      {
+        "text": "Transthoracic echocardiogram (TTE)",
+        "correct": false,
+        "rationale": "TTE can visualize the aortic root and proximal ascending aorta but has poor visualization of the descending aorta and arch. It is insufficient as the sole imaging study for suspected dissection."
+      },
+      {
+        "text": "CT angiography (CTA) of the chest, abdomen, and pelvis",
+        "correct": true,
+        "rationale": "CTA is the first-line imaging for suspected aortic dissection. It visualizes the entire aorta, identifies the intimal flap, true and false lumens, and branch vessel involvement. Sensitivity and specificity >95%."
+      },
+      {
+        "text": "Chest X-ray",
+        "correct": false,
+        "rationale": "While CXR may show mediastinal widening or pleural effusion, it is neither sensitive nor specific for dissection. A normal CXR does not exclude dissection. It should not delay definitive imaging."
+      },
+      {
+        "text": "Magnetic resonance angiography (MRA)",
+        "correct": false,
+        "rationale": "MRA has excellent sensitivity for dissection but is time-consuming and less available in emergency settings. It is reserved for patients with contrast allergy or when CTA is inconclusive."
+      }
+    ],
+    "correct_answer": "B",
+    "rationale": "Tearing chest pain with blood pressure differential is classic for aortic dissection. CTA of chest/abdomen/pelvis is the initial imaging study of choice with >95% accuracy.",
+    "tags": ["internal-medicine", "cardiology", "moderate", "2024-2025", "aortic-dissection", "emergency"]
+  }
+]

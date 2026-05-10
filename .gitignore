@@ -1,0 +1,20 @@
+
+# Local environment variables
+.env.local
+node_modules
+dist
+
+# Firebase secrets — NEVER commit these
+firebase-service-account.json
+*.json.key
+.firebase/
+
+# Full-project archive backups (tar.gz in repo root /backups)
+/backups/
+
+# Local loop logs (attach-images-loop.mjs)
+/logs/
+
+# Personal Obsidian vault (hybrid approach)
+personal-notes/
+.obsidian/
