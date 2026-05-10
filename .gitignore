@@ -18,3 +18,7 @@ firebase-service-account.json
 # Personal Obsidian vault (hybrid approach)
 personal-notes/
 .obsidian/
+
+# Large binaries
+*.deb
+*.exe
