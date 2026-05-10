@@ -1,6 +1,5 @@
 import { navigateTo, state, auth } from './app.js';
 import { signOut } from 'firebase/auth';
-import { getFunctions, httpsCallable } from 'firebase/functions';
 import { initializeThemeSwitch } from './theme.js';
 
 export function renderPricingPage(rootElement) {
@@ -172,15 +171,16 @@ export function renderPricingPage(rootElement) {
               </div>
             </div>
 
-            <!-- Test Drive -->
-            <div class="mt-12 max-w-lg mx-auto text-center">
-                <div class="p-6 bg-emerald-900/10 dark:bg-emerald-900/20 border border-emerald-500/30 rounded-2xl">
-                    <h3 class="text-lg font-bold text-emerald-600 dark:text-emerald-400">Try Pro Free for 5 Minutes</h3>
-                    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Get full Pro access instantly. No credit card needed.</p>
-                    <button id="test-drive-btn" class="mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-8 rounded-xl transition-all">
-                        Start Test Drive
+            <!-- 1 SAR Trial -->
+            <div class="mt-12 max-w-lg mx-auto">
+                <div class="p-5 bg-amber-900/10 dark:bg-amber-900/20 border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-amber-600 dark:text-amber-400">Try Pro — 1 SAR for 1 Hour</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Full Pro access. Test with a real payment. No commitment.</p>
+                    </div>
+                    <button class="upgrade-trial-btn w-full sm:w-auto bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-xl transition-all whitespace-nowrap">
+                        1 SAR — Start Trial
                     </button>
-                    <p id="test-drive-msg" class="mt-3 text-xs text-slate-400 hidden"></p>
                 </div>
             </div>
 
@@ -232,31 +232,11 @@ export function renderPricingPage(rootElement) {
         });
     });
 
-    document.getElementById('test-drive-btn').addEventListener('click', async () => {
-        const btn = document.getElementById('test-drive-btn');
-        const msg = document.getElementById('test-drive-msg');
-        btn.disabled = true;
-        btn.textContent = 'Activating...';
-        msg.classList.add('hidden');
-
-        try {
-            if (!auth.currentUser) {
-                navigateTo('login');
-                return;
-            }
-            const functions = getFunctions();
-            const grantTestDrive = httpsCallable(functions, 'grantTestProDrive');
-            const result = await grantTestDrive();
-            msg.textContent = result.data.message + ' Redirecting to dashboard...';
-            msg.className = 'mt-3 text-xs text-emerald-400';
-            msg.classList.remove('hidden');
-            setTimeout(() => navigateTo('dashboard'), 1500);
-        } catch (err) {
-            msg.textContent = err.message || 'Could not start Test Drive. Try again later.';
-            msg.className = 'mt-3 text-xs text-red-400';
-            msg.classList.remove('hidden');
-            btn.disabled = false;
-            btn.textContent = 'Start Test Drive';
+    document.querySelector('.upgrade-trial-btn').addEventListener('click', () => {
+        if (!state.user || state.user.isAnonymous) {
+            navigateTo('login');
+        } else {
+            window.location.href = '/checkout.html?plan=1+Hour+Trial&amount=100';
         }
     });
 
