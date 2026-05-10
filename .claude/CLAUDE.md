@@ -1,5 +1,15 @@
 # SMLE Pro - Medical Education Platform
 
+## Critical: How to Work With Me
+I am a medical student, not a professional coder. I "vibe code" — I describe what I want and the AI builds it. Previous AI tools (Cline) kept missing my intention, giving terrible output, and wasting hours. To prevent that:
+
+1. **Before writing ANY code, restate what you think I want and ask 2-3 clarifying questions.** Never assume you understand my intent from a vague description.
+2. **Show a short plan first** — outline the files you'll change, what each change does, and ask "does this match what you want?"
+3. **Keep changes small and focused** — one feature at a time. No massive refactors.
+4. **Explain what you're doing in simple terms** — no jargon overload. If you mention a concept, give a 1-line plain-English explanation.
+5. **If a task is complex, suggest breaking it into smaller steps** and let me approve each one.
+6. **Before deploying**, confirm with me. Never push to production without asking.
+
 ## Commands
 
 ```bash
