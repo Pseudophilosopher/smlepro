@@ -3,8 +3,6 @@ const { defineSecret } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 
-admin.initializeApp();
-
 const db = admin.firestore();
 const moyasarSecretKey = defineSecret("MOYASAR_SECRET_KEY");
 

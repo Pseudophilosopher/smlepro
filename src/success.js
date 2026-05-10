@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     // Auto-redirect to dashboard after 2 seconds
                     setTimeout(() => {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = '/';
                     }, 2000);
                     
                     if(dashboardBtn) {

@@ -472,7 +472,7 @@ async function loadPerformanceHistory() {
     try {
         const perfCol = collection(firestore, `users/${state.user.uid}/performance`);
         // We order by Date string since sometimes serverTimestamp is pending
-        const q = query(perfCol, orderBy("date", "asc"));
+        const q = query(perfCol, orderBy("date", "desc"));
         const snapshot = await getDocs(q);
         
         if (!snapshot.empty) {
