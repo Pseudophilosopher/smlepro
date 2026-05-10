@@ -1399,3 +1399,32 @@ exports.generateSocialCard = generateSocialCard;
 // Moyasar payment webhook handler (defined in webhook-handler.js)
 exports.moyasarWebhook = moyasarWebhook;
 
+/**
+ * Admin: Revoke Pro from any user by email. Call from browser console.
+ */
+exports.adminRevokePro = onCall({ region: "us-central1" }, async (request) => {
+  if (request.auth?.token?.email !== ADMIN_OPERATOR_EMAIL) {
+    throw new HttpsError("permission-denied", "Admin only.");
+  }
+  const raw = typeof request.data?.email === "string" ? request.data.email.trim().toLowerCase() : "";
+  if (!raw) throw new HttpsError("invalid-argument", "Email required.");
+  let targetUser;
+  try {
+    targetUser = await admin.auth().getUserByEmail(raw);
+  } catch (e) {
+    throw new HttpsError("not-found", "No account with that email.");
+  }
+  const uid = targetUser.uid;
+  await db.collection("users").doc(uid).set({
+    isPremium: false,
+    proExpiresAt: null,
+    upgradedAt: null,
+    upgradeSource: null,
+    moyasarPaymentId: null,
+    complimentaryPro: false,
+    testPlan: false,
+  }, { merge: true });
+  await admin.auth().setCustomUserClaims(uid, { isPro: false });
+  return { ok: true, uid, email: raw };
+});
+

@@ -236,7 +236,7 @@ export function renderPricingPage(rootElement) {
         if (!state.user || state.user.isAnonymous) {
             navigateTo('login');
         } else {
-            window.location.href = '/checkout.html?plan=1+Hour+Trial&amount=100';
+            window.location.href = '/checkout.html?plan=1+Hour+Trial&amount=1';
         }
     });
 
