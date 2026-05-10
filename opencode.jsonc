@@ -15,11 +15,10 @@
     },
 
     // Firecrawl: web scraping for medical research, competitor analysis
-    // Get an API key at https://firecrawl.dev
     "firecrawl": {
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-firecrawl"],
-      "enabled": false,
+      "enabled": true,
       "environment": {
         "FIRECRAWL_API_KEY": "{env:FIRECRAWL_API_KEY}"
       }
@@ -66,9 +65,9 @@
   // ============================================
   // Tools — enable/disable specific tools
   // ============================================
-  "tools": {
+    "tools": {
     "sequential-thinking_*": true,
-    "firecrawl_*": false,
+    "firecrawl_*": true,
     "playwright_*": false
   }
 }
