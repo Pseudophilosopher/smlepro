@@ -1399,3 +1399,64 @@ exports.generateSocialCard = generateSocialCard;
 // Moyasar payment webhook handler (defined in webhook-handler.js)
 exports.moyasarWebhook = moyasarWebhook;
 
+/**
+ * Grant a 5-minute Test Drive of Pro features.
+ * Any logged-in user can call this once per 24 hours.
+ */
+exports.grantTestProDrive = onCall({ region: "us-central1" }, async (request) => {
+  if (!request.auth?.uid) {
+    throw new HttpsError("unauthenticated", "Sign in required.");
+  }
+
+  const uid = request.auth.uid;
+  const userRef = db.collection("users").doc(uid);
+  const now = admin.firestore.Timestamp.now();
+
+  const userDoc = await userRef.get();
+  const userData = userDoc.data() || {};
+
+  // If already has active Pro (not expired), reject
+  if (userData.isPremium) {
+    if (!userData.proExpiresAt) {
+      throw new HttpsError("failed-precondition", "You already have lifetime Pro access.");
+    }
+    if (userData.proExpiresAt.toMillis() > now.toMillis()) {
+      throw new HttpsError("failed-precondition", "You already have active Pro access.");
+    }
+  }
+
+  // Rate limit: once per 24 hours
+  if (userData.testDriveUsedAt) {
+    const lastUsed = userData.testDriveUsedAt.toMillis();
+    const hoursSince = (now.toMillis() - lastUsed) / (1000 * 60 * 60);
+    if (hoursSince < 24) {
+      const nextAvailable = new Date(lastUsed + 24 * 60 * 60 * 1000);
+      throw new HttpsError(
+        "failed-precondition",
+        `Test Drive already used. Next available: ${nextAvailable.toLocaleString()}`
+      );
+    }
+  }
+
+  // Grant 5 minutes of Pro
+  const expiresAt = admin.firestore.Timestamp.fromDate(new Date(Date.now() + 5 * 60 * 1000));
+
+  await userRef.set({
+    isPremium: true,
+    proExpiresAt: expiresAt,
+    upgradedAt: now,
+    upgradeSource: "test-drive",
+    testDriveUsedAt: now,
+  }, { merge: true });
+
+  await admin.auth().setCustomUserClaims(uid, { isPro: true });
+
+  logger.info("Test Drive Pro granted", { uid, expiresAt: expiresAt.toDate().toISOString() });
+
+  return {
+    ok: true,
+    expiresAt: expiresAt.toDate().toISOString(),
+    message: "You now have 5 minutes of Pro access. Enjoy!"
+  };
+});
+

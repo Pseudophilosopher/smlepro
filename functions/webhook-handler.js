@@ -3,7 +3,9 @@ const { defineSecret } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 
-const db = admin.firestore();
+function getDb() {
+  return admin.firestore();
+}
 const moyasarSecretKey = defineSecret("MOYASAR_SECRET_KEY");
 
 /**
@@ -232,8 +234,8 @@ async function handleSuccessfulPayment(paymentId, payment, userId) {
     return;
   }
 
-  const paymentRef = db.collection("payments").doc(paymentId);
-  const userRef = db.collection("users").doc(userId);
+  const paymentRef = getDb().collection("payments").doc(paymentId);
+  const userRef = getDb().collection("users").doc(userId);
 
   // Verify the payment amount is valid
   const ALLOWED_AMOUNTS = new Set([100, 14900, 34900, 54900, 79900]);
@@ -261,7 +263,7 @@ async function handleSuccessfulPayment(paymentId, payment, userId) {
     : null;
 
   // Update Firestore in a transaction
-  await db.runTransaction(async (tx) => {
+  await getDb().runTransaction(async (tx) => {
     // Check if payment already processed
     const existingPayment = await tx.get(paymentRef);
     if (existingPayment.exists && existingPayment.data()?.verified === true) {
@@ -324,7 +326,7 @@ async function handleSuccessfulPayment(paymentId, payment, userId) {
  * Handle failed payment - log and optionally notify user
  */
 async function handleFailedPayment(paymentId, payment, userId) {
-  const paymentRef = db.collection("payments").doc(paymentId);
+  const paymentRef = getDb().collection("payments").doc(paymentId);
   
   // Record the failed payment
   await paymentRef.set(
