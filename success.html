@@ -182,6 +182,11 @@
 
                 // Show dashboard button
                 dashboardBtn.style.display = 'inline-flex';
+                
+                // Auto-redirect to dashboard after 3 seconds
+                setTimeout(() => {
+                  window.location.href = '/';
+                }, 3000);
                 return; // Exit retry loop on success
               }
 
