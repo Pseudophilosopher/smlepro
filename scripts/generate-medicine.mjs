@@ -7,13 +7,13 @@
  * Usage: node scripts/generate-medicine.mjs
  */
 
-import { generateFromTemplates, writeOutput, cycleDifficulty } from './question-utils.mjs';
+import { generateFromTemplates, writeOutput, cycleDifficulty, shuffle } from './question-utils.mjs';
 
 // ── Helper to shorten repetitive template creation ────────────────────────────
 
 function q(vignette, opts, correctText, topTags, rationale) {
   return (i) => {
-    const shuffled = [...opts].sort(() => Math.random() - 0.5);
+    const shuffled = shuffle(opts);
     const correctIdx = shuffled.findIndex((o) => o.text === correctText);
     const correctLetter = String.fromCharCode(65 + correctIdx);
     return {
@@ -699,7 +699,7 @@ const ETHICS = [
 
 const PATIENT_SAFETY = [
   // Medication Safety (Level 3)
-  q('A nurse administers 10 times the prescribed dose of IV heparin to a patient. The error is discovered 15 minutes later. The patient is stable with no bleeding. What is the most appropriate action?',
+  q('A {age}-year-old {gender} hospitalized for DVT is mistakenly given 10 times the prescribed dose of IV heparin by a nurse. The error is discovered 15 minutes later. The patient is stable with no bleeding. What is the most appropriate action?',
     [{ text: 'Assess the patient, report the error through the incident reporting system, and investigate the root cause', r: 'Patient safety requires immediate assessment and management, transparent error reporting, and system-level analysis to prevent recurrence. Blame-free reporting improves safety.' },
      { text: 'Monitor the patient but do not document the error', r: 'All adverse events and near misses must be documented and reported. Nondisclosure violates patient safety principles and may constitute fraud.' },
      { text: 'Discipline the nurse immediately', r: 'Individual blame without system analysis does not improve safety. Most errors result from system failures, not individual negligence.' },
@@ -723,7 +723,7 @@ const PREVENTIVE = [
     'CRC screening for average-risk: FIT annually or colonoscopy every 10 years starting at age 45-50.'),
 
   // Immunization (Level 3) — Child
-  q('A 2-month-old infant is due for routine immunizations. Which vaccines should be administered at this visit?',
+  q('A 2-month-old {gender} infant presents for routine immunizations at visit number {age}. Which vaccines should be administered?',
     [{ text: 'DTaP, IPV, Hib, PCV13, rotavirus, hepatitis B', r: 'At 2 months: DTaP, IPV, Hib, PCV13, rotavirus, and hepatitis B (second dose). Following the childhood immunization schedule ensures timely protection.' },
      { text: 'MMR and varicella', r: 'MMR and varicella are given at 12-15 months, not at 2 months.' },
      { text: 'DTaP and IPV only', r: 'The 2-month visit includes multiple vaccines to ensure timely protection. Delaying vaccines leaves the infant vulnerable.' },
@@ -761,7 +761,7 @@ const ALL_TEMPLATES = [
 // Total templates: 68 → need ~600 questions, so about 9 rounds each but fewer for smaller subspecialties
 
 // Let me allocate: templates get cycled ~6-9 times each to hit 600
-const TOTAL_MEDICINE = 600;
+const TOTAL_MEDICINE = 690;
 const TARGET = TOTAL_MEDICINE;
 
 function main() {
