@@ -1359,3 +1359,110 @@ exports.adminRevokePro = onCall({ region: "us-central1" }, async (request) => {
   return { ok: true, uid, email: raw };
 });
 
+// ── Admin: Refresh Quality Report ────────────────────────────────────────────
+const SAUDI_KEYWORDS = [
+  'brucellosis', 'sickle cell', 'thalassemia', 'G6PD',
+  'familial Mediterranean', 'FMF', 'MERS', 'consanguine',
+  'Hajj', 'dengue', 'leishmaniasis', 'tuberculosis',
+];
+
+exports.refreshAdminQuality = onCall({ region: "us-central1" }, async (request) => {
+  if (request.auth?.token?.email !== ADMIN_OPERATOR_EMAIL) {
+    throw new HttpsError("permission-denied", "Admin only.");
+  }
+
+  const db = admin.firestore();
+  const snap = await db.collection("questions").get();
+  const total = snap.size;
+  const questions = [];
+  snap.forEach((doc) => questions.push({ id: doc.id, ...doc.data() }));
+
+  // 1. Blueprint breakdown
+  const topicCounts = {};
+  const tagCounts = {};
+  questions.forEach((q) => {
+    const t = q.topic || "UNKNOWN";
+    topicCounts[t] = (topicCounts[t] || 0) + 1;
+    if (Array.isArray(q.tags) && q.tags.length > 0) {
+      const sub = q.tags[0];
+      if (!tagCounts[t]) tagCounts[t] = {};
+      tagCounts[t][sub] = (tagCounts[t][sub] || 0) + 1;
+    }
+  });
+
+  const blueprint = [];
+  const DOMAIN_ORDER = [
+    { key: "Internal Medicine", label: "Medicine", weight: 30 },
+    { key: "Obstetrics & Gynaecology", label: "OBGYN", weight: 25 },
+    { key: "Pediatrics", label: "Pediatrics", weight: 25 },
+    { key: "Surgery", label: "Surgery", weight: 20 },
+  ];
+  DOMAIN_ORDER.forEach((d) => {
+    const count = topicCounts[d.key] || 0;
+    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+    const subtopics = Object.entries(tagCounts[d.key] || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, c]) => ({ name, count: c }));
+    blueprint.push({ ...d, count, pct, subtopics });
+  });
+
+  // 2. Saudi content
+  const saudi = {};
+  questions.forEach((q) => {
+    const text = (q.question + " " + (q.rationale || "")).toLowerCase();
+    SAUDI_KEYWORDS.forEach((kw) => {
+      if (text.includes(kw)) {
+        saudi[kw] = (saudi[kw] || 0) + 1;
+      }
+    });
+  });
+
+  // 3. Schema validation
+  let schemaIssues = 0, missingRationale = 0, wrongOptionCount = 0, dupOptions = 0;
+  questions.forEach((q) => {
+    if (!q.question || q.question.length < 20) schemaIssues++;
+    if (!Array.isArray(q.options)) { schemaIssues++; return; }
+    if (q.options.length !== 4) wrongOptionCount++;
+    if (q.options.filter((o) => o.correct).length !== 1) schemaIssues++;
+    q.options.forEach((o) => {
+      if (!o.rationale || o.rationale.length < 10) missingRationale++;
+      if (!o.text) schemaIssues++;
+    });
+    const texts = q.options.map((o) => (o.text || "").toLowerCase().trim());
+    if (new Set(texts).size !== texts.length) dupOptions++;
+  });
+
+  // 4. Answer balance
+  const ca = { A: 0, B: 0, C: 0, D: 0 };
+  questions.forEach((q) => { if (ca[q.correct_answer] !== undefined) ca[q.correct_answer]++; });
+  const caPcts = {};
+  Object.entries(ca).forEach(([l, c]) => { caPcts[l] = total > 0 ? Math.round((c / total) * 100) : 0; });
+  const balanceOk = Object.values(caPcts).every((p) => p >= 20 && p <= 30);
+
+  // 5. Difficulty
+  const diff = { Easy: 0, Moderate: 0, Hard: 0 };
+  questions.forEach((q) => { const d = q.difficulty || "Moderate"; diff[d] = (diff[d] || 0) + 1; });
+
+  // 6. Duplicate check
+  const seen = new Set();
+  let duplicates = 0;
+  questions.forEach((q) => {
+    const k = (q.question || "").toLowerCase().trim();
+    if (seen.has(k)) duplicates++;
+    else seen.add(k);
+  });
+
+  const report = {
+    refreshedAt: admin.firestore.FieldValue.serverTimestamp(),
+    total, blueprint,
+    saudi: Object.entries(saudi).sort((a, b) => b[1] - a[1]).map(([n, c]) => ({ name: n, count: c })),
+    quality: {
+      schemaIssues, missingRationale, wrongOptionCount, dupOptions,
+      answerBalance: caPcts, balanceOk, difficulty: diff, duplicates,
+    },
+  };
+
+  await db.collection("metadata").doc("quality_report").set(report);
+  return report;
+});
+

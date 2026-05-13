@@ -49,6 +49,8 @@ export async function renderAdminStats(rootElement) {
     let lastUpdated = null;
     /** Optional Looker Studio / GA embed URL from metadata/analytics (set in Console). */
     let analyticsEmbedUrl = '';
+    /** Quality report */
+    let qualityReport = null;
 
     // 1. Populate site_stats via callable (runs with Admin SDK — bypasses rules)
     try {
@@ -78,6 +80,12 @@ export async function renderAdminStats(rootElement) {
         const qCount = await getCountFromServer(collection(firestore, 'questions'));
         totalQuestions = qCount.data().count.toLocaleString();
     } catch (e) { console.warn('[Admin] questions count failed:', e.message); }
+
+    // 4. Read quality report (cached audit)
+    try {
+        const qSnap = await getDoc(doc(firestore, 'metadata', 'quality_report'));
+        if (qSnap.exists()) qualityReport = qSnap.data();
+    } catch (e) { console.warn('[Admin] quality_report read failed:', e.message); }
 
     // 4. Analytics embed URL (metadata/analytics)
     try {
@@ -201,6 +209,127 @@ export async function renderAdminStats(rootElement) {
             })()}
         </div>
 
+        <!-- ── Blueprint Coverage Monitor ── -->
+        <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark shadow-depth mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-base">pie_chart</span> Blueprint Coverage
+                </h3>
+                <span class="text-sm font-black text-white">${totalQuestions} questions</span>
+            </div>
+            ${qualityReport && qualityReport.blueprint ? qualityReport.blueprint.map(d => {
+                const pct = d.pct || 0;
+                const offTarget = Math.abs(pct - d.weight);
+                const status = offTarget <= 3 ? '✅' : '⚠️';
+                const barColor = d.label === 'Medicine' ? '#11B4D4' : d.label === 'OBGYN' ? '#D4AF37' : d.label === 'Pediatrics' ? '#10B981' : '#F59E0B';
+                const subHtml = (d.subtopics || []).slice(0, 5).map(s =>
+                    `<div class="flex items-center justify-between text-[10px] text-slate-500 ml-4 py-0.5 border-b border-border-dark/20">
+                        <span>${s.name}</span>
+                        <span class="font-semibold text-slate-400">${s.count}</span>
+                    </div>`
+                ).join('');
+                return `
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full inline-block" style="background:${barColor}"></span>
+                            <span class="text-sm font-bold text-white">${d.label}</span>
+                            <span class="text-[10px] text-slate-500">${d.count} questions (${pct}%)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-semibold ${status === '✅' ? 'text-accent-green' : 'text-accent-orange'}">${status} target ${d.weight}%</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden mb-1">
+                        <div class="h-full rounded-full transition-all" style="width:${Math.max(2, pct)}%;background:${barColor}"></div>
+                    </div>
+                    <details class="mt-1">
+                        <summary class="text-[10px] text-slate-600 cursor-pointer hover:text-slate-400">${d.subtopics ? d.subtopics.length : 0} subspecialties</summary>
+                        ${subHtml || '<div class="text-[10px] text-slate-600 ml-4">No subtopic data</div>'}
+                    </details>
+                </div>`;
+            }).join('') : '<div class="text-sm text-slate-500">Run the quality audit to see blueprint coverage.</div>'}
+        </div>
+
+        <!-- ── Saudi Content Dashboard ── -->
+        <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark shadow-depth mb-6">
+            <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-accent-green text-base">public</span> Saudi Content
+            </h3>
+            ${qualityReport && qualityReport.saudi ? `
+            <div class="space-y-2">
+                ${qualityReport.saudi.map(s => {
+                    const barW = Math.max(4, Math.round((s.count / 30) * 100));
+                    return `
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-slate-300 w-28 shrink-0 font-medium">${s.name}</span>
+                        <div class="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full bg-accent-green" style="width:${barW}%"></div>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400 w-8 text-right">${s.count}</span>
+                    </div>`;
+                }).join('')}
+                <div class="pt-3 mt-3 border-t border-border-dark/50 flex items-center justify-between">
+                    <span class="text-xs text-slate-500">Total Saudi-specific questions</span>
+                    <span class="text-sm font-black text-white">${qualityReport.saudi.reduce((a, s) => a + s.count, 0)}</span>
+                </div>
+            </div>` : '<div class="text-sm text-slate-500">Run the quality audit to see Saudi content.</div>'}
+        </div>
+
+        <!-- ── Quality Report ── -->
+        <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark shadow-depth mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                    <span class="material-symbols-outlined text-accent-purple text-base">checklist</span> Quality Report
+                </h3>
+                <button id="run-quality-audit-btn" class="px-4 py-2 rounded-xl bg-accent-purple text-white font-bold text-xs hover:brightness-110 active:scale-[.98] transition-all">
+                    <span class="material-symbols-outlined text-sm align-text-bottom">refresh</span> Run Audit
+                </button>
+            </div>
+            ${qualityReport && qualityReport.quality ? `
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark text-center">
+                    <p class="text-xs text-slate-500 mb-1">Schema Issues</p>
+                    <p class="text-lg font-black ${qualityReport.quality.schemaIssues === 0 ? 'text-accent-green' : 'text-accent-red'}">${qualityReport.quality.schemaIssues}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark text-center">
+                    <p class="text-xs text-slate-500 mb-1">Missing Rationales</p>
+                    <p class="text-lg font-black ${qualityReport.quality.missingRationale === 0 ? 'text-accent-green' : 'text-accent-red'}">${qualityReport.quality.missingRationale}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark text-center">
+                    <p class="text-xs text-slate-500 mb-1">Duplicate Vignettes</p>
+                    <p class="text-lg font-black ${qualityReport.quality.duplicates === 0 ? 'text-accent-green' : 'text-accent-orange'}">${qualityReport.quality.duplicates}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark text-center">
+                    <p class="text-xs text-slate-500 mb-1">Answer Balance</p>
+                    <p class="text-lg font-black ${qualityReport.quality.balanceOk ? 'text-accent-green' : 'text-accent-orange'}">${qualityReport.quality.balanceOk ? '✅' : '⚠️'}</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-3">
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark">
+                    <p class="text-[10px] text-slate-500 mb-2 font-semibold uppercase tracking-wider">Answer Distribution</p>
+                    <div class="flex items-center gap-2">
+                        ${['A','B','C','D'].map(l => {
+                            const p = qualityReport.quality.answerBalance[l] || 0;
+                            const color = p >= 20 && p <= 30 ? 'text-accent-green' : 'text-accent-red';
+                            return `<div class="flex-1 text-center"><span class="text-xs font-black ${color}">${p}%</span><p class="text-[9px] text-slate-600">${l}</p></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="p-3 rounded-xl bg-background-dark border border-border-dark">
+                    <p class="text-[10px] text-slate-500 mb-2 font-semibold uppercase tracking-wider">Difficulty</p>
+                    <div class="flex items-center gap-2">
+                        ${[['Easy','#10B981'],['Moderate','#F59E0B'],['Hard','#EF4444']].map(([label, color]) => {
+                            const c = qualityReport.quality.difficulty[label] || 0;
+                            return `<div class="flex-1 text-center"><span class="text-xs font-black" style="color:${color}">${c}</span><p class="text-[9px] text-slate-600">${label}</p></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-600">${qualityReport.refreshedAt ? 'Last audited: ' + new Date(qualityReport.refreshedAt.seconds * 1000).toLocaleString() : ''}</p>
+            ` : '<div class="text-sm text-slate-500">No audit data yet. Click "Run Audit" to scan the question bank.</div>'}
+        </div>
+
         <!-- ── Google Analytics (Firebase / GA4) — opens official dashboards in new tabs; optional embed ── -->
         <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark shadow-depth mb-6 border-primary/20">
             <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2 mb-2">
@@ -305,6 +434,23 @@ export async function renderAdminStats(rootElement) {
     initializeThemeSwitch();
     document.getElementById('back-btn')?.addEventListener('click', () => navigateTo('dashboard'));
     document.getElementById('admin-flagged-btn')?.addEventListener('click', () => navigateTo('admin-moderation'));
+
+    // Quality audit button
+    document.getElementById('run-quality-audit-btn')?.addEventListener('click', async () => {
+        const btn = document.getElementById('run-quality-audit-btn');
+        if (!btn) return;
+        btn.disabled = true;
+        btn.textContent = '⏳ Auditing...';
+        try {
+            const auditFn = httpsCallable(functions, 'refreshAdminQuality');
+            await auditFn();
+            renderAdminStats(rootElement);
+        } catch (e) {
+            console.error('Audit failed:', e.message);
+            btn.disabled = false;
+            btn.textContent = '❌ Failed';
+        }
+    });
 
     const grantFn = httpsCallable(functions, 'grantComplimentaryPro');
     const revokeFn = httpsCallable(functions, 'revokeComplimentaryPro');
