@@ -8,6 +8,7 @@
 import { navigateTo, state } from './app.js';
 import { DIAGNOSTIC_QUESTIONS, DIAGNOSTIC_DOMAIN_WEIGHTS } from './diagnosticData.js';
 import { initializeThemeSwitch } from './theme.js';
+import { trackDiagnosticStarted, trackDiagnosticQuestionAnswered, trackDiagnosticCompleted, trackDiagnosticAbandoned } from './analytics.js';
 
 let timerInterval;
 
@@ -66,6 +67,7 @@ export function startDiagnostic() {
     results: null,         // populated on finish
   };
   clearStoredDiagnostic();
+  trackDiagnosticStarted();
   navigateTo('diagnostic');
 }
 
@@ -134,20 +136,39 @@ export function renderDiagnostic(rootElement) {
           ${question.options.map((opt, i) => {
             const optId = String.fromCharCode(65 + i);
             const selected = answeredId === optId;
-            const borderCls = selected
-              ? 'border-primary bg-primary/10'
-              : 'border-border-dark hover:border-primary/50 hover:bg-primary/5';
+            const isCorrect = opt.correct;
+            const borderCls = !isAnswered
+              ? 'border-border-dark hover:border-primary/50 hover:bg-primary/5'
+              : selected
+                ? isCorrect
+                  ? 'border-accent-green bg-accent-green/10'
+                  : 'border-accent-red bg-accent-red/10'
+                : !selected && isCorrect && isAnswered
+                  ? 'border-accent-green/50 bg-accent-green/5'
+                  : 'border-border-dark/40 opacity-60';
             return `
             <div class="diag-option p-4 rounded-xl border ${borderCls} cursor-pointer transition-all" data-option="${optId}">
               <div class="flex items-start gap-3">
                 <div class="size-8 shrink-0 rounded-lg bg-background-dark border border-border-dark flex items-center justify-center font-bold text-sm text-slate-400">
-                  ${optId}
+                  ${isAnswered && isCorrect ? '✓' : optId}
                 </div>
                 <p class="text-sm sm:text-base text-slate-200 leading-relaxed pt-1">${opt.text}</p>
+                ${isAnswered && isCorrect ? '<span class="ml-auto shrink-0 text-accent-green material-symbols-outlined">check_circle</span>' : ''}
+                ${isAnswered && selected && !isCorrect ? '<span class="ml-auto shrink-0 text-accent-red material-symbols-outlined">cancel</span>' : ''}
               </div>
             </div>`;
           }).join('')}
         </div>
+
+        <!-- Explanation (shown after answering) -->
+        ${isAnswered ? `
+        <div class="mt-6 p-4 rounded-xl border ${isCorrectAnswer(question, answeredId) ? 'border-accent-green/30 bg-accent-green/5' : 'border-accent-red/30 bg-accent-red/5'}">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined ${isCorrectAnswer(question, answeredId) ? 'text-accent-green' : 'text-accent-red'}">${isCorrectAnswer(question, answeredId) ? 'check_circle' : 'cancel'}</span>
+            <span class="text-sm font-bold ${isCorrectAnswer(question, answeredId) ? 'text-accent-green' : 'text-accent-red'}">${isCorrectAnswer(question, answeredId) ? 'Correct!' : 'Not quite — the correct answer was ' + getCorrectAnswerLetter(question)}</span>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">${question.explanation}</p>
+        </div>` : ''}
 
         <!-- Navigation -->
         <div class="flex items-center justify-between mt-8 pt-6 border-t border-border-dark/60">
@@ -158,7 +179,7 @@ export function renderDiagnostic(rootElement) {
           </button>
 
           <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-500">${answeredId ? 'Answered' : 'Select an answer'}</span>
+            <span class="text-xs text-slate-500">${isAnswered ? 'Answered' : 'Select an answer'}</span>
             <button id="diag-next-btn"
               class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all
                 ${isAnswered
@@ -194,9 +215,10 @@ export function renderDiagnostic(rootElement) {
     const opt = e.target.closest('.diag-option');
     if (!opt) return;
     const optId = opt.dataset.option;
+    if (session.userAnswers[question.id]) return; // already answered
     session.userAnswers[question.id] = optId;
+    trackDiagnosticQuestionAnswered(qIndex + 1, question.domain);
     persistSession();
-    // Re-render to show selection + enable next
     renderDiagnostic(rootElement);
   });
 
@@ -233,7 +255,8 @@ export function renderDiagnostic(rootElement) {
 
   document.getElementById('diag-exit-btn')?.addEventListener('click', () => {
     clearInterval(timerInterval);
-    // Don't clear storage on exit — user can resume later
+    const answeredCount = Object.keys(session.userAnswers).length;
+    trackDiagnosticAbandoned(answeredCount);
     navigateTo('landing');
   });
 
@@ -322,6 +345,7 @@ function finishDiagnostic() {
   };
 
   navigateTo('diagnosticResults');
+  trackDiagnosticCompleted(session.results.overallScore, session.results.smleReadiness, Math.round(session.totalTime / 1000));
 }
 
 function getDomainBadgeClass(domain) {
@@ -333,4 +357,14 @@ function getDomainBadgeClass(domain) {
     CrossCutting: 'bg-accent-red/15 text-accent-red border border-accent-red/30',
   };
   return map[domain] || 'bg-slate-700 text-slate-300';
+}
+
+function isCorrectAnswer(question, answeredId) {
+  const correctIdx = question.options.findIndex(o => o.correct === true);
+  return answeredId === String.fromCharCode(65 + correctIdx);
+}
+
+function getCorrectAnswerLetter(question) {
+  const correctIdx = question.options.findIndex(o => o.correct === true);
+  return String.fromCharCode(65 + correctIdx);
 }

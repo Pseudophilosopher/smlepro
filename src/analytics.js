@@ -28,6 +28,14 @@ export const ANALYTICS_EVENTS = {
   DAILY_DOSE_COMPLETE: 'daily_dose_complete',
   DAILY_DOSE_SHARE: 'daily_dose_share',
 
+  // ── Diagnostic Events ────────────────────────────────────────
+  DIAGNOSTIC_STARTED: 'diagnostic_started',
+  DIAGNOSTIC_QUESTION_ANSWERED: 'diagnostic_question_answered',
+  DIAGNOSTIC_COMPLETED: 'diagnostic_completed',
+  DIAGNOSTIC_ABANDONED: 'diagnostic_abandoned',
+  DIAGNOSTIC_SAVED_RESULTS: 'diagnostic_saved_results',
+  DIAGNOSTIC_SHARED: 'diagnostic_shared',
+
   // ── Conversion Events ────────────────────────────────────────
   UPGRADE_CLICK: 'upgrade_click',
   UPGRADE_VIEW_PLAN: 'upgrade_view_plan',
@@ -265,6 +273,65 @@ export function trackDailyDoseComplete(score, timeSpent) {
     score: score,
     time_spent_seconds: timeSpent,
     content_type: 'free'
+  });
+}
+
+/**
+ * Track diagnostic started
+ */
+export function trackDiagnosticStarted() {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_STARTED, {
+    content_type: 'diagnostic',
+  });
+}
+
+/**
+ * Track diagnostic question answered
+ */
+export function trackDiagnosticQuestionAnswered(questionNumber, domain) {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_QUESTION_ANSWERED, {
+    question_number: questionNumber,
+    domain: domain,
+  });
+}
+
+/**
+ * Track diagnostic completed
+ */
+export function trackDiagnosticCompleted(score, readiness, timeSpent) {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_COMPLETED, {
+    score: score,
+    smle_readiness: readiness,
+    time_spent_seconds: timeSpent,
+    content_type: 'diagnostic',
+  });
+}
+
+/**
+ * Track diagnostic abandoned (user exited mid-quiz)
+ */
+export function trackDiagnosticAbandoned(questionsAnswered) {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_ABANDONED, {
+    questions_answered: questionsAnswered,
+    total_questions: 40,
+  });
+}
+
+/**
+ * Track diagnostic results saved (email submitted)
+ */
+export function trackDiagnosticSavedResults(email) {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_SAVED_RESULTS, {
+    has_email: !!email,
+  });
+}
+
+/**
+ * Track diagnostic shared
+ */
+export function trackDiagnosticShared() {
+  trackEvent(ANALYTICS_EVENTS.DIAGNOSTIC_SHARED, {
+    content_type: 'diagnostic',
   });
 }
 

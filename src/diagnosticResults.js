@@ -1,15 +1,17 @@
 /**
  * Diagnostic Results — Weakness Heatmap + SMLE Readiness Score.
  * Features:
- *   - Domain heatmap (2×2 grid for Medicine, OBGYN, Peds, Surgery)
- *   - Weakest domain highlighted with actionable study plan
- *   - Email gate (no signup required, just email)
- *   - Shareable text summary (viral loop)
- *   - Bridge to Daily Dose (habit formation)
+ *   - Domain heatmap (5 domains including CrossCutting as Foundational Skills)
+ *   - Results shown immediately (no gate)
+ *   - Save section at bottom (email capture after value)
+ *   - Previous results comparison if available
+ *   - Web Share API for virality
+ *   - 3-path CTA: BoardAce articles / Practice sessions / Daily Dose
  */
-import { navigateTo, state, startDailyDose, firestore } from './app.js';
+import { navigateTo, state, startDailyDose, firestore, auth } from './app.js';
 import { initializeThemeSwitch } from './theme.js';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, orderBy, limit, getDocs, serverTimestamp } from 'firebase/firestore';
+import { trackDiagnosticSavedResults, trackDiagnosticShared } from './analytics.js';
 
 export function renderDiagnosticResults(rootElement) {
   const session = state.diagnosticSession;
@@ -23,22 +25,23 @@ export function renderDiagnosticResults(rootElement) {
   const minutes = Math.floor(totalTime / 60000);
   const seconds = Math.floor((totalTime % 60000) / 1000);
 
-  const readinessLabel = smleReadiness >= 80 ? 'Exam Ready 🏆'
-    : smleReadiness >= 60 ? 'On Track 👍'
-    : smleReadiness >= 40 ? 'Needs Work ⚠️'
-    : 'Critical Gaps 🚨';
+  const readinessLabel = smleReadiness >= 80 ? 'Exam Ready'
+    : smleReadiness >= 60 ? 'On Track'
+    : smleReadiness >= 40 ? 'Needs Work'
+    : 'Critical Gaps';
 
   const readinessColor = smleReadiness >= 80 ? 'text-accent-green'
     : smleReadiness >= 60 ? 'text-primary'
     : smleReadiness >= 40 ? 'text-accent-orange'
     : 'text-accent-red';
 
-  // Build domain heatmap (2×2 grid)
+  const heroEmoji = overallScore >= 80 ? '🏆' : overallScore >= 60 ? '👍' : overallScore >= 40 ? '⚠️' : '🚨';
+
+  // ── Build domain heatmap (5 domains) ──
   const domainOrder = ['Medicine', 'OBGYN', 'Pediatrics', 'Surgery'];
   const heatmapHtml = domainOrder.map(domain => {
     const pct = domainPcts[domain] ?? 0;
     const color = pct >= 70 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#ef4444';
-    const bgOpacity = pct >= 80 ? '0.25' : pct >= 60 ? '0.15' : pct >= 40 ? '0.10' : '0.05';
     return `
       <div class="rounded-2xl border border-border-dark p-5 bg-surface-dark/80" style="border-left: 4px solid ${color};">
         <div class="flex items-center justify-between mb-3">
@@ -46,12 +49,28 @@ export function renderDiagnosticResults(rootElement) {
           <span class="text-2xl font-black" style="color:${color}">${pct}%</span>
         </div>
         <div class="w-full bg-border-dark/60 rounded-full h-2.5">
-          <div class="h-2.5 rounded-full transition-all duration-1000" style="width:${pct}%;background:${color};"></div>
+          <div class="h-2.5 rounded-full transition-all duration-1000" style="width:${Math.max(2, pct)}%;background:${color};"></div>
         </div>
       </div>`;
   }).join('');
 
-  // Weakest domain → study plan
+  // CrossCutting as Foundational Skills (if it exists)
+  const ccPct = domainPcts['CrossCutting'];
+  const crossCuttingHtml = ccPct !== undefined ? `
+    <div class="rounded-2xl border border-border-dark p-5 bg-surface-dark/80" style="border-left: 4px solid #a78bfa;">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <span class="text-sm font-bold text-white">Foundational Skills</span>
+          <p class="text-[9px] text-slate-500">Ethics · Preventive · Patient Safety</p>
+        </div>
+        <span class="text-2xl font-black" style="color:#a78bfa">${ccPct}%</span>
+      </div>
+      <div class="w-full bg-border-dark/60 rounded-full h-2.5">
+        <div class="h-2.5 rounded-full transition-all duration-1000" style="width:${Math.max(2, ccPct)}%;background:#a78bfa;"></div>
+      </div>
+    </div>` : '';
+
+  // ── Weakest domain → study plan ──
   const studyPlanHtml = weakestDomain.name ? `
     <div class="bg-primary/10 border border-primary/30 rounded-2xl p-5 sm:p-6">
       <div class="flex items-start gap-4">
@@ -61,28 +80,28 @@ export function renderDiagnosticResults(rootElement) {
         <div class="min-w-0">
           <h3 class="text-base font-black text-white mb-1">Your Priority: <span class="text-accent-orange">${weakestDomain.name}</span></h3>
           <p class="text-sm text-slate-400 leading-relaxed mb-3">
-            You scored only <strong class="text-accent-orange">${weakestDomain.score}%</strong> in ${weakestDomain.name}.
-            This is your highest-yield improvement area. Here's your recommended study plan:
+            You scored <strong class="text-accent-orange">${weakestDomain.score}%</strong> in ${weakestDomain.name}.
+            This is your highest-yield improvement area. Here's your plan:
           </p>
           <ul class="space-y-2 text-sm text-slate-300">
             <li class="flex items-start gap-2">
               <span class="material-symbols-outlined text-accent-green text-sm mt-0.5">check_circle</span>
-              <span>Review <strong>${weakestDomain.name}</strong> core concepts for 30 min/day this week</span>
+              <span>Read about <a href="https://smlepro.web.app/#${weakestDomain.name.toLowerCase().replace(/\s/g, '-')}" target="_blank" class="text-primary hover:underline" id="diag-boardace-link">${weakestDomain.name} core concepts</a></span>
             </li>
             <li class="flex items-start gap-2">
               <span class="material-symbols-outlined text-accent-green text-sm mt-0.5">check_circle</span>
-              <span>Take a daily 10-question drill focused on ${weakestDomain.name}</span>
+              <span>Try 40 practice questions on <strong>${weakestDomain.name}</strong></span>
             </li>
             <li class="flex items-start gap-2">
               <span class="material-symbols-outlined text-accent-green text-sm mt-0.5">check_circle</span>
-              <span>Re-take this diagnostic in 2 weeks to measure improvement</span>
+              <span>Re-take this diagnostic in 2 weeks to track your progress</span>
             </li>
           </ul>
         </div>
       </div>
     </div>` : '';
 
-  // Strongest domain
+  // ── Strongest domain ──
   const strengthHtml = strongestDomain.name ? `
     <div class="bg-accent-green/10 border border-accent-green/30 rounded-2xl p-5 sm:p-6 mt-4">
       <div class="flex items-start gap-4">
@@ -96,14 +115,17 @@ export function renderDiagnosticResults(rootElement) {
       </div>
     </div>` : '';
 
+  // ── Comparison with previous diagnostic (if saved) ──
+  const comparisonHtml = '<div id="diag-comparison" class="mb-6"></div>';
+
+  // ── Render ──
   rootElement.innerHTML = `
   <div class="min-h-screen bg-background-dark text-slate-200">
-    <!-- Result Page -->
     <main class="max-w-3xl mx-auto px-4 py-8 sm:py-12">
 
       <!-- Hero -->
       <div class="text-center mb-10">
-        <div class="text-5xl mb-4">${overallScore >= 80 ? '🏆' : overallScore >= 60 ? '👍' : overallScore >= 40 ? '⚠️' : '🚨'}</div>
+        <div class="text-5xl mb-4">${heroEmoji}</div>
         <h1 class="text-3xl sm:text-4xl font-black text-white mb-2">Your SMLE Diagnostic Results</h1>
         <p class="text-slate-500 text-sm">${totalCorrect} of ${totalQuestions} correct · ${minutes}:${String(seconds).padStart(2, '0')} min</p>
       </div>
@@ -124,190 +146,248 @@ export function renderDiagnosticResults(rootElement) {
         </div>
       </div>
 
-      <div id="diag-results-content">
-        <!-- Email Gate (visible on first load, hidden after submission) -->
-        <div id="diag-email-gate" class="bg-surface-dark rounded-2xl border border-primary/40 p-6 sm:p-8 mb-8 text-center">
-          <div class="size-14 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-primary text-3xl">mail</span>
-          </div>
-          <h2 class="text-xl font-black text-white mb-2">Get Your Full Report 💪</h2>
-          <p class="text-sm text-slate-400 mb-6 max-w-sm mx-auto">
-            Enter your email to unlock the breakdown below — plus we'll send you a personalized study plan in 24 hours.
-            No spam, unsubscribe anytime.
-          </p>
-          <form id="diag-email-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input type="email" id="diag-email-input" required placeholder="your@email.com"
-              class="flex-1 px-4 py-3 rounded-xl border border-border-dark bg-background-dark text-white text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-              pattern="[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$">
-            <button type="submit" id="diag-email-submit-btn"
-              class="px-6 py-3 rounded-xl bg-primary text-background-dark font-black text-sm hover:brightness-110 transition-all whitespace-nowrap">
-              Unlock Results →
-            </button>
-          </form>
-          <p id="diag-email-error" class="text-xs text-accent-red mt-3 hidden">Please enter a valid email address.</p>
-          <p class="text-[10px] text-slate-600 mt-4">By submitting, you agree to receive study tips. Unsubscribe anytime.</p>
+      ${comparisonHtml}
 
-          <!-- Skip link for returning users (not ideal but gives an out) -->
-          <button id="diag-skip-gate-btn" class="text-xs text-slate-600 hover:text-primary mt-4 transition-colors underline">
-            Skip — show results anyway
+      <!-- Domain heatmap -->
+      <div class="bg-surface-dark rounded-2xl p-6 border border-border-dark mb-6">
+        <h2 class="text-lg font-black text-white mb-5 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">grid_view</span> Domain Breakdown
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${heatmapHtml}
+          ${crossCuttingHtml}
+        </div>
+      </div>
+
+      <!-- Weighted SMLE Readiness explanation -->
+      <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark mb-6">
+        <div class="flex items-start gap-3">
+          <span class="material-symbols-outlined text-primary text-lg mt-0.5">info</span>
+          <div>
+            <p class="text-sm font-bold text-white mb-1">How it's calculated</p>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Your SMLE Readiness Score uses the official SMLE blueprint weights:
+              Medicine (30%), OBGYN (25%), Pediatrics (25%), Surgery (20%).
+              Foundational Skills (Ethics, Preventive) are shown for reference.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      ${studyPlanHtml}
+      ${strengthHtml}
+
+      <!-- Save section (after value — no gate) -->
+      <div id="diag-save-section" class="bg-surface-dark rounded-2xl border border-primary/40 p-6 sm:p-8 mb-6 text-center">
+        <div class="size-14 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-3xl">save</span>
+        </div>
+        <h2 class="text-xl font-black text-white mb-2">Save Your Results 📊</h2>
+        <p class="text-sm text-slate-400 mb-6 max-w-sm mx-auto">
+          Save your diagnostic history and track your improvement over time.
+          We'll send you a comparison when you retake it.
+        </p>
+        <form id="diag-save-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input type="email" id="diag-email-input" required placeholder="your@email.com"
+            class="flex-1 px-4 py-3 rounded-xl border border-border-dark bg-background-dark text-white text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+            pattern="[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$">
+          <button type="submit" id="diag-save-submit-btn"
+            class="px-6 py-3 rounded-xl bg-primary text-background-dark font-black text-sm hover:brightness-110 transition-all whitespace-nowrap">
+            Save My Results →
           </button>
-        </div>
+        </form>
+        <p id="diag-save-status" class="text-xs mt-3 hidden"></p>
+        <p class="text-[10px] text-slate-600 mt-4">No spam, unsubscribe anytime.</p>
+      </div>
 
-        <!-- Results content (hidden until gate passed) -->
-        <div id="diag-results-reveal" class="hidden space-y-6">
-          <!-- Domain heatmap -->
-          <div class="bg-surface-dark rounded-2xl p-6 border border-border-dark">
-            <h2 class="text-lg font-black text-white mb-5 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">grid_view</span> Domain Breakdown
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              ${heatmapHtml}
-            </div>
-          </div>
+      <!-- Action buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4">
+        <button id="diag-start-daily-btn"
+          class="flex-1 px-6 py-4 rounded-xl bg-primary text-background-dark font-black text-sm shadow-glow-primary hover:brightness-110 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">bolt</span> Daily Dose (Free)
+        </button>
+        <button id="diag-practice-btn"
+          class="flex-1 px-6 py-4 rounded-xl bg-accent-purple text-white font-black text-sm shadow-glow-purple hover:brightness-110 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">school</span> Practice Sessions
+        </button>
+        <button id="diag-share-btn"
+          class="flex-1 px-6 py-4 rounded-xl bg-accent-green/20 border border-accent-green/40 text-accent-green font-black text-sm hover:bg-accent-green/30 transition-all flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">share</span> Share
+        </button>
+      </div>
 
-          <!-- Weighted SMLE Readiness explanation -->
-          <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark">
-            <div class="flex items-start gap-3">
-              <span class="material-symbols-outlined text-primary text-lg mt-0.5">info</span>
-              <div>
-                <p class="text-sm font-bold text-white mb-1">How it's calculated</p>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                  Your SMLE Readiness Score uses the official SMLE blueprint weights:
-                  Medicine (30%), OBGYN (25%), Pediatrics (25%), Surgery (20%).
-                  Cross-cutting topics (Ethics, Preventive) are bonus questions.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          ${studyPlanHtml}
-          ${strengthHtml}
-
-          <!-- Action buttons -->
-          <div class="flex flex-col sm:flex-row gap-3 pt-4">
-            <button id="diag-start-daily-btn"
-              class="flex-1 px-6 py-4 rounded-xl bg-primary text-background-dark font-black text-sm shadow-glow-primary hover:brightness-110 transition-all flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">bolt</span> Continue with Daily Dose
-            </button>
-            <button id="diag-share-btn"
-              class="flex-1 px-6 py-4 rounded-xl bg-accent-green/20 border border-accent-green/40 text-accent-green font-black text-sm hover:bg-accent-green/30 transition-all flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">share</span> Share My Results
-            </button>
-          </div>
-
-          <div class="flex justify-center">
-            <button id="diag-back-landing-btn" class="text-xs font-semibold text-slate-500 hover:text-primary transition-colors">
-              Back to Home
-            </button>
-          </div>
-        </div>
+      <div class="flex justify-center mt-4">
+        <button id="diag-back-landing-btn" class="text-xs font-semibold text-slate-500 hover:text-primary transition-colors">
+          Back to Home
+        </button>
       </div>
 
     </main>
   </div>`;
 
-  // ── Email gate logic ────────────────────────────────────────────────────
-  const gate = document.getElementById('diag-email-gate');
-  const reveal = document.getElementById('diag-results-reveal');
-  const form = document.getElementById('diag-email-form');
-  const emailInput = document.getElementById('diag-email-input');
-  const errorEl = document.getElementById('diag-email-error');
-
-  // Check if already submitted (stored in sessionStorage to avoid re-gating)
-  const gatePassed = sessionStorage.getItem('diag_gate_passed') === '1';
-
-  if (gatePassed) {
-    gate?.classList.add('hidden');
-    reveal?.classList.remove('hidden');
+  // ── Pre-fill email from Firebase Auth ──
+  if (auth?.currentUser?.email) {
+    const input = document.getElementById('diag-email-input');
+    if (input) {
+      input.value = auth.currentUser.email;
+      input.readOnly = true;
+    }
   }
 
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = emailInput.value.trim().toLowerCase();
+  // ── Try to fetch previous diagnostic results ──
+  loadPreviousResults(session.results).then(prevHtml => {
+    const el = document.getElementById('diag-comparison');
+    if (el && prevHtml) el.innerHTML = prevHtml;
+  });
 
-    // Basic validation
+  // ── Save form ──
+  const saveForm = document.getElementById('diag-save-form');
+  const saveStatus = document.getElementById('diag-save-status');
+
+  saveForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('diag-email-input').value.trim().toLowerCase();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errorEl.classList.remove('hidden');
+      saveStatus.textContent = 'Please enter a valid email.';
+      saveStatus.className = 'text-xs mt-3 text-accent-red';
+      saveStatus.classList.remove('hidden');
       return;
     }
-    errorEl.classList.add('hidden');
 
-    // Submit to Firestore (best-effort)
+    // Save to Firestore
     try {
-      await addDoc(collection(firestore, 'diagnostic_leads'), {
+      const uid = auth?.currentUser?.uid || null;
+      const docData = {
         email,
+        uid,
         score: overallScore,
         smleReadiness,
-        weakestDomain: weakestDomain.name,
-        strongestDomain: strongestDomain.name,
+        weakestDomain: weakestDomain?.name || null,
+        strongestDomain: strongestDomain?.name || null,
         domainPcts,
         createdAt: serverTimestamp(),
-      });
+      };
+      // If logged in, save to user's subcollection for history
+      if (uid) {
+        const { doc, setDoc } = await import('firebase/firestore');
+        await addDoc(collection(firestore, 'users', uid, 'diagnostics'), docData);
+      }
+      // Also save to leads collection for email capture
+      await addDoc(collection(firestore, 'diagnostic_leads'), docData);
+      trackDiagnosticSavedResults(email);
+      saveStatus.textContent = '✅ Results saved! Check back after your next diagnostic to see improvement.';
+      saveStatus.className = 'text-xs mt-3 text-accent-green';
+      saveStatus.classList.remove('hidden');
+      document.getElementById('diag-save-section').querySelector('form').style.display = 'none';
     } catch (err) {
-      // Non-blocking — still reveal results
-      console.warn('[Diagnostic] Lead capture failed (non-critical):', err.message);
+      saveStatus.textContent = 'Could not save. Try again later.';
+      saveStatus.className = 'text-xs mt-3 text-accent-red';
+      saveStatus.classList.remove('hidden');
     }
-
-    // Store in sessionStorage so they don't see the gate again
-    try {
-      sessionStorage.setItem('diag_gate_passed', '1');
-    } catch { /* ignore */ }
-
-    gate.classList.add('hidden');
-    reveal.classList.remove('hidden');
   });
 
-  // Skip gate
-  document.getElementById('diag-skip-gate-btn')?.addEventListener('click', () => {
-    gate.classList.add('hidden');
-    reveal.classList.remove('hidden');
-  });
-
-  // ── Share button ────────────────────────────────────────────────────────
-  document.getElementById('diag-share-btn')?.addEventListener('click', () => {
+  // ── Share button (Web Share API with clipboard fallback) ──
+  document.getElementById('diag-share-btn')?.addEventListener('click', async () => {
     const domains = ['Medicine', 'OBGYN', 'Pediatrics', 'Surgery'];
     const grid = domains.map(d => {
       const pct = domainPcts[d] ?? 0;
-      return `${pct >= 70 ? '🟩' : pct >= 50 ? '🟨' : '🟥'} ${d}: ${pct}%`;
+      return `${pct >= 70 ? '✅' : pct >= 50 ? '⚠️' : '❌'} ${d}: ${pct}%`;
     }).join('\n');
 
     const shareText =
-`🩺 SMLE Readiness Diagnostic
-
+`🩺 SMLE Diagnostic Results
 Score: ${totalCorrect}/${totalQuestions} (${overallScore}%)
 Readiness: ${smleReadiness}% — ${readinessLabel}
 
 ${grid}
 
-${weakestDomain.name ? `🎯 Weakest: ${weakestDomain.name} (${weakestDomain.score}%)` : ''}
-${strongestDomain.name ? `💪 Strongest: ${strongestDomain.name} (${strongestDomain.score}%)` : ''}
+${weakestDomain?.name ? `Weakest: ${weakestDomain.name} (${weakestDomain.score}%)` : ''}
+${strongestDomain?.name ? `Strongest: ${strongestDomain.name} (${strongestDomain.score}%)` : ''}
 
-Find your weak spots in 8 mins → 👇
+Find your weak spots in 8 mins:
 https://smlepro.web.app/`;
 
-    copyToClipboard(shareText);
+    // Web Share API
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'My SMLE Readiness Score', text: shareText, url: 'https://smlepro.web.app/' });
+        trackDiagnosticShared();
+        return;
+      } catch (e) {
+        if (e.name !== 'AbortError') console.warn('Share failed:', e);
+      }
+    }
+    // Fallback: clipboard
+    try {
+      await navigator.clipboard.writeText(shareText);
+      showToast('Copied! Share your SMLE Readiness anywhere 🚀');
+      trackDiagnosticShared();
+    } catch {
+      showToast('Could not copy. Please copy manually.');
+    }
   });
 
-  // ── Daily Dose bridge ────────────────────────────────────────────────────
-  document.getElementById('diag-start-daily-btn')?.addEventListener('click', () => {
-    startDailyDose();
-  });
-
-  document.getElementById('diag-back-landing-btn')?.addEventListener('click', () => {
-    navigateTo('landing');
-  });
+  // ── Action buttons ──
+  document.getElementById('diag-start-daily-btn')?.addEventListener('click', () => startDailyDose());
+  document.getElementById('diag-practice-btn')?.addEventListener('click', () => navigateTo('dashboard'));
+  document.getElementById('diag-back-landing-btn')?.addEventListener('click', () => navigateTo('landing'));
 
   initializeThemeSwitch();
 }
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      const toast = document.createElement('div');
-      toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-sm z-[9999] flex items-center gap-2 animate-bounce';
-      toast.innerHTML = '<span class="material-symbols-outlined text-accent-green">check_circle</span> Copied! Share your SMLE Readiness anywhere 🚀';
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3500);
-    })
-    .catch(() => alert('Could not copy — please copy manually.'));
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl font-bold text-sm z-[9999] flex items-center gap-2 animate-bounce';
+  toast.innerHTML = `<span class="material-symbols-outlined text-accent-green">check_circle</span> ${msg}`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
+
+async function loadPreviousResults(currentResults) {
+  const uid = auth?.currentUser?.uid;
+  if (!uid) return '';
+
+  try {
+    const { query, where, orderBy, limit, getDocs, collection, getFirestore } = await import('firebase/firestore');
+    const db = getFirestore();
+    const q = query(
+      collection(db, 'users', uid, 'diagnostics'),
+      orderBy('createdAt', 'desc'),
+      limit(1)
+    );
+    const snap = await getDocs(q);
+
+    if (snap.empty) return '';
+
+    const prev = snap.docs[0].data();
+    const prevOverall = prev.score || 0;
+    const change = currentResults.overallScore - prevOverall;
+    const changeColor = change > 0 ? 'text-accent-green' : change < 0 ? 'text-accent-red' : 'text-slate-400';
+    const changeArrow = change > 0 ? '↑' : change < 0 ? '↓' : '→';
+
+    return `
+      <div class="bg-surface-dark rounded-2xl p-5 border border-border-dark mb-6">
+        <h3 class="text-sm font-black text-white flex items-center gap-2 mb-3">
+          <span class="material-symbols-outlined text-accent-purple">history</span> Your Progress
+        </h3>
+        <div class="flex items-center justify-around text-center">
+          <div>
+            <p class="text-xs text-slate-500 mb-1">Previous</p>
+            <p class="text-xl font-black text-white">${prevOverall}%</p>
+          </div>
+          <div class="text-2xl text-slate-500">→</div>
+          <div>
+            <p class="text-xs text-slate-500 mb-1">Today</p>
+            <p class="text-xl font-black ${changeColor}">${currentResults.overallScore}%</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 mb-1">Change</p>
+            <p class="text-xl font-black ${changeColor}">${changeArrow} ${Math.abs(change)}%</p>
+          </div>
+        </div>
+      </div>`;
+  } catch (e) {
+    console.warn('Could not load previous diagnostic:', e.message);
+    return '';
+  }
 }
