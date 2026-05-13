@@ -567,7 +567,7 @@ const ID = [
     'Active TB: 2 months RIPE (4 drugs) then 4 months RI (2 drugs). Directly observed therapy improves adherence.'),
 
   // Brucellosis (Level 1)
-  q('A {age}-year-old {gender} presents with intermittent fever, night sweats, arthralgia, and lower back pain for 3 weeks. He reports consuming unpasteurized dairy. Brucella serology is positive. What is the most appropriate treatment?',
+  q('A {age}-year-old {gender} presents with intermittent fever, night sweats, arthralgia, and lower back pain for 3 weeks. The patient reports consuming unpasteurized dairy. Brucella serology is positive. What is the most appropriate treatment?',
     [{ text: 'Doxycycline + rifampicin for 6 weeks', r: 'Standard therapy for uncomplicated brucellosis is doxycycline plus rifampicin for 6 weeks. Combination therapy reduces relapse to <5%.' },
      { text: 'Doxycycline alone for 3 weeks', r: 'Monotherapy has 15-25% relapse rate. Combination therapy with rifampicin is required for adequate intracellular eradication.' },
      { text: 'Azithromycin for 5 days', r: 'Macrolides have poor activity against Brucella and are not recommended. Bactericidal agents with intracellular penetration are needed.' },
@@ -730,11 +730,8 @@ const PREVENTIVE = [
      { text: 'No vaccines until 4 months', r: 'The immunization schedule starts at 2 months for a reason. Delaying increases the window of susceptibility to preventable diseases.' }],
     'DTaP, IPV, Hib, PCV13, rotavirus, hepatitis B', ['preventive', 'immunization', 'pediatric'],
     '2-month immunizations: DTaP, IPV, Hib, PCV13, rotavirus, HepB. Following the schedule protects infants during their most vulnerable period.'),
-];
 
-// ══════════════════════════════════════════════════════════════════════════════
-// ASSEMBLE ALL MEDICINE SUBSECTIONS
-// ══════════════════════════════════════════════════════════════════════════════
+];
 
 const ALL_TEMPLATES = [
   ...CARDIOLOGY,

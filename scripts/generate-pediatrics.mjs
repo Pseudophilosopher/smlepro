@@ -235,7 +235,7 @@ const T = [
   q('A {mo}-month-old {gender} presents with fever, poor feeding, and bulging fontanelle. Blood culture grows Haemophilus influenzae type b. The mother declined vaccination. What is the most appropriate prevention for this infection?',
     [{text:'Hib vaccine series starting at 2 months',r:'Hib vaccine (conjugate) at 2, 4, 6, and 12-15 months prevents invasive Hib disease (meningitis, epiglottitis, pneumonia). Decline in cases >99% since vaccine introduction.'},
      {text:'Meningococcal vaccine',r:'Meningococcal vaccine prevents Neisseria meningitidis, not Hib. Two different pathogens.'},
-     {text:'Pneumococcal conjugate vaccine',r:'PCV13 prevents Streptococcus pneumoniae, not Hib.'},
+     {text:'Pneumococcal conjugate vaccine',r:'PCV13 prevents Streptococcus pneumoniae infections but does not cover Haemophilus influenzae type b, which requires the dedicated Hib vaccine.'},
      {text:'Rifampin prophylaxis for close contacts',r:'Rifampin prophylaxis is for close contacts of Hib cases, not for routine infant prevention. The vaccine is the primary prevention.'}],
     'Hib vaccine series starting at 2 months',['peds','Hib','vaccine'],'Hib vaccine: conjugate vaccine at 2,4,6,12-15 months. Also indicated for asplenia and sickle cell disease.'),
 
