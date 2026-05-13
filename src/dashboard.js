@@ -1,5 +1,6 @@
 import { navigateTo, state, firestore, auth, checkDailyDoneToday, startDailyDose, loadWrongAnswerPool } from './app.js';
 import { topicToDrillBucket } from './topic-drill-buckets.js';
+import { buildBlueprintProgress, buildSmleSimulation, buildWeeklyTarget, buildSmartRecommendations, buildDomainSparklines } from './dashboard-widgets.js';
 import { signOut, updateProfile } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { initializeThemeSwitch } from './theme.js';
@@ -596,6 +597,21 @@ export function renderDashboard(rootElement) {
                     </div>
                 </div>
 
+                <!-- ── SMLE Blueprint Progress ── -->
+                ${buildBlueprintProgress(specialtyStats)}
+
+                <!-- ── SMLE Simulation + Weekly Target ── -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    ${isPro ? buildSmleSimulation() : ''}
+                    ${buildWeeklyTarget(performance)}
+                </div>
+
+                <!-- ── Smart Recommendations ── -->
+                ${buildSmartRecommendations(specialtyStats, wrongPool)}
+
+                <!-- ── Domain Trends (sparklines) ── -->
+                ${buildDomainSparklines(performance)}
+
                 <!-- ── Weak Questions ── -->
                 ${buildWrongAnswerCard(wrongPool, isPro)}
 
@@ -873,6 +889,14 @@ export function renderDashboard(rootElement) {
             const isStrict = document.getElementById('strict-mode-toggle')?.checked ?? false;
             startQuiz('All Topics', len, isStrict);
         });
+    });
+
+    // SMLE Simulation — 200 questions, strict, mixed
+    document.getElementById('start-simulation-btn')?.addEventListener('click', () => {
+        if (!isPro) { navigateTo('pricing'); return; }
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) overlay.classList.remove('hidden');
+        startQuiz('Mixed/All', 200, true);
     });
 
     document.getElementById('category-selection-container').addEventListener('click', (e) => {
